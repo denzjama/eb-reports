@@ -32,6 +32,14 @@ TEXT = {
         "perception": "Что говорят в отзывах",
         "perception_note": "Отзывы — мнения отдельных людей, а не факты о компании; на оценку они не влияют.",
         "full": "Полный отчёт с методологией, картой источников и всеми доказательствами",
+        "about": "Об Employer Brand Auditor",
+        "about_text": [
+            "Employer Brand Auditor — бесплатный плагин с открытым кодом для Claude Code. Он смотрит на HR-бренд глазами кандидата: что компания обещает, чем это подтверждено и чем она отличается от других работодателей.",
+            "**Как подключить.** Нужен [Claude Code](https://claude.com/claude-code). В терминале выполните две команды:",
+            "```\nclaude plugin marketplace add denzjama/employer-brand-auditor\nclaude plugin install employer-brand-auditor@employer-brand-auditor\n```",
+            "**Как пользоваться.** Напишите в Claude Code «Проаудируй HR-бренд компании [название]» или положите в папку свои материалы: EVP, тексты вакансий, карьерную страницу. Для подробного разбора с соцсетями и отзывами попросите глубокий аудит.",
+            "**Что вы получите.** HTML-отчёт с оценкой от 0 до 100 по восьми измерениям, цитатами-доказательствами к каждому выводу, главными проблемами, планом действий и переписанными текстами. Методология объяснена в самом отчёте. Код и документация: [github.com/denzjama/employer-brand-auditor](https://github.com/denzjama/employer-brand-auditor).",
+        ],
         "sources": "Источники",
         "disclaimer": (
             "Разбор оценивает только публичную коммуникацию работодателя, а не то, как в компании "
@@ -58,6 +66,14 @@ TEXT = {
         "perception": "What reviews say",
         "perception_note": "Reviews are individual opinions, not facts about the company; they never change the score.",
         "full": "Full report with the method, source map and all evidence",
+        "about": "About Employer Brand Auditor",
+        "about_text": [
+            "Employer Brand Auditor is a free, open-source plugin for Claude Code. It reads an employer brand the way a candidate does: what the company promises, what backs it up, and what sets it apart from other employers.",
+            "**How to install.** You need [Claude Code](https://claude.com/claude-code). Run two commands in a terminal:",
+            "```\nclaude plugin marketplace add denzjama/employer-brand-auditor\nclaude plugin install employer-brand-auditor@employer-brand-auditor\n```",
+            "**How to use it.** Ask Claude Code to \"audit [company name]'s employer brand\", or put your own material in the folder: an EVP, job ads, a careers page. For a fuller study with social channels and employee reviews, ask for a deep audit.",
+            "**What you get.** An HTML report with a 0–100 score across eight dimensions, a quotation behind every finding, the main problems, an action plan and rewritten copy. The method is explained inside the report. Code and docs: [github.com/denzjama/employer-brand-auditor](https://github.com/denzjama/employer-brand-auditor).",
+        ],
         "sources": "Sources",
         "disclaimer": (
             "This review assesses the employer's public communication only, not what working there "
@@ -142,6 +158,12 @@ def build(d, report_url=None, site=False):
     if report_url:
         add("")
         add("**[{}]({})**".format(t["full"], report_url))
+    add("")
+
+    add("## " + t["about"])
+    for para in t["about_text"]:
+        add("")
+        add(para)
     add("")
 
     srcs = d.get("sources", [])

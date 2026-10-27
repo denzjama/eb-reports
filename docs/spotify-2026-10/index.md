@@ -52,6 +52,21 @@ The audit was made with the Employer Brand Auditor plugin from public candidate-
 
 **[Full report with the method, source map and all evidence](https://denzjama.github.io/eb-reports/spotify-2026-10/report.html)**
 
+## About Employer Brand Auditor
+
+Employer Brand Auditor is a free, open-source plugin for Claude Code. It reads an employer brand the way a candidate does: what the company promises, what backs it up, and what sets it apart from other employers.
+
+**How to install.** You need [Claude Code](https://claude.com/claude-code). Run two commands in a terminal:
+
+```
+claude plugin marketplace add denzjama/employer-brand-auditor
+claude plugin install employer-brand-auditor@employer-brand-auditor
+```
+
+**How to use it.** Ask Claude Code to "audit [company name]'s employer brand", or put your own material in the folder: an EVP, job ads, a careers page. For a fuller study with social channels and employee reviews, ask for a deep audit.
+
+**What you get.** An HTML report with a 0–100 score across eight dimensions, a quotation behind every finding, the main problems, an action plan and rewritten copy. The method is explained inside the report. Code and docs: [github.com/denzjama/employer-brand-auditor](https://github.com/denzjama/employer-brand-auditor).
+
 ## Sources
 
 - [Join the Band | Life at Spotify](https://www.lifeatspotify.com/)
