@@ -6,6 +6,7 @@ The reviews assess public communication only, not what working at a company is l
 
 ## Reviews
 
+- [Apple: 68/100](apple-2026-10/) · October 2026
 - [Netflix: 75/100](netflix-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/netflixs-employer-brand-75-100-d69cecfa4e7f)
 - [IKEA: 66/100](ikea-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/ikeas-employer-brand-66-100-6398ce1746a2)
 - [Spotify: 63/100](spotify-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/spotifys-employer-brand-63-100-6358ccad634c)
