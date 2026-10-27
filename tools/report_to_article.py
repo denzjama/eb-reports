@@ -2,7 +2,7 @@
 """Turn an Employer Brand Auditor HTML report into a Markdown article.
 
 Usage:
-    python3 report_to_article.py REPORT.html [--report-url URL] [-o ARTICLE.md]
+    python3 report_to_article.py REPORT.html [--report-url URL] [--site] [-o ARTICLE.md]
 
 The article carries the score, verdict, what works, the main problems, the
 first actions, a short method note and the source list. The full report is
@@ -77,12 +77,18 @@ def load(path):
     return json.loads(m.group(1).replace("<\\/", "</"))
 
 
-def build(d, report_url=None):
+def build(d, report_url=None, site=False):
     t = TEXT.get(d.get("lang"), TEXT["en"])
     s = d["score"]
     out = []
     add = out.append
-    add("# " + t["title"].format(company=d["company"], score=s["value"]))
+    title = t["title"].format(company=d["company"], score=s["value"])
+    if site:
+        add("---")
+        add("title: " + json.dumps(title, ensure_ascii=False))
+        add("---")
+    else:
+        add("# " + title)
     add("")
     add("*" + d.get("verdict", "") + "*")
     add("")
@@ -157,8 +163,9 @@ def main():
     ap.add_argument("report")
     ap.add_argument("--report-url")
     ap.add_argument("-o", "--out")
+    ap.add_argument("--site", action="store_true", help="page for the site: title in front matter, no top heading")
     a = ap.parse_args()
-    md = build(load(a.report), a.report_url)
+    md = build(load(a.report), a.report_url, a.site)
     if a.out:
         open(a.out, "w", encoding="utf-8").write(md)
         print(a.out)

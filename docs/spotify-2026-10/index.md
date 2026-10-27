@@ -1,4 +1,6 @@
-# Spotify's employer brand: 63/100
+---
+title: "Spotify's employer brand: 63/100"
+---
 
 *Practical and specific in the hiring FAQ, the benefits terms and the job ads. Generic where Spotify introduces itself as an employer, and contradicted by its own ads on the flexibility promise.*
 
