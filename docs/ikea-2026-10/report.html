@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+ "lang": "en",
+ "company": "IKEA",
+ "date": "2026-10-27",
+ "plugin_version": "0.4.1",
+ "score": {
+  "value": 66,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 100,
+  "confidence": "high",
+  "reliability_note": "all 34 criteria assessed from six types of material: careers pages, culture pages, three job ads, employee quotes, the hiring-process page and the YouTube channel. Collected automatically from public pages on 27 October 2026. No employee reviews could be read"
+ },
+ "verdict": "IKEA's careers material shows a specific, Swedish-rooted way of working and gives hourly candidates real decision facts, but it leads with a customer mission and promises career mobility without showing how mobility works.",
+ "notices": [
+  "The material was collected automatically from IKEA's public careers pages, three current job ads and the @IKEA YouTube channel on 27 October 2026. Some pages may have been missed, and live pages may have changed since then.",
+  "No employee reviews could be read. Glassdoor, Indeed and kununu blocked automated access, Comparably returned an error page, and no InHerSight employer page was found. The section on promise and perception therefore has no review content. Screenshots can be added to fill it (see the end of the report)."
+ ],
+ "materials": [
+  {
+   "name": "jobs.ikea.com home page",
+   "type": "Careers site"
+  },
+  {
+   "name": "Life at IKEA (jobs.ikea.com)",
+   "type": "Employer proposition"
+  },
+  {
+   "name": "Our shared values (jobs.ikea.com)",
+   "type": "Employer proposition"
+  },
+  {
+   "name": "Your possibilities (jobs.ikea.com)",
+   "type": "Careers site"
+  },
+  {
+   "name": "You can stay with us and go almost anywhere (jobs.ikea.com)",
+   "type": "Careers site"
+  },
+  {
+   "name": "Food Co-worker, Sunrise, Florida, US",
+   "type": "Job ad"
+  },
+  {
+   "name": "Forklift Driver for Goods Receiving, Aalborg, Denmark",
+   "type": "Job ad"
+  },
+  {
+   "name": "Senior Backend Software Engineer (AR, Spatial & AI), Amsterdam, Netherlands",
+   "type": "Job ad"
+  },
+  {
+   "name": "Take a minute, chat, figure things out together (jobs.ikea.com)",
+   "type": "Employer proposition"
+  },
+  {
+   "name": "Work with us (ikea.com, US)",
+   "type": "Careers site"
+  },
+  {
+   "name": "Prepare for success (ikea.com global)",
+   "type": "Hiring process"
+  },
+  {
+   "name": "Life at IKEA: Figuring things out, together (ikea.com global)",
+   "type": "Employer proposition"
+  },
+  {
+   "name": "IKEA Data & Technology (ikea.com global)",
+   "type": "Team page with employee quotes"
+  },
+  {
+   "name": "YouTube @IKEA, latest 15 videos",
+   "type": "Social media"
+  }
+ ],
+ "sources": [
+  {
+   "title": "IKEA Jobs | See all job openings",
+   "url": "https://jobs.ikea.com/en",
+   "type": "Careers site",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Life at IKEA",
+   "url": "https://jobs.ikea.com/en/life-at-ikea",
+   "type": "Employer proposition",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Our shared values and strong culture make IKEA unique.",
+   "url": "https://jobs.ikea.com/en/our-values",
+   "type": "Employer proposition",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Your possibilities",
+   "url": "https://jobs.ikea.com/en/your-possibilities",
+   "type": "Careers site",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "You can stay with us – and go almost anywhere",
+   "url": "https://jobs.ikea.com/en/stay-with-us",
+   "type": "Careers site",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Food Co-worker (34-40 hours per week | Full-time), Sunrise, Florida",
+   "url": "https://jobs.ikea.com/en/job/sunrise/food-co-worker-34-40-hours-per-week-full-time/24107/102302087184",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Forklift Driver for Goods Receiving for morning shifts, 10 hours pr. week, Aalborg",
+   "url": "https://jobs.ikea.com/en/job/aalborg/forklift-driver-for-goods-receiving-for-morning-shifts-10-hours-pr-week-aalborg/24107/101074375968",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Senior Backend Software Engineer (AR, Spatial & AI-powered Experiences), Amsterdam",
+   "url": "https://jobs.ikea.com/en/job/amsterdam/senior-backend-software-engineer-ar-spatial-and-ai-powered-experiences/24107/90947272384",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Take a minute, chat, figure things out together.",
+   "url": "https://jobs.ikea.com/en/working-together",
+   "type": "Employer proposition",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Come work with us - IKEA (US)",
+   "url": "https://www.ikea.com/us/en/this-is-ikea/work-with-us/",
+   "type": "Careers site",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Prepare for success – IKEA Global",
+   "url": "https://www.ikea.com/global/en/jobs/prepare-for-success/",
+   "type": "Hiring process",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Life at IKEA: Figuring things out, together – IKEA Global",
+   "url": "https://www.ikea.com/global/en/jobs/life-at-ikea/",
+   "type": "Employer proposition",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "IKEA Data & Technology – IKEA Global",
+   "url": "https://www.ikea.com/global/en/jobs/tech/",
+   "type": "Team page with employee quotes",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "YouTube channel IKEA (@IKEA)",
+   "url": "https://www.youtube.com/channel/UCea45juw3lHS65aRSC4bdCw",
+   "type": "Social media",
+   "captured": "2026-10-27"
+  }
+ ],
+ "source_map": [
+  {
+   "source": "jobs.ikea.com home page",
+   "url": "https://jobs.ikea.com/en",
+   "kind": "Careers site",
+   "decision": "included",
+   "reason": "The main global careers site: headline, work areas, headcount figures."
+  },
+  {
+   "source": "jobs.ikea.com culture pages: Life at IKEA, Our values, Working together, Your possibilities, Stay with us",
+   "url": "https://jobs.ikea.com/en/life-at-ikea",
+   "kind": "Employer proposition",
+   "decision": "included",
+   "reason": "The pages that state what IKEA offers as an employer."
+  },
+  {
+   "source": "1,432 job ads listed in the jobs.ikea.com sitemap on 27 October 2026",
+   "url": "https://jobs.ikea.com/en",
+   "kind": "Job ads",
+   "decision": "included",
+   "reason": "Three current ads sampled from different role families: restaurant, warehouse, software engineering. The rest share the same template. The total describes hiring volume only."
+  },
+  {
+   "source": "About 1,480 location, category and search listing pages",
+   "url": "https://jobs.ikea.com/en",
+   "kind": "Listing pages",
+   "decision": "excluded",
+   "reason": "Search templates repeated per city and work area; no proposition content."
+  },
+  {
+   "source": "Six further job ads found by search (Data Engineer Älmhult and Malmö, Senior Software Engineer Malmö, Full Stack Engineer Amsterdam, Fulfilment Operations Co-worker Winnipeg, Customer Relations Assistant Exeter)",
+   "url": "https://jobs.ikea.com/en",
+   "kind": "Job ads",
+   "decision": "unavailable",
+   "reason": "Closed: the site answered that the job cannot be found."
+  },
+  {
+   "source": "Story, team and student pages counted in the sitemap (27 story, 10 team, 9 student pages)",
+   "url": "https://jobs.ikea.com/en",
+   "kind": "Employee stories",
+   "decision": "unavailable",
+   "reason": "Their addresses could not be located in this run, including the target of the Read more from our co-workers link."
+  },
+  {
+   "source": "IKEA Data & Technology page",
+   "url": "https://www.ikea.com/global/en/jobs/tech/",
+   "kind": "Team page with employee quotes",
+   "decision": "included",
+   "reason": "The tech role family's page, with four employee quotes."
+  },
+  {
+   "source": "Prepare for success",
+   "url": "https://www.ikea.com/global/en/jobs/prepare-for-success/",
+   "kind": "Hiring process",
+   "decision": "included",
+   "reason": "Four-step hiring process, adjustments and equal-pay statement."
+  },
+  {
+   "source": "Life at IKEA (ikea.com global)",
+   "url": "https://www.ikea.com/global/en/jobs/life-at-ikea/",
+   "kind": "Employer proposition",
+   "decision": "included",
+   "reason": "Global version of the culture page, with one named employee quote."
+  },
+  {
+   "source": "Work with us (ikea.com US)",
+   "url": "https://www.ikea.com/us/en/this-is-ikea/work-with-us/",
+   "kind": "Careers site",
+   "decision": "included",
+   "reason": "Shows how the shopping site routes to careers."
+  },
+  {
+   "source": "IKEA Industry page and its seven country pages",
+   "url": "https://www.ikea.com/global/en/jobs/industry/",
+   "kind": "Business unit page",
+   "decision": "excluded",
+   "reason": "Describes the manufacturing business, with no candidate-facing proposition or process."
+  },
+  {
+   "source": "Other ikea.com jobs pages: IMC, Glorious future for your career, Welcome to Älmhult, Me & IKEA",
+   "url": "https://www.ikea.com/global/en/jobs/",
+   "kind": "Careers site",
+   "decision": "excluded",
+   "reason": "Not fetched within the per-site limit. Me & IKEA is an interactive tool without readable text."
+  },
+  {
+   "source": "Country recruitment pages and non-English language versions",
+   "url": "https://www.ikea.com/global/en/jobs/",
+   "kind": "Market pages",
+   "decision": "excluded",
+   "reason": "Outside the scope chosen: the global English-language presence."
+  },
+  {
+   "source": "Aggregator reposts of IKEA ads",
+   "url": "",
+   "kind": "Job boards",
+   "decision": "excluded",
+   "reason": "Not official."
+  },
+  {
+   "source": "YouTube @IKEA",
+   "url": "https://www.youtube.com/channel/UCea45juw3lHS65aRSC4bdCw",
+   "kind": "Social media",
+   "decision": "included",
+   "reason": "Main corporate channel; the description names Inter IKEA Systems B.V. and one video links to the tech careers page. No separate global careers channel was found."
+  },
+  {
+   "source": "Country YouTube playlists and unaffiliated videos about IKEA jobs",
+   "url": "",
+   "kind": "Social media",
+   "decision": "excluded",
+   "reason": "Single-market or not official."
+  },
+  {
+   "source": "LinkedIn, Instagram, Facebook, X, TikTok",
+   "url": "https://www.linkedin.com/company/ikea/",
+   "kind": "Social media",
+   "decision": "manual",
+   "reason": "Closed to automated collection."
+  },
+  {
+   "source": "Glassdoor reviews",
+   "url": "https://www.glassdoor.com/Reviews/IKEA-Reviews-E1219.htm",
+   "kind": "Employee reviews",
+   "decision": "manual",
+   "reason": "Bot check (HTTP 403), also with the second fetch tool."
+  },
+  {
+   "source": "Indeed reviews",
+   "url": "https://www.indeed.com/cmp/Ikea/reviews",
+   "kind": "Employee reviews",
+   "decision": "manual",
+   "reason": "Security check (HTTP 403)."
+  },
+  {
+   "source": "kununu",
+   "url": "https://www.kununu.com/de/ikea",
+   "kind": "Employee reviews",
+   "decision": "unavailable",
+   "reason": "Human verification page."
+  },
+  {
+   "source": "Comparably",
+   "url": "https://www.comparably.com/companies/ikea",
+   "kind": "Employee reviews",
+   "decision": "unavailable",
+   "reason": "The page returned only an error message."
+  },
+  {
+   "source": "InHerSight",
+   "url": "",
+   "kind": "Employee reviews",
+   "decision": "unavailable",
+   "reason": "No employer page located."
+  }
+ ],
+ "social": [
+  {
+   "platform": "YouTube",
+   "account": "@IKEA",
+   "url": "https://www.youtube.com/channel/UCea45juw3lHS65aRSC4bdCw",
+   "purpose": "General corporate and product channel, not a careers channel.",
+   "sample": "15 videos, 6 March 2024 to 24 January 2025 (titles and descriptions; videos not watched)",
+   "rhythm": "About 1.4 videos a month, unevenly spread: five of the 15 went up on 5 July 2024. The newest video in the public feed is dated 24 January 2025.",
+   "people_share": "1 of 15 about work or hiring (Work in tech at IKEA). 1 more introduces a product designer.",
+   "themes": [
+    "Products and kitchen fronts (8 of 15)",
+    "Four mood videos released on the same day",
+    "Archive collection and the Buyback & Resell service",
+    "One tech-careers video"
+   ],
+   "notes": "The careers video's description repeats the opening of the Data & Technology page word for word and links to it. None of the careers-site themes (go almost anywhere along the value chain, first names and Fika) appears in the sample."
+  }
+ ],
+ "perception": {
+  "sample": [
+   {
+    "platform": "Glassdoor",
+    "reviews": 0,
+    "period": "none",
+    "rating": "not read: the site blocked automated access"
+   },
+   {
+    "platform": "Indeed",
+    "reviews": 0,
+    "period": "none",
+    "rating": "not read: security check"
+   },
+   {
+    "platform": "kununu",
+    "reviews": 0,
+    "period": "none",
+    "rating": "not read: human verification page"
+   },
+   {
+    "platform": "Comparably",
+    "reviews": 0,
+    "period": "none",
+    "rating": "not read: error page"
+   }
+  ],
+  "thin": true,
+  "themes": [],
+  "caveat": "No reviews could be read, so the audit cannot set what IKEA promises against what reviewers say. Rating figures seen only in search results were not used."
+ },
+ "manual_import": [
+  {
+   "platform": "LinkedIn company page and Life tab",
+   "url": "https://www.linkedin.com/company/ikea/",
+   "capture": [
+    "Profile header with description and follower count",
+    "The Life tab sections",
+    "3–5 recent posts about people, work or hiring, opened with captions",
+    "Pinned posts"
+   ]
+  },
+  {
+   "platform": "Instagram",
+   "url": "https://www.instagram.com/ikea/",
+   "capture": [
+    "Profile header with bio",
+    "Grid of the latest 9–12 posts",
+    "3–5 posts about people or work with captions"
+   ]
+  },
+  {
+   "platform": "Facebook, X and TikTok",
+   "url": "",
+   "capture": [
+    "Only accounts you confirm as official global or careers accounts; the addresses were not confirmed in this run",
+    "Profile header and 3–5 recent people or hiring posts"
+   ]
+  },
+  {
+   "platform": "Glassdoor reviews",
+   "url": "https://www.glassdoor.com/Reviews/IKEA-Reviews-E1219.htm",
+   "capture": [
+    "The rating page with date and review count",
+    "15–30 recent reviews from the last 24 months with dates; author names are not needed"
+   ]
+  },
+  {
+   "platform": "Indeed reviews",
+   "url": "https://www.indeed.com/cmp/Ikea/reviews",
+   "capture": [
+    "The rating page with date and review count",
+    "15–30 recent reviews with dates"
+   ]
+  }
+ ],
+ "scope": {
+  "reviewed": [
+   "13 public pages on jobs.ikea.com and ikea.com: the careers home page, five culture and proposition pages, the US work-with-us page, the hiring-process page, the Data & Technology page and three job ads posted on 26 October 2026 (restaurant co-worker in Florida, forklift driver in Aalborg, senior backend engineer in Amsterdam)",
+   "The latest 15 videos on the @IKEA YouTube channel",
+   "The global English-language careers presence, captured on 27 October 2026"
+  ],
+  "not_reviewed": [
+   "Employee reviews: every review site tried blocked access or failed to load",
+   "LinkedIn, Instagram, Facebook, X and TikTok (closed to automated collection)",
+   "Long-form co-worker stories, team and student pages, which could not be located",
+   "The Me & IKEA tool, which is interactive",
+   "Country career sites, non-English versions, IKEA Industry and other business-unit sites",
+   "The hiring process as candidates experience it, and what employees say outside official channels",
+   "Six further job ads that had closed by the capture date"
+  ]
+ },
+ "summary": {
+  "points": [
+   "The two hourly job ads are the strongest material. The Florida restaurant ad states the hourly pay range, weekly hours, contract type and required availability. The Aalborg warehouse ad states the exact shift times, the physical demands and a named contact.",
+   "The first thing a candidate reads is a customer mission: make millions of people look forward to going home. What working at IKEA offers has to be pieced together from sub-pages.",
+   "The main career promise, that you can stay and go almost anywhere, rests on a list of IKEA business units. No route, rule, example or number shows how moves happen, and the Aalborg ad repeats the promise as endless possibilities to grow.",
+   "The informal, Swedish-rooted way of working (first names, casual dress, Fika, talking to anyone regardless of title) is the one claim tied to IKEA alone. None of the three ads mentions these practices. The Amsterdam ad brings in the value of togetherness only to explain why engineers must spend most of their time in the office.",
+   "The most specific tech proof sits in the Amsterdam ad (named product, stack, partner team), while the Data & Technology page relies on brightest minds and the forefront of technology. The material does not say whether the ad's team belongs to IKEA Data & Technology. On YouTube, 1 of the 15 latest videos is about work."
+  ],
+  "actions": [
+   "Add one line about working at IKEA under the headline on jobs.ikea.com, built from what the culture pages already say.",
+   "Back the mobility promise with how internal moves work and real figures and routes, then carry it into the ads.",
+   "Rebuild the Data & Technology page around named products and team set-ups, and replace the one-line quotes with real stories."
+  ]
+ },
+ "dimensions": [
+  {
+   "id": "clarity",
+   "score": 7,
+   "max": 12,
+   "assessable": true,
+   "why": "The home page leads with a customer mission and company figures. The employee offer exists, but a candidate has to assemble it from Your possibilities and the culture pages. The language is plain and playful on the careers pages, with unexplained internal terms in the ads.",
+   "criteria": [
+    {
+     "name": "Offer identifiable at a glance",
+     "score": 2,
+     "max": 4,
+     "assessable": true,
+     "note": "The first screen shows the mission headline and headcount; the offer to employees sits on sub-pages."
+    },
+    {
+     "name": "Candidate benefit stated",
+     "score": 3,
+     "max": 4,
+     "assessable": true,
+     "note": "Several pages speak from the candidate's side (you could work anywhere along the way, you are on first-name terms with everyone). Long passages of company self-description remain, such as the value-chain paragraph."
+    },
+    {
+     "name": "Message hierarchy",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Mission, mobility, values and diversity carry equal weight; the home page groups 25 work areas without a lead idea."
+    },
+    {
+     "name": "Plain language",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Careers pages are plain. The ads use unexplained terms: Group P&C, HIP, free choice allowance, Service Execution Team Leader."
+    }
+   ]
+  },
+  {
+   "id": "differentiation",
+   "score": 10,
+   "max": 16,
+   "assessable": true,
+   "why": "One core claim breaks under substitution: the informal way of working tied to IKEA's Småland origin and the Fika ritual. The mobility and mission claims bend, and the values and inclusion claims fit any comparable employer. Specific assets (the value chain, IKEA Food, IKEA Kreativ) are used but not proven.",
+   "criteria": [
+    {
+     "name": "Only true of this employer",
+     "score": 3,
+     "max": 5,
+     "assessable": true,
+     "note": "The simplicity and Fika claim breaks under substitution; the mission and mobility claims bend; the values and inclusion claims survive."
+    },
+    {
+     "name": "Avoids stock phrases",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Stock phrases appear (endless possibilities to grow, brightest minds, forefront of technology, so much more than a job), but the culture pages rest on named practices."
+    },
+    {
+     "name": "Uses employer-specific assets",
+     "score": 3,
+     "max": 4,
+     "assessable": true,
+     "note": "The value chain from stores to factories, IKEA Food and the Swedish heritage are tied to the offer; the link between the value chain and actual moves is not shown."
+    },
+    {
+     "name": "Hard to copy",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "The heritage is structural, but first names, casual dress and coffee breaks can be adopted by anyone."
+    },
+    {
+     "name": "Memorable idea",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Memorable lines exist (231,000 heads, the meatballs aside) and stay you can go almost anywhere means something, but it is absent from the home page and from two of the three ads."
+    }
+   ]
+  },
+  {
+   "id": "proof",
+   "score": 9,
+   "max": 16,
+   "assessable": true,
+   "why": "Three of seven main claims have partial support and none has strong support. The culture claim is backed by named practices, the values-led hiring claim by the Me & IKEA tool, and the welcome claim by concrete hiring practices. The mobility, mission, care and tech claims rest on business-unit lists, benefits lists, one-line quotes or a team the material does not connect to the claim.",
+   "criteria": [
+    {
+     "name": "Claims backed by evidence",
+     "score": 3,
+     "max": 6,
+     "assessable": true,
+     "note": "Three of seven claims partly supported, including three of the five core claims; mobility and the headline are weakly supported."
+    },
+    {
+     "name": "Specific evidence",
+     "score": 2,
+     "max": 4,
+     "assessable": true,
+     "note": "Only a minority of claims has meaningful support, and that support is practice descriptions without outcomes."
+    },
+    {
+     "name": "Evidence fits the claim",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "The support fits some claims, often at a narrower scope: open offices and first names describe offices, not stores or warehouses."
+    },
+    {
+     "name": "Evidence next to the claim",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Where support exists it sits beside the claim (Fika on the same page as the simplicity claim); for the other claims there is nothing to place."
+    }
+   ]
+  },
+  {
+   "id": "audience_fit",
+   "score": 8,
+   "max": 12,
+   "assessable": true,
+   "why": "The ads are written for their roles and cover the factors that matter for each. The careers pages address everyone (there is a job for everyone), and only the tech family has its own page among those reviewed. Real trade-offs appear in the ads, not in the proposition.",
+   "criteria": [
+    {
+     "name": "Audience named",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Each ad has a clear audience; the careers pages speak to all work areas at once."
+    },
+    {
+     "name": "Decision factors covered",
+     "score": 3,
+     "max": 4,
+     "assessable": true,
+     "note": "Pay, hours and availability for the restaurant role; shift times and physical demands for the warehouse role; stack and team for the engineer. The engineer ad gives no pay."
+    },
+    {
+     "name": "Adapted per audience",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Ads adapt to their roles on a shared values core; among the pages reviewed, store and logistics candidates have no page of their own."
+    },
+    {
+     "name": "Makes choices",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "The ads state hard choices (hard manual labour, majority of time in the office, weekends and evenings). The proposition itself says there is a job for everyone."
+    }
+   ]
+  },
+  {
+   "id": "employee_truth",
+   "score": 7,
+   "max": 10,
+   "assessable": true,
+   "why": "The ads show the work in detail, including demands and how they are handled. Employee voice is limited to five one-sentence quotes. Culture is shown through practices on the working-together pages and through adjectives elsewhere.",
+   "criteria": [
+    {
+     "name": "Employee voice",
+     "score": 1,
+     "max": 3,
+     "assessable": true,
+     "note": "Five one-sentence quotes, four with first names only; none describes a concrete event."
+    },
+    {
+     "name": "Work reality",
+     "score": 3,
+     "max": 3,
+     "assessable": true,
+     "note": "Task lists, shift times, tools (forklift, IT systems, Python and Django) and team set-ups in all three ads."
+    },
+    {
+     "name": "Honest difficulties",
+     "score": 2,
+     "max": 2,
+     "assessable": true,
+     "note": "The Aalborg ad names hard manual labour and the 10 AM deadline and says how the team handles them (support, training)."
+    },
+    {
+     "name": "Culture shown through behaviour",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "First names, Fika and open access to anyone are practices; the values page and the stay-with-us adjective list are mostly description."
+    }
+   ]
+  },
+  {
+   "id": "consistency",
+   "score": 8,
+   "max": 12,
+   "assessable": true,
+   "why": "Values appear on every careers and culture page and in two of the three ads. The careers pages' strongest ideas (mobility, Fika) do not reach most ads. Tone shifts from playful pages to corporate ad copy, and several smaller statements pull against each other.",
+   "criteria": [
+    {
+     "name": "Same core promise",
+     "score": 4,
+     "max": 5,
+     "assessable": true,
+     "note": "The headline appears on three pages and values appear in the restaurant and engineer ads; the Aalborg ad does not mention the values and the restaurant ad does not mention mobility."
+    },
+    {
+     "name": "Proof tells the same story",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Customer and scale figures (660 million restaurant customers, 1 million people with suppliers) sit off the employee story."
+    },
+    {
+     "name": "Same voice",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Playful careers pages (So many options!) against corporate ad openings such as drive the digital agenda."
+    },
+    {
+     "name": "No contradictions",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Minor tensions: values before experience against fixed experience minimums; flexible work against mostly in the office; four different headcount figures."
+    }
+   ]
+  },
+  {
+   "id": "candidate_relevance",
+   "score": 9,
+   "max": 12,
+   "assessable": true,
+   "why": "The ads make the role easy to picture and the restaurant ad gives pay and hours. Why IKEA rather than another employer is answered only in general terms. The warehouse ad describes pay as a band without figures and the engineer ad gives no pay.",
+   "criteria": [
+    {
+     "name": "Why join",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Mobility, the informal culture and the mission are offered as reasons, without proof of the mobility reason."
+    },
+    {
+     "name": "Role reality",
+     "score": 3,
+     "max": 3,
+     "assessable": true,
+     "note": "Concrete tasks, team, partners and conditions in all three ads."
+    },
+    {
+     "name": "Decision facts",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Full facts for the restaurant role; no pay figure for the warehouse or engineer roles."
+    },
+    {
+     "name": "Doubts answered",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Apply even without every qualification, adjustments on request, schedule input in Aalborg. How mobility works is left open."
+    }
+   ]
+  },
+  {
+   "id": "conversion",
+   "score": 8,
+   "max": 10,
+   "assessable": true,
+   "why": "Apply buttons, job search and alerts are clear, and the hiring process is laid out in four steps. Effort and support are only partly explained, and one ad invites questions without giving a contact.",
+   "criteria": [
+    {
+     "name": "Clear next step",
+     "score": 3,
+     "max": 3,
+     "assessable": true,
+     "note": "Search, apply and job alerts on every page reviewed."
+    },
+    {
+     "name": "Key facts near the button",
+     "score": 2,
+     "max": 2,
+     "assessable": true,
+     "note": "In the ads, Apply now! sits directly above contract, hours, pay and benefits."
+    },
+    {
+     "name": "Effort reduced",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Apply-anyway encouragement and a named contact in Aalborg; no time to apply or list of what to prepare."
+    },
+    {
+     "name": "Button fits the stage",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Me & IKEA serves undecided candidates; elsewhere a generic Apply now!, and the engineer ad's Let's connect! has no contact behind it."
+    },
+    {
+     "name": "Process described",
+     "score": 1,
+     "max": 1,
+     "assessable": true,
+     "note": "Pre-screening, interviews, decision and onboarding are described."
+    }
+   ]
+  }
+ ],
+ "strengths": [
+  {
+   "title": "The hourly ads give the facts needed to decide",
+   "text": "The Florida restaurant ad states a pay range of $17.58 to $24.83 an hour, 34 to 40 hours a week, a permanent full-time contract and that weekend and evening availability is required. It lists benefits with their conditions: medical plans need at least 20 hours a week, paid parental leave is up to 16 weeks. The Aalborg ad states an average of 10 hours a week, weekday mornings from 05:00 to 10:00 plus every second Saturday, and that co-workers can give input to the schedule."
+  },
+  {
+   "title": "The warehouse ad names the hard parts and how they are handled",
+   "text": "The Aalborg ad asks for good physical shape and the ability to handle hard manual labour. It explains why the pace is high: the shelves must be filled before the store opens at 10 AM. It then says how the team copes, through mutual support and the training the employer commits to, and gives a named team leader's email for questions."
+  },
+  {
+   "title": "The way of working is shown through practices",
+   "text": "The working-together pages describe first-name terms, casual dress, open offices, the freedom to talk to any co-worker regardless of title, and Fika as a daily coffee break that IKEA locations have kept for over 70 years. These are linked to the Småland origin and the value of Simplicity. This is the one proposition in the material that a comparable employer could not reuse unchanged."
+  },
+  {
+   "title": "The hiring process is described and open",
+   "text": "Prepare for success lays out four steps from pre-screening to onboarding, says the offer comes in writing and invites candidates to ask for adjustments at any stage. It and the Aalborg ad both encourage people to apply without meeting every qualification."
+  },
+  {
+   "title": "The engineer ad is concrete about the work",
+   "text": "The Amsterdam ad names the product (IKEA Kreativ, part of the Home Imagination Platform), the stack (Python, Django, PostgreSQL, Celery), the partner team at Geomagical Labs in California and the team size (small). It states the office expectation plainly."
+  }
+ ],
+ "problems": [
+  {
+   "severity": "high",
+   "title": "The headline promise is about customers, not about working at IKEA",
+   "evidence": [
+    "\"Make millions of people look forward to going home.\" (jobs.ikea.com home page, first screen, followed by headcount, country and store figures)",
+    "The same line closes the Data & Technology page, and the US page uses \"Make millions of people look forward to coming home\""
+   ],
+   "why": "The first screen tells a candidate what IKEA does for customers. It says nothing about what the job gives the person doing it. The offer to employees appears only on sub-pages, so the line repeated across three touchpoints carries no employee benefit.",
+   "flags": [
+    "RF03",
+    "RF04"
+   ]
+  },
+  {
+   "severity": "high",
+   "title": "The mobility promise has no mechanism and no proof",
+   "evidence": [
+    "\"You can stay with us – and go almost anywhere\" (page title, jobs.ikea.com)",
+    "Your possibilities says your role could change or travel to any IKEA location worldwide, and that a job could grow in whichever direction you choose",
+    "\"At IKEA you have endless possibilities to grow.\" (Aalborg forklift ad)"
+   ],
+   "why": "The only support is a list of where IKEA operates (stores, development centres, factories, distribution facilities, studios, office hubs) and one employee's sentence that there are opportunities to take on more responsibility. Nothing says who can move, how to apply internally, or how many people have moved. The promise is the careers site's main reason to join, and it is repeated in an ad for a role averaging 10 hours a week without any route attached.",
+   "flags": [
+    "RF14",
+    "RF06"
+   ]
+  },
+  {
+   "severity": "medium",
+   "title": "The tech page uses stock phrases while its best proof sits in a single ad",
+   "evidence": [
+    "\"To do that, we're looking for the brightest minds in tech to join us!\" (Data & Technology page)",
+    "\"Passionate about data and technology? IKEA offers a workplace where your skills can flourish while you work at the forefront of technology.\" (Data & Technology page, repeated word for word in the YouTube video description)"
+   ],
+   "why": "The page names no product, problem or tool. The Amsterdam ad names a product, a stack and a partner team, but it describes Group Digital and Ingka Digital, and the material does not say whether these belong to IKEA Data & Technology. Until that is clear, the ad's detail cannot be read as evidence for the page.",
+   "flags": [
+    "RF15",
+    "RF02"
+   ]
+  },
+  {
+   "severity": "medium",
+   "title": "Values are offered as what makes IKEA different, but most are shown only in words",
+   "evidence": [
+    "\"Our shared values and strong culture make IKEA unique.\" (Our values page)",
+    "\"IKEA is not like other companies and we don't want to be.\" (Our values page)",
+    "The stay-with-us page describes its people as \"a wide variety of unique, hard-working, down-to-earth, energetic, eager, humble, capable, experienced and innovative people\""
+   ],
+   "why": "Simplicity is demonstrated through Fika and first names. The other seven values, including togetherness and give and take responsibility, are defined in belief statements without a practice or example. The Life at IKEA section headed Putting words into action contains no action.",
+   "flags": [
+    "RF21",
+    "RF07"
+   ]
+  },
+  {
+   "severity": "medium",
+   "title": "Employee voice is five one-sentence quotes",
+   "evidence": [
+    "\"IKEA, to me, feels like a second home. Not because of the work, but because of the people.\" (Selva, Data Engineer)",
+    "\"The best part of the workplace is the diversity of individuals I get to work with.\" (Jeff, Solution Architect Team Manager)"
+   ],
+   "why": "Four of the five quotes carry a first name only, and none describes something that happened. All five come from office and tech roles; in the material reviewed, no store, restaurant or warehouse co-worker speaks. The Read more from our co-workers link could not be followed in this run, so longer stories may exist elsewhere.",
+   "flags": [
+    "RF16"
+   ]
+  },
+  {
+   "severity": "low",
+   "title": "Several statements pull against each other",
+   "evidence": [
+    "\"We look for people's values before competence and experience.\" (Our values page) next to \"Minimum 2 years related experience.\" (Florida restaurant ad)",
+    "\"A flexible work environment that values your well-being, growth, and continuous learning.\" next to \"This is why we expect you to spend the majority of time in the office.\" (both in the Amsterdam ad)",
+    "Headcount is given as +215,000 for FY25 (home page), 231,000 at last count in FY22 (Life at IKEA), nearly 230,000 (Your possibilities) and more than 200,000 (Data & Technology); stores as +480 and over 460"
+   ],
+   "why": "None of these is a direct contradiction about the job, and some may have simple explanations. Read together, they leave a candidate unsure how the values-first principle applies to experience requirements and what flexibility means in an office-first role. The 231,000 heads headline uses an FY22 figure while the home page shows FY25.",
+   "flags": []
+  }
+ ],
+ "fixes": [
+  {
+   "title": "Put the employee offer on the first screen of jobs.ikea.com",
+   "needs_new_data": false,
+   "steps": [
+    "Keep the mission headline and add one line beneath it about working at IKEA, using wording the culture pages already contain (see Before → after).",
+    "Link that line to Your possibilities and the working-together page, ahead of the work-area grid.",
+    "Replace the headcount figures on the first screen with a fact about the work, or add one, so the first screen is not only about company size."
+   ],
+   "why_first": "It costs least and changes what every visitor sees first. The text needed already exists on the site.",
+   "needs": [
+    "Agreement on which of the existing ideas leads: go almost anywhere, or the informal way of working"
+   ],
+   "effort": "small",
+   "effort_note": "Copy change on one page using existing wording",
+   "who": [
+    "Employer-brand lead",
+    "Careers-site content owner"
+   ],
+   "check": [
+    "How many home-page visitors open Your possibilities or the culture pages",
+    "Whether recruiters hear the line repeated back in first interviews"
+   ]
+  },
+  {
+   "title": "Back the mobility promise with how it works and what has happened",
+   "needs_new_data": true,
+   "steps": [
+    "Publish how internal moves work: who can apply, whether part-time store and warehouse co-workers qualify, and where internal jobs are posted.",
+    "Add figures for internal moves with their period and population, for several years if available.",
+    "Add two or three real co-worker routes across the value chain, with role, location and dates, told by the people themselves.",
+    "In ads, replace endless possibilities to grow with the route that starts from that role."
+   ],
+   "why_first": "Mobility is the careers site's main reason to join and currently the least supported core claim.",
+   "needs": [
+    "Internal-move data by period and population",
+    "The internal-mobility rules",
+    "Co-workers willing to tell their route"
+   ],
+   "effort": "large",
+   "effort_note": "Data gathering across IKEA companies plus new stories",
+   "who": [
+    "People & Culture analytics (move data)",
+    "Talent mobility owners (rules)",
+    "Store and warehouse managers (stories)"
+   ],
+   "check": [
+    "Whether candidates ask about internal moves in interviews",
+    "How many applications to hourly roles come from people already at IKEA"
+   ]
+  },
+  {
+   "title": "Rebuild the Data & Technology page around named products and teams",
+   "needs_new_data": true,
+   "steps": [
+    "Clarify which IKEA companies and teams the page covers.",
+    "Replace brightest minds and forefront of technology with two or three named products, the problem each solves and the tools used.",
+    "Turn the four one-line quotes into short accounts of something each person built, decided or changed.",
+    "Update the YouTube video description to match."
+   ],
+   "why_first": "The specific material already exists in ads. Moving it onto the page is quicker than the mobility work, but it depends on one confirmation.",
+   "needs": [
+    "Confirmation of whether the page covers teams such as IKEA Kreativ in Ingka Digital",
+    "Real input from the quoted employees"
+   ],
+   "effort": "medium",
+   "effort_note": "One confirmation, product details from team leads and four short interviews",
+   "who": [
+    "Tech recruitment lead",
+    "Engineering managers",
+    "The quoted co-workers"
+   ],
+   "check": [
+    "Time spent on the page and clicks from it to tech ads",
+    "Whether tech candidates mention a named product in applications"
+   ]
+  }
+ ],
+ "rewrites": [
+  {
+   "title": "jobs.ikea.com home page, first screen",
+   "original": "Make millions of people look forward to going home.",
+   "problem": "The line describes what IKEA does for customers. Nothing on the first screen says what working here offers.",
+   "logic": "Keep the headline and add a second line about the job, built only from wording on Your possibilities, keeping its may and could.",
+   "rewrite": "Make millions of people look forward to going home.\nWork in one of our stores, development centres, factories, distribution facilities, studios or office hubs. Your role could change, or travel to any one of our locations all over the world.",
+   "notes": [
+    {
+     "kind": "evidence",
+     "text": "How internal moves work and how often they happen, before the second line is made stronger."
+    },
+    {
+     "kind": "confirm",
+     "text": "Whether the option to change or travel applies to part-time store and warehouse co-workers as well as office roles."
+    }
+   ]
+  },
+  {
+   "title": "Aalborg forklift ad, team section",
+   "original": "We will ensure the correct training, so you will feel safe and competent in the job. At IKEA you have endless possibilities to grow.",
+   "problem": "The first sentence is a concrete commitment. The second is a stock growth phrase with no route behind it.",
+   "logic": "Keep the training commitment, drop the stock phrase, and mark the missing route as information to collect.",
+   "rewrite": "We will ensure the correct training, so you will feel safe and competent in the job.\n[Information needed: the next roles people in goods receiving have moved into, and how they applied.]",
+   "notes": [
+    {
+     "kind": "evidence",
+     "text": "Examples of next roles taken by goods-receiving co-workers in Aalborg or elsewhere, with the route they followed."
+    }
+   ]
+  },
+  {
+   "title": "Data & Technology page, opening",
+   "original": "At IKEA Data & Technology, we're on a mission to develop new and existing digital capabilities that create value for both the IKEA business and customers. To do that, we're looking for the brightest minds in tech to join us!",
+   "problem": "A superlative with no product, problem or tool behind it.",
+   "logic": "Keep the factual first sentence and replace the superlative with the facts it needs. Product names from the Amsterdam ad are kept out until the team relationship is confirmed.",
+   "rewrite": "At IKEA Data & Technology, we develop new and existing digital capabilities that create value for both the IKEA business and customers.\n[Information needed: two or three products the teams work on, the problem each solves for customers or co-workers, and the main tools used.]",
+   "notes": [
+    {
+     "kind": "confirm",
+     "text": "Whether IKEA Kreativ and the Home Imagination Platform, described in the Amsterdam ad as part of Ingka Digital, can be presented on this page."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "How internal moves work: who can apply, whether part-time hourly co-workers qualify, and where internal roles are posted."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "Figures for internal moves between roles, functions or countries, with period and population, for more than one year if possible."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "Two or three real co-worker routes across the value chain, including store, restaurant or warehouse roles."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "Longer accounts from the quoted co-workers describing something concrete they did."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "Pay figures or band ranges for the Aalborg warehouse and Amsterdam engineering roles."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "A contact or channel behind Questions and support? Let's connect! in the Amsterdam ad."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "Whether the option to change roles or move locations applies to part-time store and warehouse co-workers."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "How hiring on values before competence and experience applies to roles that set minimum years of experience."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "What the flexible work environment in the Amsterdam ad allows, given the expectation to spend most of the time in the office."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "Which headcount and store figures are current, so the 231,000 heads headline can be updated or dated."
+  },
+  {
+   "kind": "confirm",
+   "for": "audit",
+   "text": "Whether IKEA Data & Technology on ikea.com includes Group Digital and Ingka Digital teams such as IKEA Kreativ."
+  },
+  {
+   "kind": "evidence",
+   "for": "audit",
+   "text": "Screenshots of the LinkedIn Life tab, Instagram and recent Glassdoor and Indeed reviews, to complete the social and perception sections."
+  },
+  {
+   "kind": "evidence",
+   "for": "audit",
+   "text": "The address of the co-worker stories behind the Read more from our co-workers link."
+  }
+ ],
+ "genericity": [
+  {
+   "claim": "\"Make millions of people look forward to going home.\"",
+   "verdict": "partial",
+   "substitution": "bends",
+   "ubiquity": "rare",
+   "specificity": "some",
+   "defensibility": "supportable",
+   "why": "Tied to home furnishing, so it bends: another home-furnishing retailer could use it with little change. It uses no stock phrases, but millions has no scope and the line says nothing about the employee."
+  },
+  {
+   "claim": "\"You can stay with us – and go almost anywhere\"",
+   "verdict": "partial",
+   "substitution": "bends",
+   "ubiquity": "common",
+   "specificity": "some",
+   "defensibility": "supportable",
+   "why": "The list of IKEA business units gives it some specific ground, but a large group with several businesses could say the same. Nothing in the material shows how a move happens. The Aalborg ad's version, endless possibilities to grow, is a stock phrase."
+  },
+  {
+   "claim": "Work is kept simple and informal: first names, casual dress, open offices, talking to anyone regardless of title, and Fika, rooted in IKEA's origin in the Swedish countryside (Working together; Life at IKEA)",
+   "verdict": "partial",
+   "substitution": "breaks",
+   "ubiquity": "common",
+   "specificity": "high",
+   "defensibility": "supportable",
+   "why": "Breaks under substitution because it depends on IKEA's Småland origin and a ritual the page says IKEA locations have kept for over 70 years. Talking to anyone regardless of title follows the flat-hierarchy pattern, and the practices themselves are easy to adopt, so it stops short of fully setting IKEA apart."
+  },
+  {
+   "claim": "\"Our shared values and strong culture make IKEA unique.\"",
+   "verdict": "generic",
+   "substitution": "survives",
+   "ubiquity": "ubiquitous",
+   "specificity": "some",
+   "defensibility": "unowned",
+   "why": "A comparable employer could print it unchanged. The named values (cost-consciousness, Småland heritage) add some specifics, but the claim of uniqueness has no comparison or practice behind it."
+  },
+  {
+   "claim": "\"Everybody's different. That's what we all have in common.\"",
+   "verdict": "generic",
+   "substitution": "survives",
+   "ubiquity": "ubiquitous",
+   "specificity": "some",
+   "defensibility": "supportable",
+   "why": "Built on the inclusion pattern and true of any employer. The apply-anyway encouragement and the offer of adjustments are real practices but can be copied without cost."
+  }
+ ],
+ "ledger": [
+  {
+   "claim": "Your work makes millions of people look forward to going home (home page, Data & Technology page, US page)",
+   "class": "core",
+   "evidence": "Scale facts: more than 660 million restaurant customers a year (Florida ad); up to 1 million people including suppliers (Stay with us); backend systems used by millions of customers (Amsterdam ad).",
+   "strength": "weak",
+   "status": "weak",
+   "comment": "Customer and scale facts offered for an employee promise; they show IKEA's reach, not what the work gives the person doing it."
+  },
+  {
+   "claim": "You can stay with IKEA and go almost anywhere: change role, move location, grow in the direction you choose (Your possibilities, Stay with us, Aalborg ad, Data & Technology page)",
+   "class": "core",
+   "evidence": "A list of IKEA business types along the value chain and nearly 230,000 co-workers (Your possibilities); one quote: there are opportunities to take on more responsibility when you would like to develop (Aycoul, Data & Technology).",
+   "strength": "weak",
+   "status": "weak",
+   "comment": "The business list shows where people could work, not that moves happen; the quote is one person's one sentence and is about responsibility, not moves. Needed: rules, figures by period, routes."
+  },
+  {
+   "claim": "Work is kept simple and informal, rooted in IKEA's Swedish origin (Working together, both Life at IKEA pages, Simplicity value)",
+   "class": "core",
+   "evidence": "First-name terms, casual dress, open offices, freedom to talk with any co-worker regardless of title, and Fika described as a daily break at IKEA locations for over 70 years (Working together).",
+   "strength": "moderate",
+   "status": "partial",
+   "comment": "Named practices, but self-described and without outcomes. Open offices and dress describe office settings; the material does not show how this works in stores or warehouses."
+  },
+  {
+   "claim": "Shared values shape the culture and the hiring, and make IKEA unique (Our values, Life at IKEA global, Prepare for success, Amsterdam ad)",
+   "class": "core",
+   "evidence": "The Me & IKEA tool, described as helping IKEA see whether a candidate's values fit; the hiring-process page headed values-led recruitment; the Amsterdam ad's statement that sharing the values is important; Sabrina Jacques' quote about recognising her values in others.",
+   "strength": "moderate",
+   "status": "partial",
+   "comment": "The tool and process wording support values-led hiring, but indirectly: no step in the four-step process says how values are assessed. The uniqueness part has no support."
+  },
+  {
+   "claim": "Everyone is welcome and can be themselves at IKEA (Prepare for success, Life at IKEA, US page, Aalborg ad, Stay with us)",
+   "class": "core",
+   "evidence": "Encouragement to apply without meeting every qualification (Prepare for success, Aalborg ad); the offer to adjust the process to personal needs at any stage; a commitment to equal pay based on experience and qualifications (Prepare for success).",
+   "strength": "moderate",
+   "status": "partial",
+   "comment": "Concrete practices, but they cover the hiring stage only; the material shows nothing about inclusion once employed. The Putting words into action section contains no action."
+  },
+  {
+   "claim": "IKEA takes care of co-workers and their dependents as a top priority (Florida ad, Data & Technology page)",
+   "class": "supporting",
+   "evidence": "Benefits in the Florida ad for eligible regular co-workers: paid parental leave up to 16 weeks, a KinderCare tuition discount, 24/7 telehealth; private health insurance and massage in the Aalborg ad.",
+   "strength": "weak",
+   "status": "weak",
+   "comment": "Benefits lists are useful candidate information, but they do not show priority or care beyond themselves, and they cover two locations."
+  },
+  {
+   "claim": "In tech you work at the forefront of technology with the latest technologies (Data & Technology page, YouTube video)",
+   "class": "supporting",
+   "evidence": "The Amsterdam ad: IKEA Kreativ, 3D and AI, Python and Django, collaboration with Geomagical Labs in California.",
+   "strength": "weak",
+   "status": "weak",
+   "comment": "The ad describes Group Digital and Ingka Digital; the material does not say whether they belong to IKEA Data & Technology. Until confirmed, this cannot count as direct support. Forefront and latest are not demonstrated by any comparison."
+  }
+ ]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>
