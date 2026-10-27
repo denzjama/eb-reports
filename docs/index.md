@@ -6,4 +6,4 @@ The reviews assess public communication only, not what working at a company is l
 
 ## Reviews
 
-- [Spotify: 63/100](spotify-2026-10/) · October 2026
+- [Spotify: 63/100](spotify-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/spotifys-employer-brand-63-100-6358ccad634c)
