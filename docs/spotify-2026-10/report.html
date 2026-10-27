@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "Spotify",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 63,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 97,
+  "confidence": "high",
+  "reliability_note": "33 of 34 criteria assessed across five types of material (proposition, careers pages, job ads, a social channel, hiring process). Collected automatically from public pages; employee reviews and closed social platforms are not included"
+},
+"verdict": "Practical and specific in the hiring FAQ, the benefits terms and the job ads. Generic where Spotify introduces itself as an employer, and contradicted by its own ads on the flexibility promise.",
+"notices": [
+  "The material was collected automatically from public pages on 27 October 2026. Some sources may have been missed, and live pages may have changed since that date.",
+  "No employee reviews could be read: Indeed and kununu blocked automatic access, and Glassdoor is closed to it. The only open social channel was a YouTube playlist. Instagram, LinkedIn and X are listed under What to add for the full picture."
+],
+"materials": [
+  {"name": "Careers site home page", "type": "Careers page"},
+  {"name": "Culture page (Impact is Our Superpower, The Spotify Way, belonging)", "type": "Employer value proposition"},
+  {"name": "Benefits & Perks page", "type": "Careers page"},
+  {"name": "Students page with internship FAQ", "type": "Careers page"},
+  {"name": "New York office page", "type": "Careers page"},
+  {"name": "Start Your Journey: hiring steps and FAQ", "type": "Candidate communication"},
+  {"name": "Latest page: list of podcast episode titles", "type": "Employee content index"},
+  {"name": "Job ad: Account Executive, Commercial, Spotify Technology (London)", "type": "Job ad"},
+  {"name": "Job ad: Senior Backend Engineer, Content Platform (London / Stockholm)", "type": "Job ad"},
+  {"name": "Job ad: Data Scientist, Business Analytics (London)", "type": "Job ad"},
+  {"name": "Job ad: Client Partner, Emerging & Scaled (São Paulo)", "type": "Job ad"},
+  {"name": "Job ad: AV Engineer, Platform (Stockholm)", "type": "Job ad"},
+  {"name": "Job ad: Legal Counsel, Litigation and Copyright (New York)", "type": "Job ad"},
+  {"name": "Job ad: Communications Lead, MENAT+ (Dubai)", "type": "Job ad"},
+  {"name": "Job ad: Senior Product Manager, Spotify Connect (London / Stockholm)", "type": "Job ad"},
+  {"name": "Job board listing of all open roles", "type": "Job listing"},
+  {"name": "YouTube playlist Life at Spotify (15 videos, titles and descriptions)", "type": "Social media"}
+],
+"sources": [
+  {"title": "Join the Band | Life at Spotify", "url": "https://www.lifeatspotify.com/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Culture | Life at Spotify", "url": "https://www.lifeatspotify.com/the-way-we-play/culture", "type": "Employer value proposition", "captured": "2026-10-27"},
+  {"title": "Benefits & Perks | Life at Spotify", "url": "https://www.lifeatspotify.com/the-way-we-play/benefits-and-perks", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Start Your Journey | Life at Spotify", "url": "https://www.lifeatspotify.com/start-your-journey", "type": "Candidate communication", "captured": "2026-10-27"},
+  {"title": "Students | Life at Spotify", "url": "https://www.lifeatspotify.com/start-your-journey/students", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "New York | Life at Spotify", "url": "https://www.lifeatspotify.com/find-your-team/locations/new-york", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Latest | Life at Spotify", "url": "https://www.lifeatspotify.com/latest", "type": "Employee content index", "captured": "2026-10-27"},
+  {"title": "Account Executive, Commercial, Spotify Technology (London)", "url": "https://www.lifeatspotify.com/jobs/account-executive-commercial-spotify-technology-3", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Senior Backend Engineer, Content Platform (London / Stockholm)", "url": "https://jobs.lever.co/spotify/9f66e598-8587-4a57-8552-2cdb8672014a", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Data Scientist, Business Analytics (London)", "url": "https://jobs.lever.co/spotify/b4f6cd01-1d5d-41a9-b287-6d10416da03c", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Client Partner, Emerging & Scaled (São Paulo)", "url": "https://jobs.lever.co/spotify/92375b47-968c-4bad-83ee-c89b26b24e1d", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "AV Engineer, Platform (Stockholm)", "url": "https://jobs.lever.co/spotify/785989a6-b219-43b1-92d9-750a67054f24", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Legal Counsel, Litigation and Copyright (New York)", "url": "https://jobs.lever.co/spotify/8d54dd6d-d7e0-4298-b051-423bcec4089e", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Communications Lead, MENAT+ (Dubai)", "url": "https://jobs.lever.co/spotify/c152d042-642d-4a48-862b-8be8d6cdc819", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Senior Product Manager, Spotify Connect (London / Stockholm)", "url": "https://jobs.lever.co/spotify/8bd60a8c-d8bb-41ba-9ac0-69d0b643d63d", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Spotify job openings (job board listing)", "url": "https://jobs.lever.co/spotify", "type": "Job listing", "captured": "2026-10-27"},
+  {"title": "YouTube playlist: Life at Spotify", "url": "https://www.youtube.com/playlist?list=PLS4Ugv1bs-u-Ski_g845PWZoc11ec2pHo", "type": "Social media", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "Careers home, culture, benefits, students, New York office and hiring-process pages", "url": "https://www.lifeatspotify.com/", "kind": "Careers site", "decision": "included", "reason": "Official careers pages: proposition, benefits, hiring process, early careers and one major office"},
+  {"source": "Latest page (podcast episode titles)", "url": "https://www.lifeatspotify.com/latest", "kind": "Employee content index", "decision": "included", "reason": "The only employee-voice hub found. It lists titles with day and month, no year and no episode text"},
+  {"source": "Eight job ads", "url": "https://jobs.lever.co/spotify", "kind": "Job ads", "decision": "included", "reason": "Sample across sales, engineering, data, advertising sales, AV, legal, communications and product in London, Stockholm, New York, São Paulo and Dubai"},
+  {"source": "Job board listing of all open roles", "url": "https://jobs.lever.co/spotify", "kind": "Job listing", "decision": "included", "reason": "Hiring footprint: about 89 postings in 17 locations, with On-site, Hybrid and Remote tags (hand count)"},
+  {"source": "YouTube playlist Life at Spotify", "url": "https://www.youtube.com/playlist?list=PLS4Ugv1bs-u-Ski_g845PWZoc11ec2pHo", "kind": "Social media", "decision": "included", "reason": "Linked from the careers site and published by the Spotify channel; read through the public feed"},
+  {"source": "About 20 category pages and about 28 other location pages", "url": "https://www.lifeatspotify.com/", "kind": "Careers site", "decision": "excluded", "reason": "Same template as the pages captured; New York sampled as the location page"},
+  {"source": "Filtered job lists and the careers-site job list", "url": "https://www.lifeatspotify.com/jobs", "kind": "Job listing", "decision": "excluded", "reason": "The list is drawn by scripts and showed 0 jobs in the captured text; the job board listing was used instead"},
+  {"source": "About 80 other open job ads", "url": "https://jobs.lever.co/spotify", "kind": "Job ads", "decision": "excluded", "reason": "Sampling limit; eight ads cover the main role families and cities"},
+  {"source": "Regional work page, AI notice, candidate privacy policy", "url": "https://www.lifeatspotify.com/", "kind": "Policy pages", "decision": "excluded", "reason": "Legal and policy pages, not the candidate proposition"},
+  {"source": "Equity and Impact Report 2025, UK Gender Pay Report 2025", "url": "https://www.lifeatspotify.com/", "kind": "Reports (PDF)", "decision": "excluded", "reason": "Corporate reports in PDF form; not fetched"},
+  {"source": "YouTube handle @lifeatspotify", "url": "https://www.youtube.com/@lifeatspotify", "kind": "Social media", "decision": "excluded", "reason": "Resolves to an unrelated personal channel, not an official account"},
+  {"source": "Newsroom, engineering blog, 2017 interviews", "url": "https://newsroom.spotify.com/", "kind": "Corporate content", "decision": "excluded", "reason": "Not candidate-facing, or outside the 24-month window"},
+  {"source": "Third-party career pages and aggregators", "url": "", "kind": "Third-party pages", "decision": "excluded", "reason": "Not official, or outdated"},
+  {"source": "Main corporate Spotify accounts on YouTube, X and Instagram", "url": "", "kind": "Social media", "decision": "excluded", "reason": "Not recruiting-specific"},
+  {"source": "Glassdoor ratings seen in search results", "url": "", "kind": "Reviews", "decision": "excluded", "reason": "Search snippets are not used as evidence"},
+  {"source": "How We Hire, students and New York pages at older addresses", "url": "https://www.lifeatspotify.com/how-we-hire", "kind": "Careers site", "decision": "unavailable", "reason": "Redirects; the same content was captured at the current addresses"},
+  {"source": "YouTube playlist page", "url": "https://www.youtube.com/playlist?list=PLS4Ugv1bs-u-Ski_g845PWZoc11ec2pHo", "kind": "Social media", "decision": "unavailable", "reason": "The page is built by scripts; the playlist was read through its public feed instead"},
+  {"source": "Job board data feed", "url": "https://api.lever.co/v0/postings/spotify", "kind": "Job listing", "decision": "unavailable", "reason": "Data format the collector cannot read; not needed"},
+  {"source": "Indeed reviews", "url": "https://www.indeed.com/cmp/Spotify/reviews", "kind": "Reviews", "decision": "unavailable", "reason": "The page returned a security check"},
+  {"source": "kununu reviews", "url": "https://www.kununu.com/de/spotify", "kind": "Reviews", "decision": "unavailable", "reason": "The page returned a human-verification check"},
+  {"source": "Instagram LifeatSpotify", "url": "https://www.instagram.com/LifeatSpotify", "kind": "Social media", "decision": "manual", "reason": "Closed to automatic collection; linked from the careers site"},
+  {"source": "LinkedIn company page", "url": "https://www.linkedin.com/company/spotify", "kind": "Social media", "decision": "manual", "reason": "Closed to automatic collection; linked from the careers site"},
+  {"source": "X lifeatspotify", "url": "https://twitter.com/lifeatspotify", "kind": "Social media", "decision": "manual", "reason": "Closed to automatic collection; linked from the careers site"},
+  {"source": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/Spotify-Reviews-E408251.htm", "kind": "Reviews", "decision": "manual", "reason": "Closed to automatic collection"}
+],
+"social": [
+  {
+    "platform": "YouTube",
+    "account": "Life at Spotify playlist (Spotify channel)",
+    "url": "https://www.youtube.com/playlist?list=PLS4Ugv1bs-u-Ski_g845PWZoc11ec2pHo",
+    "purpose": "People and culture: office tours, interns, inclusion, a staff festival. Linked from the careers site.",
+    "sample": "15 videos returned by the public feed, 9 Sep 2021 to 6 Oct 2023. Titles and descriptions only; videos not watched.",
+    "rhythm": "10 videos in Sep to Dec 2021, 3 in 2022, 2 in 2023. None in the sample after October 2023.",
+    "people_share": "14 of 15 (the other is a product video about Soundtrap for Education)",
+    "themes": [
+      "Office tours: 7 of 15 (Gothenburg, Mumbai, New York, Stockholm, Berlin, Toronto, Paris), plus one on local artists in the Toronto office",
+      "Interns: 3 of 15 (2021, 2022 and 2023 classes)",
+      "Inclusion: 2 of 15 (a spotlight on the Able group, an inclusion conversation)",
+      "Staff festival: 1 of 15 (SpotiFEST 2023)"
+    ],
+    "notes": "Impact, the lead theme of the culture page, appears in one description (2021 interns). Work from Anywhere appears in two (the Stockholm text and a Gothenburg hashtag), with no detail on how it works. Two descriptions link to the students page and three use #JoinTheBand. Interns share their experiences in three videos, but only the descriptions were read."
+  }
+],
+"perception": {
+  "sample": [
+    {"platform": "Glassdoor", "reviews": 0, "period": "not collected", "rating": "Not read: closed to automatic collection"},
+    {"platform": "Indeed", "reviews": 0, "period": "not collected", "rating": "Not read: the page returned a security check"},
+    {"platform": "kununu", "reviews": 0, "period": "not collected", "rating": "Not read: the page returned a human-verification check"}
+  ],
+  "thin": true,
+  "themes": [],
+  "caveat": "No reviews could be read, so this layer compares nothing yet. Ratings seen only in search results were not used. Adding screenshots of the rating pages and 10 to 20 recent reviews would fill it."
+},
+"manual_import": [
+  {"platform": "Instagram", "url": "https://www.instagram.com/LifeatSpotify", "capture": ["Profile header with bio and follower count", "Grid of the latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, opened with captions", "Pinned posts"]},
+  {"platform": "LinkedIn", "url": "https://www.linkedin.com/company/spotify", "capture": ["Header and follower count", "Sections of the Life tab", "3 to 5 recent posts about people, culture or hiring (#lifeatspotify)"]},
+  {"platform": "X", "url": "https://twitter.com/lifeatspotify", "capture": ["Profile header", "Latest 9 to 12 posts", "Pinned post"]},
+  {"platform": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/Spotify-Reviews-E408251.htm", "capture": ["Rating page with overall rating, review count and date", "10 to 20 most recent reviews from the last 24 months, text only"]},
+  {"platform": "Indeed", "url": "https://www.indeed.com/cmp/Spotify/reviews", "capture": ["Rating page with overall rating, review count and date", "10 to 20 most recent reviews from the last 24 months, text only"]},
+  {"platform": "kununu", "url": "https://www.kununu.com/de/spotify", "capture": ["Rating page with overall rating, review count and date", "10 to 20 most recent reviews from the last 24 months, text only"]}
+],
+"scope": {
+  "reviewed": [
+    "17 public sources captured on 27 October 2026",
+    "Six careers-site pages: home, culture, benefits, students, New York office, hiring process with FAQ",
+    "The Latest page of podcast titles",
+    "Eight job ads in sales, engineering, data, advertising sales, AV, legal, communications and product, in London, Stockholm, New York, São Paulo and Dubai",
+    "The job board listing of open roles",
+    "The Life at Spotify YouTube playlist (15 video titles and descriptions)"
+  ],
+  "not_reviewed": [
+    "Employee reviews on Glassdoor, Indeed and kununu",
+    "Instagram, LinkedIn and X accounts",
+    "What is said in the podcast episodes and videos (only titles and descriptions were read)",
+    "About 80 other open job ads and the other location and category pages",
+    "The Equity and Impact Report 2025 and the UK Gender Pay Report 2025",
+    "The interview experience itself and what employees say outside official channels"
+  ]
+},
+"summary": {
+  "points": [
+    "The careers material is practical and specific where candidates make decisions: the hiring FAQ, the benefits terms and the job ads. It is generic where Spotify introduces itself: the culture page leads with impact and values that would fit any comparable employer.",
+    "The content only Spotify could publish already exists but sits low down: concert and festival tickets, early access to experimental features, listening rooms and a weekly music night in New York, and job ads about getting music onto the platform and about Spotify Connect.",
+    "Flexibility is the one promise the material contradicts. The benefits page offers genuine flexibility over where you work. Four of the seven job board ads sampled are tagged On-site, one asks for 4-5 office days a week, and all carry the same work-from-home sentence. The hiring FAQ tells candidates to look in each job description for these details.",
+    "Growth and pay are promised without a mechanism: GreenHouse learning is named twice and never described, and only the New York ad gives a pay range.",
+    "The outside view is missing: no employee reviews could be read, and the only open social channel is a YouTube playlist whose newest video in the sample is from October 2023."
+  ],
+  "actions": [
+    "Make each job ad's work-mode text match its tag, and replace the template line in the legal ad.",
+    "Move the music-specific work and perks to the top of the home and culture pages, with real examples of impact.",
+    "Describe GreenHouse and how impact affects pay, and publish pay ranges beyond the US where possible."
+  ]
+},
+"dimensions": [
+  {
+    "id": "clarity", "score": 7, "max": 12, "assessable": true,
+    "why": "The home page opens with a call to join and a line saying every role shapes how millions experience creativity on the platform, then moves to benefits and three values. Impact, the values, the AI-forward Spotify Way and belonging compete as lead ideas. The benefits page states concrete terms from the candidate's side.",
+    "criteria": [
+      {"name": "The offer is identifiable", "score": 2, "max": 4, "assessable": true, "note": "An offer can be pieced together from the home, culture and benefits pages, but no single sentence says what working here offers."},
+      {"name": "The candidate's benefit is explicit", "score": 3, "max": 4, "assessable": true, "note": "The benefits page speaks to the candidate in concrete terms, for example six months of paid parental leave and a choice of cash or equity. The culture page is mostly the company describing itself."},
+      {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "Impact, the three values, the Spotify Way and belonging get equal weight; nothing marks one as the lead."},
+      {"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "Internal names appear without explanation: WFA Allowance, GreenHouse, Silk Road in the engineering ad, Seamless in the product ad."}
+    ]
+  },
+  {
+    "id": "differentiation", "score": 8, "max": 16, "assessable": true,
+    "why": "The claims that introduce Spotify as an employer (impact as a superpower, trust in people's judgment, an AI-forward culture) stay true with another employer's name put in. The content only Spotify could publish sits lower down: music-linked perks, music spaces in the New York office and job ads about music ingestion and Spotify Connect.",
+    "criteria": [
+      {"name": "True only of this employer", "score": 2, "max": 5, "assessable": true, "note": "None of the core claims stops being true under another employer's name. Employer-specific detail appears only in perks, the New York page and job ads."},
+      {"name": "Free of stock phrases", "score": 1, "max": 3, "assessable": true, "note": "The culture page builds its case from stock phrases: meaningful impact, bold moves, world-class, extraordinary, real difference."},
+      {"name": "Uses what is specific to the employer", "score": 3, "max": 4, "assessable": true, "note": "Concert and festival tickets, Premium with early access to experimental features and the New York listening rooms are part of the offer, but not its basis."},
+      {"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "The music perks rest on what Spotify is. The central impact promise rests on nothing another employer would lack."},
+      {"name": "Memorable", "score": 1, "max": 2, "assessable": true, "note": "Join the band, band members and the Bassline recur across the site, ads and videos. The phrasing sticks but says little about the work."}
+    ]
+  },
+  {
+    "id": "proof", "score": 9, "max": 16, "assessable": true,
+    "why": "Four of eight claims have partial support in the material: belonging (16 named communities), family support, the cash and equity choice, and the AI-forward culture (AI tasks in two job ads). The impact claim, the trust-in-judgment value and the growth promise rest on self-description. The flexibility claim is contradicted by the job ads.",
+    "criteria": [
+      {"name": "How many claims are backed", "score": 3, "max": 6, "assessable": true, "note": "Four of eight claims are partly supported and none fully. Of the four core claims, only belonging has meaningful support."},
+      {"name": "How specific the proof is", "score": 2, "max": 4, "assessable": true, "note": "The proof that exists is concrete (16 named groups, six months of leave usable up to a child's third birthday) but covers half the claims and shows practices, not outcomes."},
+      {"name": "Whether the proof fits the claim", "score": 2, "max": 3, "assessable": true, "note": "Support fits some claims at the scope made; the AI evidence covers two of eight roles, not the whole company."},
+      {"name": "Proof next to the claim", "score": 2, "max": 3, "assessable": true, "note": "Belonging, family and equity proof sits next to its claim. AI proof sits in job ads, away from the culture page that makes the claim."}
+    ]
+  },
+  {
+    "id": "audience_fit", "score": 8, "max": 12, "assessable": true,
+    "why": "Job ads and the students page are written for clear audiences, and the students page has its own pillars and FAQ. The culture and benefits pages address every role with one message. On work mode, roles with very different arrangements receive the same sentence.",
+    "criteria": [
+      {"name": "Clear who it speaks to", "score": 2, "max": 3, "assessable": true, "note": "Ads and the students page are precise about audience; the home and culture pages speak to every role at once."},
+      {"name": "Covers what matters for the role", "score": 3, "max": 4, "assessable": true, "note": "Engineers get the systems, languages and on-call duty; sellers get company size, sales-cycle length and targets. Pay is in one ad of eight and progression in none."},
+      {"name": "Adapted for different audiences", "score": 2, "max": 3, "assessable": true, "note": "Students get their own content. Experienced hires in very different roles share one culture page, one benefits page and one work-mode sentence."},
+      {"name": "Makes real choices", "score": 1, "max": 2, "assessable": true, "note": "Choices appear in the FAQs (apply in English; this summer's interns must join in London, Stockholm or NYC, with no remote option), but the proposition itself names no trade-off."}
+    ]
+  },
+  {
+    "id": "employee_truth", "score": 6, "max": 10, "assessable": true,
+    "why": "Job ads describe the work in concrete detail, and the legal ad says openly that the workload is growing faster than the team. Culture is described mostly through values and adjectives, with practices set apart from them. Employee voice was not assessed (3 points left out): it sits in podcasts and videos whose content was not captured, and none of the written pages reviewed quotes an employee.",
+    "criteria": [
+      {"name": "Employee voice", "score": 0, "max": 3, "assessable": false, "note": "Employee voice appears to sit in podcast episodes and intern videos; only titles and descriptions were captured. The written pages reviewed contain no employee quotes."},
+      {"name": "Work reality", "score": 3, "max": 3, "assessable": true, "note": "Ads list concrete tasks, tools and conditions: music deliveries, DDEX, ideally Java, Scala or Go and shared on-call for the backend role; Crestron, Q-SYS and Dante for the AV role."},
+      {"name": "Difficulties named", "score": 2, "max": 2, "assessable": true, "note": "The legal ad says the workload is growing faster than the team and asks the hire to shape processes. The FAQ says status updates are not given and detailed feedback is not always possible."},
+      {"name": "Culture shown through behaviour", "score": 1, "max": 2, "assessable": true, "note": "Practices exist (16 belonging groups, Friday Night Live, donation matching up to $15K a year), but the three values and the impact culture have no practice attached."}
+    ]
+  },
+  {
+    "id": "consistency", "score": 7, "max": 12, "assessable": true,
+    "why": "Band vocabulary, the hiring FAQ and the shared ad template make the touchpoints sound like one employer, and impact and belonging recur across pages and ads. Work mode is where they part: the benefits page and every sampled ad promise flexibility, while four ads are tagged On-site and one asks for 4-5 office days.",
+    "criteria": [
+      {"name": "One core promise", "score": 3, "max": 5, "assessable": true, "note": "Impact appears on the home, culture, students and benefits pages and in ads. The New York page and the YouTube playlist focus on offices and perks instead."},
+      {"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Belonging proof matches the culture page; foosball, the arcade room and city views on the New York page support no stated promise."},
+      {"name": "Same voice", "score": 2, "max": 2, "assessable": true, "note": "Band vocabulary and one ad template run through the site, the ads and the video descriptions."},
+      {"name": "No contradictions", "score": 0, "max": 2, "assessable": true, "note": "The benefits page promises flexibility over where you work; the AV ad asks for 4-5 office days in the same block that offers flexibility to work from home."}
+    ]
+  },
+  {
+    "id": "candidate_relevance", "score": 9, "max": 12, "assessable": true,
+    "why": "The hiring FAQ answers many practical questions directly, and the job ads describe the work well. Pay appears only in the New York ad, and work-mode information in four of eight ads contradicts itself. The reason to choose Spotify is stated in general terms.",
+    "criteria": [
+      {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Reasons are given (impact, benefits, belonging), in terms that would fit any comparable employer."},
+      {"name": "Picture of the role", "score": 2, "max": 3, "assessable": true, "note": "Tasks, teams and collaborators are concrete; office attendance is unclear in four of eight ads."},
+      {"name": "Facts needed to decide", "score": 2, "max": 3, "assessable": true, "note": "Location and contract type are in every ad. Pay is in one ad of eight; elsewhere the benefits page calls salaries competitive and equitable, with no figure."},
+      {"name": "Doubts answered", "score": 3, "max": 3, "assessable": true, "note": "The FAQ covers reapplying, referrals, response times, interview format, feedback, remote work, scarce entry-level roles and recruitment fraud."}
+    ]
+  },
+  {
+    "id": "conversion", "score": 7, "max": 10, "assessable": true,
+    "why": "Apply buttons are easy to find and the hiring process is described step by step with response times. Most ads end with legal notices rather than reasons or key facts, and the call to apply is the same generic button everywhere.",
+    "criteria": [
+      {"name": "Clear next step", "score": 3, "max": 3, "assessable": true, "note": "Every page links to open jobs, every ad has an apply button, and the FAQ explains referrals and reapplying."},
+      {"name": "Reasons next to the button", "score": 1, "max": 2, "assessable": true, "note": "Only the New York legal ad puts pay and benefits shortly before its apply button; the other job board ads end with equal opportunity and AI notices."},
+      {"name": "Effort explained", "score": 1, "max": 2, "assessable": true, "note": "The FAQ says to apply in English and welcomes cover letters, portfolios and personal websites, but says nothing about how long applying takes."},
+      {"name": "Call to action fits the stage", "score": 1, "max": 2, "assessable": true, "note": "One generic apply button for all roles. The students page says 2027 internship information is coming soon and offers no way to be notified."},
+      {"name": "Process explained", "score": 1, "max": 1, "assessable": true, "note": "Three steps, interview rounds, who you meet, and response times stated as aims: within a few weeks of applying and a few days after the final interview."}
+    ]
+  }
+],
+"strengths": [
+  {"title": "The hiring FAQ answers real questions", "text": "The hiring page explains the three steps and who you meet in each interview round. It says you can reapply after six months, that referrals go through the employee, and that Spotify tries to reply within a few weeks of an application and within a few days of a final interview. It also lists the genuine web addresses and email domain, and states that money is never exchanged during hiring."},
+  {"title": "Job ads show the work", "text": "The backend engineering ad describes taking in music deliveries from labels and distributors, names the preferred languages and the DDEX standard, and includes a share of on-call. The account executive ad gives the size of target companies, the length of sales cycles and the type of buyer. The legal ad says plainly that the workload is growing faster than the team and that the hire will help design processes for it."},
+  {"title": "Benefits are stated as terms", "text": "Six months of paid parental leave for new parents, usable in intervals up to the child's third birthday. Donation matching up to $15K a year. A choice of how to split the incentive mix between cash and equity. The account executive ad lists five global benefits, and the New York legal ad gives a base range with equity, 23 paid days off and 13 paid flexible holidays."},
+  {"title": "The most Spotify-specific content is already published", "text": "Concert and festival tickets in the Live Mix perk, employee access to experimental Premium features, and in New York listening rooms and a weekly music night called Friday Night Live. These are the only parts of the material that would stop being true under another employer's name. The job ads add the work itself: music ingestion, Spotify Connect, advertising on music and podcasts."},
+  {"title": "The hiring AI notice gives the Spotify Way a concrete form", "text": "The culture page says Spotify is AI-forward in order to amplify human judgment. The notice at the foot of every job board ad says AI tools may support parts of hiring, that they do not replace human judgment, and that final hiring decisions are made by humans. It reads as a working example of the same idea, but it sits in small print and the culture page does not point to it."}
+],
+"problems": [
+  {
+    "severity": "high",
+    "title": "The flexibility promise is contradicted by the job ads.",
+    "evidence": [
+      "Benefits page: \"We offer genuine flexibility for how, when, and where you work.\"",
+      "AV Engineer ad (Stockholm, tagged On-site), in one block: \"We offer you the flexibility to work where you work best! There will be some in person meetings, but still allows for flexibility to work from home.\" and \"We ask that you come in 4-5 times per week.\"",
+      "Legal Counsel ad (New York, tagged On-site), under the heading Who You’ll Be: \"Onsite: (For example: You’ll be based in our New York office)\", followed by the same work-from-home sentence.",
+      "All eight sampled ads carry the same work-from-home sentence. Four of the seven job board ads are tagged On-site: data science, AV, legal and communications."
+    ],
+    "why": "The hiring FAQ says each job description explains how the Work From Anywhere program applies to the role. In the ads sampled, that explanation is one shared sentence that does not change with the role's tag. The AV and legal ads do not say how many days, if any, are at home, and the legal ad shows a template example where its arrangement should be.",
+    "flags": ["RF12"]
+  },
+  {
+    "severity": "high",
+    "title": "The proposition at the top could be any employer's.",
+    "evidence": [
+      "Culture page: \"Everything we do revolves around creating meaningful impact. It's how we measure success, reward excellence, and grow together.\"",
+      "Home page: \"Human Judgment means we trust our people to make the right calls, learn from mistakes, and grow.\"",
+      "Culture page: \"Bold moves define our culture.\""
+    ],
+    "why": "These sentences name no product, team, practice or number. Beyond the benefits page's statement that base salaries depend on job, location and impact, the material does not show how impact is measured or rewarded. None of the three values has a practice attached anywhere in the material.",
+    "flags": ["RF01", "RF21"]
+  },
+  {
+    "severity": "medium",
+    "title": "Pay appears in one of eight ads.",
+    "evidence": [
+      "Legal Counsel ad (New York): \"The United States base range for this position is $170,366 to 243,380, plus equity.\"",
+      "Benefits page: \"Competitive and equitable base salaries, based on your job, location and impact.\"",
+      "The seven other ads, in London, Stockholm, São Paulo and Dubai, state no pay."
+    ],
+    "why": "The New York ad shows the format already exists: a range, equity, days off and named benefits in one paragraph. Elsewhere the only pay statement is the benefits page line, which uses a stock phrase and gives no figure, so the reward side of those offers cannot be judged from the ads.",
+    "flags": []
+  },
+  {
+    "severity": "medium",
+    "title": "Growth and learning are promised but never described.",
+    "evidence": [
+      "Home page: \"We offer flexible work arrangements, comprehensive health coverage, generous parental leave, and learning opportunities that grow with you.\"",
+      "Account Executive ad: \"Extensive learning opportunities, through our dedicated team, GreenHouse.\"",
+      "Hiring FAQ: \"Many of our interns become full-time too, so it’s also worth checking out our internship programs on the Students page.\""
+    ],
+    "why": "GreenHouse is named twice with no format, time or eligibility. The culture page says careers are defined by the difference you make, with no path or example. The one growth mechanism described in detail is the Emerging Talent Program, an 8-month fixed-term continuation open only to graduating summer 2027 interns in Product & Technology.",
+    "flags": ["RF14"]
+  },
+  {
+    "severity": "medium",
+    "title": "Employees do not speak on the written pages, and the people content found is old or undated.",
+    "evidence": [
+      "None of the six careers-site pages reviewed (home, culture, benefits, students, New York, hiring process) quotes an employee.",
+      "The newest of the 15 videos returned from the Life at Spotify playlist was published on 6 October 2023; 10 of the 15 date from September to December 2021.",
+      "The Latest page lists podcast episodes with day and month but no year.",
+      "Hiring FAQ: \"Are you holding virtual interviews whilst everyone works remotely?\""
+    ],
+    "why": "The material points to employee voice (intern videos, a Life at Spotify podcast series), but the written pages carry none, and the dates on the people content are either old or missing. The material gives no way to tell how current these accounts are.",
+    "flags": []
+  },
+  {
+    "severity": "low",
+    "title": "Internal names are used without explanation.",
+    "evidence": [
+      "The benefits page lists WFA Allowance and GreenHouse learning with no description.",
+      "Backend engineering ad: \"Help move validation towards real time and make Silk Road a well-documented, self-serve platform\""
+    ],
+    "why": "These terms are not explained anywhere in the material reviewed, so their meaning may be unclear to a reader without internal context.",
+    "flags": ["RF19"]
+  }
+],
+"fixes": [
+  {
+    "title": "Make each ad's work-mode text match its tag, and qualify the flexibility promise.",
+    "needs_new_data": true,
+    "steps": [
+      "Replace the shared work-from-home sentence in each ad with the role's actual arrangement: office days per week, home days, and whether the Work From Anywhere program applies.",
+      "Replace the template example line in the Legal Counsel ad with the role's real arrangement.",
+      "On the benefits page, replace the unconditional flexibility line with the conditions the hiring FAQ already states (see Before → after).",
+      "Before publishing, check each ad's job board tag (On-site, Hybrid, Remote) against its text."
+    ],
+    "why_first": "It is the only claim the material contradicts, it affects four of the seven job board ads sampled, and most of the fix is editing.",
+    "needs": ["Office attendance expected for each open role", "What the WFA Allowance covers and who receives it"],
+    "effort": "medium",
+    "effort_note": "A pass over open ads against their tags, plus one input per role from hiring managers",
+    "who": ["Talent acquisition operations (ad template)", "Hiring managers (attendance per role)", "Owner of the Work From Anywhere program"],
+    "check": ["Whether any open ad tagged On-site still carries the work-from-home sentence", "How often candidates ask about office days at the recruiter call"]
+  },
+  {
+    "title": "Rebuild the top of the careers site around what only Spotify can say.",
+    "needs_new_data": true,
+    "steps": [
+      "Lead the home and culture pages with the music and audio work and perks already published: music ingestion, Spotify Connect, advertising on music and podcasts, concert and festival tickets, early access to experimental features.",
+      "Keep impact as a theme only with one or two real examples per function: what a team shipped and what changed.",
+      "For each of the three values, add one practice that shows it, or take the value off the candidate-facing pages."
+    ],
+    "why_first": "Proof and differentiation lose the most points, because the top-level claims rest on self-description while the specific material sits lower down.",
+    "needs": ["Two or three real impact examples with outcomes, from engineering, product and sales", "One practice per value, for example how Hack Weeks or risk-taking work in practice"],
+    "effort": "large",
+    "effort_note": "New content gathered from several teams, then a rewrite of two pages",
+    "who": ["Employer brand team", "Engineering and product leads (examples)", "People and culture team (value practices)"],
+    "check": ["Whether each value on the culture page has a practice beside it", "Whether people unfamiliar with Spotify can restate the offer after reading the first screen of the home page"]
+  },
+  {
+    "title": "Explain growth and pay where the material is silent.",
+    "needs_new_data": true,
+    "steps": [
+      "Add a short GreenHouse section to the benefits page: what it offers, how much time people get for it, who can use it.",
+      "Explain how impact is assessed and how it affects pay and progression, since the benefits page says base salaries depend on it.",
+      "Use the New York ad's pay paragraph as the model for other locations where ranges can be published.",
+      "Replace \"Many of our interns become full-time too\" with the actual number, if it can be shared."
+    ],
+    "why_first": "Both are promised in the material, and neither has a mechanism or a figure outside the New York ad.",
+    "needs": ["GreenHouse content and eligibility", "How impact is assessed for pay", "Pay ranges by location that can be published", "Number of interns offered full-time roles, by year"],
+    "effort": "medium",
+    "effort_note": "Inputs from three or four owners; the writing itself is short",
+    "who": ["Compensation and benefits", "GreenHouse learning team", "Early careers team", "Legal (pay disclosure by country)"],
+    "check": ["Share of open ads that state pay", "Whether candidates still ask about learning or progression at the offer stage"]
+  }
+],
+"rewrites": [
+  {
+    "title": "Benefits page: Work Your Way",
+    "original": "Work isn't somewhere you go, it's something you do.\n\nWe offer genuine flexibility for how, when, and where you work.",
+    "problem": "An unconditional promise of flexibility over where you work, which four of the sampled ads contradict.",
+    "logic": "Uses only the hiring FAQ's own description of the Work From Anywhere Program, with its conditions kept, and sends the candidate to the job description for the role's arrangement.",
+    "rewrite": "Our Work From Anywhere Program is designed to let you work where you work best, whether that's mostly at the office or mostly at home. How it applies depends on the role: each job description sets out what it means for that job, and your recruiter can take you through the options during the interview process.\n\nYou may also be able to move within your region, as long as it makes sense for your role, you can still collaborate easily with your team and Spotify has an operational presence there.",
+    "notes": [
+      {"kind": "confirm", "text": "That every job description states the role's arrangement before this copy goes live."},
+      {"kind": "confirm", "text": "What the WFA Allowance covers and who receives it; the benefits page lists it with no description."}
+    ]
+  },
+  {
+    "title": "AV Engineer ad: Where You'll Be",
+    "original": "This role is based in Stockholm.\n\nWe offer you the flexibility to work where you work best! There will be some in person meetings, but still allows for flexibility to work from home.\n\nWe ask that you come in 4-5 times per week.",
+    "problem": "The block offers flexibility to work from home and then asks for four to five office days a week.",
+    "logic": "Keeps the two facts specific to this role and removes the shared sentence that contradicts them.",
+    "rewrite": "This role is based in our Stockholm office. We ask that you come in 4-5 times per week.",
+    "notes": [
+      {"kind": "confirm", "text": "Whether any home working applies to this role, and if so how many days."}
+    ]
+  },
+  {
+    "title": "Culture page: opening lines",
+    "original": "Everything we do revolves around creating meaningful impact. It's how we measure success, reward excellence, and grow together.",
+    "problem": "Two sentences of stock impact language with no mechanism.",
+    "logic": "Replaces the claim with two mechanisms the benefits page already states, kept as separate facts. Impact stays in the copy only where the material says how it is used.",
+    "rewrite": "Your base salary is based on your job, your location and your impact.\n\nYou choose how to allocate your incentive mix between cash and equity.",
+    "notes": [
+      {"kind": "evidence", "text": "How impact is assessed, and by whom."},
+      {"kind": "evidence", "text": "One real example of a team's impact and its outcome, to follow these lines."},
+      {"kind": "confirm", "text": "Whether the incentive mix applies to all employees in all locations."}
+    ]
+  }
+],
+"questions": [
+  {"kind": "confirm", "for": "communication", "text": "How many office days are expected for each role tagged On-site, and whether any home working applies."},
+  {"kind": "confirm", "for": "communication", "text": "Whether the example line under Who You’ll Be in the Legal Counsel ad is an unfilled template."},
+  {"kind": "confirm", "for": "communication", "text": "What the WFA Allowance covers and who receives it."},
+  {"kind": "confirm", "for": "communication", "text": "Whether the incentive mix applies to all employees in all locations."},
+  {"kind": "evidence", "for": "communication", "text": "What GreenHouse offers, how much time people get for it and who can use it."},
+  {"kind": "evidence", "for": "communication", "text": "How impact is assessed and how it affects pay and progression."},
+  {"kind": "evidence", "for": "communication", "text": "Pay ranges by location that can be published beyond the US."},
+  {"kind": "evidence", "for": "communication", "text": "How many interns were offered full-time roles, and in which years."},
+  {"kind": "evidence", "for": "communication", "text": "Two or three real examples of team impact with outcomes."},
+  {"kind": "evidence", "for": "communication", "text": "One practice for each of the three values."},
+  {"kind": "evidence", "for": "communication", "text": "Participation in the 16 belonging communities, if it can be shared."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the Instagram, LinkedIn (Life tab) and X accounts linked from the careers site."},
+  {"kind": "evidence", "for": "audit", "text": "Recent reviews from Glassdoor, Indeed and kununu: the rating page and 10 to 20 reviews from the last 24 months."},
+  {"kind": "evidence", "for": "audit", "text": "Transcripts or summaries of the Life at Spotify podcast episodes and intern videos, so employee voice can be assessed."},
+  {"kind": "confirm", "for": "audit", "text": "Whether the Life at Spotify YouTube playlist has videos newer than October 2023; the public feed returned 15, the newest from 6 October 2023."}
+],
+"genericity": [
+  {"claim": "\"Everything we do revolves around creating meaningful impact. It's how we measure success, reward excellence, and grow together.\" (culture page)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Built from the stock phrase meaningful impact. It names nothing about Spotify's work, products or pay mechanism, so a comparable employer could publish it unchanged."},
+  {"claim": "\"Human Judgment means we trust our people to make the right calls, learn from mistakes, and grow.\" (home page)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "none", "defensibility": "unowned", "why": "A statement of trust and learning with no practice or example attached; nothing in it depends on Spotify."},
+  {"claim": "\"The Spotify Way: Human Insight, Amplified.\" with the AI-forward paragraph (culture page)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "Carries the Spotify name, but the idea of using AI to free people for human work has no Spotify-specific practice on the culture page. Two job ads and the hiring AI notice give it some support elsewhere."},
+  {"claim": "\"We offer genuine flexibility for how, when, and where you work.\" with the Work From Anywhere Program described in the hiring FAQ", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The sentence itself fits any employer. The named program and its conditions (moving within your region where Spotify has an operational presence) add specifics, though the ads contradict the unconditional wording."},
+  {"claim": "\"Belonging at Spotify isn't separate from performance—it's part of it.\" with 16 named belonging communities (culture page)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The sentence uses stock inclusion language. The list of 16 named groups, each with its purpose, is specific to this material, though another employer could build the same structure."}
+],
+"ledger": [
+  {"claim": "Impact is how success is measured and rewarded and how people grow (culture page headline; home page; students page; benefits page; job ads).", "class": "core", "evidence": "Benefits page: base salaries based on job, location and impact, and a stated belief in pay differentiation based on impact. Job ads describe role-level influence, for example presenting findings to senior leaders (data science, London).", "strength": "weak", "status": "weak", "comment": "The pay statement names impact as a factor but not how it is assessed, so it is too vague to back the claim. Influence in one job description shows what that role does, not how the company measures and rewards impact."},
+  {"claim": "People are trusted to make their own calls and take thoughtful risks (Human Judgment value, home page; Risks Taken, culture page).", "class": "core", "evidence": "Two ads give the hire a scope to own: the backend engineer owns large parts of the ingestion pipeline; the product manager owns the strategy and roadmap for their scope within Spotify Connect. A podcast titled Meet The Guy Who Won 3 Hack Weeks (title only).", "strength": "weak", "status": "weak", "comment": "Ownership in two job descriptions is about those roles and does not show a company-wide practice. The podcast content was not captured."},
+  {"claim": "Genuine flexibility over how, when and where you work (benefits page; home page; hiring FAQ; every ad sampled).", "class": "core", "evidence": "Hiring FAQ: the Work From Anywhere Program, with conditions for moving within a region. Job board listing: 28 postings tagged Remote (hand count). Against it: the AV ad asks for 4-5 office days a week, and four of the seven job board ads sampled are tagged On-site while carrying the work-from-home sentence.", "strength": "moderate", "status": "conflicting", "comment": "The program is described with conditions, which is real support. The benefits page states the claim without conditions, and ads in the same material contradict it. Which statement applies to which role needs confirming."},
+  {"claim": "Belonging is part of how work gets done (culture page; equal opportunity statement in ads; YouTube).", "class": "core", "evidence": "Culture page: 16 belonging communities, each named with its purpose. YouTube: a spotlight on the Able group (December 2021) and an inclusion conversation (January 2022).", "strength": "moderate", "status": "partial", "comment": "The named groups show the practice exists. The material gives no participation figures or outcomes, and does not show the link to performance that the culture page states."},
+  {"claim": "An AI-forward culture where AI amplifies human judgment and you master the tools of the future (culture page; benefits page).", "class": "supporting", "evidence": "AV ad: deploy AI-powered capabilities in meeting rooms and use AI tooling for monitoring, reporting, documentation and troubleshooting. Account executive ad: building a scalable sales motion with AI. Job board ads: AI may support parts of hiring; final hiring decisions are made by humans.", "strength": "moderate", "status": "partial", "comment": "The evidence covers two of eight roles and the hiring process, which is narrower than a company-wide claim."},
+  {"claim": "You can become an owner and choose your cash and equity mix (benefits page; account executive ad).", "class": "supporting", "evidence": "Benefits page: stock options and restricted share units with flexible allocation between cash and equity. New York legal ad: base range plus equity.", "strength": "moderate", "status": "partial", "comment": "The mechanism is stated; eligibility, vesting and amounts are not."},
+  {"claim": "Support for every stage of growing your family (benefits page; account executive ad; legal ad).", "class": "supporting", "evidence": "Benefits page: six months of paid parental leave for new parents, usable in intervals up to the child's third birthday; repeated in the account executive and legal ads.", "strength": "moderate", "status": "partial", "comment": "The leave terms are specific. Welcome Back support and family-forming support are named without saying what they include, so every stage is not covered."},
+  {"claim": "You will grow here: learning that grows with you, careers defined by impact, internships that build careers (home; culture; students; account executive ad).", "class": "supporting", "evidence": "GreenHouse named on the benefits page and in the account executive ad, with no content. Students page: an 8-month fixed-term Emerging Talent Program for graduating summer 2027 interns in Product & Technology. Hiring FAQ: many interns become full-time, with no number.", "strength": "weak", "status": "weak", "comment": "The only mechanism described in detail applies to one intern group, not to employees generally. GreenHouse has no description, and the intern statement has no count."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+<html>
