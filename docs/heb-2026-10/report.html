@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "H-E-B",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 57,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 94,
+  "confidence": "high",
+  "reliability_note": "32 of 34 criteria assessed across five types of public material (careers pages, the About page, employee stories, the hiring process, one social channel). No job ad text could be read"
+},
+"verdict": "H-E-B's careers site has real specifics, from dated career journeys to a frank description of warehouse work, but it leads with lines any large retailer could use and never explains its most distinctive promise: that Partners are owners.",
+"notices": [
+  "These sources were collected automatically from H-E-B's public pages on 2026-10-27. Some sources may have been missed, and live pages may have changed since then. Job ad pages on careers.heb.com are drawn by scripts in the browser and could not be read, so no job ad is part of this audit.",
+  "Facts about H-E-B in this report come only from the pages listed in the appendix. They were assessed as evidence shown to candidates and were not independently checked."
+],
+"materials": [
+  {"name": "Careers home page", "type": "Careers page"},
+  {"name": "Our Careers hub", "type": "Careers page"},
+  {"name": "About H-E-B (Here, Everyone Belongs)", "type": "Employer value proposition"},
+  {"name": "Stores careers page", "type": "Careers page"},
+  {"name": "Supply Chain & Logistics careers page", "type": "Careers page"},
+  {"name": "Corporate careers page", "type": "Careers page"},
+  {"name": "Digital careers page", "type": "Careers page"},
+  {"name": "Health & Wellness careers page", "type": "Careers page"},
+  {"name": "Students page", "type": "Careers page"},
+  {"name": "Candidate Toolkit", "type": "Candidate communication (hiring process)"},
+  {"name": "Story: Brooke Brownlow", "type": "Employee story"},
+  {"name": "Story: Luis Martinez", "type": "Employee story"},
+  {"name": "Story: Justin Tippett", "type": "Employee story"},
+  {"name": "Digital blog: Eyes on the Enterprise", "type": "Employee story"},
+  {"name": "Careers blog index", "type": "Careers page"},
+  {"name": "YouTube @HEB (15 latest videos)", "type": "Social channel"},
+  {"name": "Comparably review answers", "type": "Employee reviews (not scored)"}
+],
+"sources": [
+  {"title": "H-E-B Careers home", "url": "https://careers.heb.com/careers-home", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "H-E-B Career Opportunities (Our Careers)", "url": "https://careers.heb.com/our-careers", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "About H-E-B | Here, Everyone Belongs", "url": "https://careers.heb.com/about-us", "type": "Employer value proposition", "captured": "2026-10-27"},
+  {"title": "H-E-B Store Careers", "url": "https://careers.heb.com/stores", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "H-E-B Supply Chain & Logistics", "url": "https://careers.heb.com/supply-chain", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "H-E-B Corporate careers", "url": "https://careers.heb.com/corporate", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "H-E-B Digital careers", "url": "https://careers.heb.com/digital", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "H-E-B Health & Wellness careers", "url": "https://careers.heb.com/healthcare", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "H-E-B Students", "url": "https://careers.heb.com/students", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Candidate Toolkit", "url": "https://careers.heb.com/candidate-toolkit", "type": "Hiring process", "captured": "2026-10-27"},
+  {"title": "Here, Everyone Belongs: Brooke Brownlow (May 29, 2026)", "url": "https://careers.heb.com/blog/here-everyone-belongs-brooke-brownlow", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "Here, Everyone Belongs: Luis Martinez (July 23, 2025)", "url": "https://careers.heb.com/blog/here-everyone-belongs-luis-martinez", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "Here, Everyone Belongs: Justin Tippett (August 19, 2025)", "url": "https://careers.heb.com/blog/here-everyone-belongs-justin-tippett", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "Eyes on the Enterprise (March 07, 2025)", "url": "https://careers.heb.com/blog/eyes-on-the-enterprise", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "Careers blog index", "url": "https://careers.heb.com/blog", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "YouTube channel @HEB", "url": "https://www.youtube.com/user/HEB", "type": "Social channel", "captured": "2026-10-27"},
+  {"title": "H E B Employee Reviews | Comparably", "url": "https://www.comparably.com/companies/h-e-b/reviews", "type": "Employee reviews", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "Careers home, Our Careers hub and six business-area pages", "url": "https://careers.heb.com/our-careers", "kind": "Careers pages", "decision": "included", "reason": "Official, current and candidate-facing; one page per business area"},
+  {"source": "About H-E-B", "url": "https://careers.heb.com/about-us", "kind": "Employer value proposition", "decision": "included", "reason": "States the values and the people-company line"},
+  {"source": "Candidate Toolkit", "url": "https://careers.heb.com/candidate-toolkit", "kind": "Hiring process", "decision": "included", "reason": "Hiring steps and video-interview FAQ"},
+  {"source": "Three Here, Everyone Belongs stories and one digital blog post", "url": "https://careers.heb.com/blog", "kind": "Employee stories", "decision": "included", "reason": "The most recent story plus different business areas and formats"},
+  {"source": "Careers blog index", "url": "https://careers.heb.com/blog", "kind": "Careers page", "decision": "included", "reason": "Lists the stories and the podcast; 16 pages of posts"},
+  {"source": "YouTube @HEB", "url": "https://www.youtube.com/user/HEB", "kind": "Social channel", "decision": "included", "reason": "Linked from the careers site footer; latest 15 videos read"},
+  {"source": "Comparably review page", "url": "https://www.comparably.com/companies/h-e-b/reviews", "kind": "Employee reviews", "decision": "included", "reason": "Public and readable; used only for the perception layer"},
+  {"source": "Job ad pages and job search lists", "url": "https://careers.heb.com/careers-home/jobs/229803", "kind": "Job ads", "decision": "unavailable", "reason": "Drawn by scripts in the browser; only titles and navigation came back. The total number of open roles could not be determined"},
+  {"source": "Partner Perks and Partner Services pages on heb.com", "url": "https://www.heb.com/static-page/H-E-B-partner-perks", "kind": "Benefits", "decision": "unavailable", "reason": "Blocked automatic access (HTTP 403). No benefits page was found on careers.heb.com"},
+  {"source": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/H-E-B-Reviews-E2824.htm", "kind": "Employee reviews", "decision": "manual", "reason": "Bot check; screenshots needed"},
+  {"source": "Indeed reviews", "url": "https://www.indeed.com/cmp/H-e-b/reviews", "kind": "Employee reviews", "decision": "manual", "reason": "Security check; screenshots needed"},
+  {"source": "Comparably company home page", "url": "https://www.comparably.com/companies/heb", "kind": "Employee reviews", "decision": "unavailable", "reason": "Returned only an error; the reviews page worked instead"},
+  {"source": "InHerSight", "url": "https://www.inhersight.com/", "kind": "Employee reviews", "decision": "unavailable", "reason": "No H-E-B page found"},
+  {"source": "Grow Your Career link", "url": "https://careers.heb.com/grow-your-career", "kind": "Careers page", "decision": "unavailable", "reason": "Redirects to the careers home page"},
+  {"source": "Instagram, Facebook and X careers accounts; LinkedIn Life tab", "url": "https://www.instagram.com/hebcareers", "kind": "Social channels", "decision": "manual", "reason": "Official (linked from the careers site) but closed to automatic collection"},
+  {"source": "Careers sitemap", "url": "http://careers.heb.com/sitemap.xml", "kind": "Site map", "decision": "excluded", "reason": "Points only to another company's sitemap, so it lists no H-E-B pages"},
+  {"source": "Category, brand and location listing pages; about 45 filtered job searches", "url": "https://careers.heb.com/jobs", "kind": "Job lists", "decision": "excluded", "reason": "Same template as pages already captured; job lists are script-drawn"},
+  {"source": "Other blog stories, the podcast and Ask A Recruiter videos", "url": "https://careers.heb.com/blog", "kind": "Employee stories, audio, video", "decision": "excluded", "reason": "Sample capped at four posts; audio and video not processed"},
+  {"source": "Newsroom, consumer pages, third-party and aggregator results", "url": "https://newsroom.heb.com/", "kind": "Press and third-party pages", "decision": "excluded", "reason": "Not official candidate-facing material"}
+],
+"social": [
+  {
+    "platform": "YouTube",
+    "account": "@HEB",
+    "url": "https://www.youtube.com/user/HEB",
+    "purpose": "General corporate channel: cooking, commercials and product spotlights, by its own description",
+    "sample": "15 videos, 2026-10-08 to 2026-10-22",
+    "rhythm": "15 uploads in 15 days, 11 of them on 2026-10-14",
+    "people_share": "0 of 15 about working at H-E-B, people or hiring",
+    "themes": ["Local supplier spotlights: 11 of 15", "Sports partnerships (Dallas Cowboys, San Antonio Spurs): 3 of 15", "Product recipe: 1 of 15"],
+    "notes": "This is the channel the careers site footer links to. The supplier videos tell family and Texas stories that echo the take-care-of-Texas line on the careers pages, but none is about the work or links to jobs in its description. View counts are context only."
+  }
+],
+"perception": {
+  "sample": [
+    {"platform": "Comparably", "reviews": 70, "period": "Undated; first page of survey answers", "rating": "Shown on Comparably on 2026-10-27: 90% positive out of 1,781 reviews; 14,785 ratings from 1,942 participants"}
+  ],
+  "thin": false,
+  "themes": [
+    {"theme": "Pay and benefits", "mentions": 14, "of": 70, "tone": "mixed", "promise": "No careers page read states pay. The Students page lists competitive salary among the benefits of completing SORL.", "match": "not_addressed", "note": "Six answers praise benefits and pay. Eight raise low pay, unequal pay for the same job, or store pay compared with executives."},
+    {"theme": "Part-time hours and eligibility", "mentions": 3, "of": 70, "tone": "negative", "promise": "Partners are owners in our company (Our Careers, About), stated without conditions.", "match": "tension", "note": "One answer says part-time Partners cannot qualify for the stock program; two ask for more hours and benefits for part-timers. Whether eligibility rules exist is a question for H-E-B."},
+    {"theme": "Management and leadership", "mentions": 18, "of": 70, "tone": "mixed", "promise": "Stories describe leaders who mentor people and look after them.", "match": "mixed", "note": "Six answers praise leaders' availability and support. Twelve ask for better-trained managers, less favouritism and more respect."},
+    {"theme": "Coworkers and team", "mentions": 11, "of": 70, "tone": "mixed", "promise": "Here, Everyone Belongs (navigation and story series).", "match": "mixed", "note": "Four answers praise mutual help. Seven mention gossip, favouritism or low effort; most of these answer a prompt that asks what coworkers should improve."},
+    {"theme": "Feeling valued and culture", "mentions": 9, "of": 70, "tone": "positive", "promise": "Each & Every Person Counts (Our Careers, About).", "match": "consistent", "note": "Answers mention friendliness, respect, fair treatment and colleagues from different countries. One calls the experience horrible; one asks for kinder treatment after mistakes."},
+    {"theme": "Workload, staffing and schedules", "mentions": 6, "of": 70, "tone": "negative", "promise": "The supply-chain page names a rapid pace; the digital blog says the MySchedule feature gives Partners flexibility.", "match": "mixed", "note": "Answers mention production goals put ahead of people, understaffing, shift patterns and an interview question about days off. One praises a team leader who works with time-off needs."},
+    {"theme": "Hiring process", "mentions": 8, "of": 70, "tone": "mixed", "promise": "Four-step process with an online video interview (Candidate Toolkit).", "match": "mixed", "note": "Two answers call the online process faster and safer. Others mention group interviews, an internal promotion interview with no feedback, and being oversold on the job."},
+    {"theme": "Promotion", "mentions": 3, "of": 70, "tone": "negative", "promise": "ONE COMPANY, MANY CAREERS; the ATL promotion figure on the Students page.", "match": "tension", "note": "Three answers say tenure or favouritism decides promotion, or ask for more chances to move up. The count is small."}
+  ],
+  "caveat": "The sample is 70 short answers from the first page of one platform, without dates, so it cannot be limited to the last 24 months. Comparably asks paired questions, one about what is good and one about what should improve, so the balance of praise and criticism partly reflects the questions. One answer can count toward more than one theme. Glassdoor and Indeed blocked automatic access."
+},
+"manual_import": [
+  {"platform": "Instagram: H-E-B Careers", "url": "https://www.instagram.com/hebcareers", "capture": ["Profile header with bio and follower count", "Grid of the latest 9–12 posts", "3–5 recent posts about people, work or hiring, opened with captions", "Pinned posts"]},
+  {"platform": "Facebook: H-E-B Careers", "url": "https://www.facebook.com/HEBCareers", "capture": ["Page header and About section", "Latest 9–12 posts", "3–5 people or hiring posts with captions", "Pinned post"]},
+  {"platform": "X: H-E-B Careers", "url": "https://x.com/HEBCareers", "capture": ["Profile header", "Latest 15–20 posts", "Pinned post"]},
+  {"platform": "LinkedIn: H-E-B Life tab", "url": "https://www.linkedin.com/company/heb/life", "capture": ["Header and follower count", "Life tab sections", "3–5 recent posts about people or hiring"]},
+  {"platform": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/H-E-B-Reviews-E2824.htm", "capture": ["Rating page with overall rating, review count and date", "15–30 most recent reviews, text only, without names, saved to social/reviews/"]},
+  {"platform": "Indeed reviews", "url": "https://www.indeed.com/cmp/H-e-b/reviews", "capture": ["Rating page with overall rating, review count and date", "15–30 most recent reviews, text only, without names, saved to social/reviews/"]}
+],
+"scope": {
+  "reviewed": [
+    "11 pages on careers.heb.com, including the About page and the Candidate Toolkit, captured on 2026-10-27",
+    "4 employee stories from the careers blog: 3 from the Here, Everyone Belongs series and 1 digital blog post",
+    "The corporate YouTube channel @HEB linked from the careers site: titles and descriptions of the latest 15 videos",
+    "70 short review answers on Comparably, used for the perception section only and not scored"
+  ],
+  "not_reviewed": [
+    "Job ad texts: the pages are drawn by scripts and could not be read, so the number of open roles is also unknown",
+    "Benefits and Partner Perks pages on heb.com, which blocked automatic access",
+    "Careers accounts on Instagram, Facebook, X and LinkedIn, which are closed to automatic collection",
+    "Glassdoor and Indeed reviews (bot checks); no InHerSight page was found",
+    "Other blog stories, the podcast and the Ask A Recruiter videos",
+    "H-E-B Mexico, Mi Tienda and Favor careers",
+    "The interview experience itself, and what employees say outside these sources"
+  ]
+},
+"summary": {
+  "points": [
+    "The lead lines fit any large retailer: many careers, endless opportunity, every person counts. The one idea in this material that is close to being only H-E-B's, that Partners are owners in the company, appears twice in passing and is explained nowhere.",
+    "Career growth is the only promise with meaningful support: named, dated career journeys and a programme figure (96% of ATL participants promoted to Team Leader upon successful completion). All four storytellers read hold leadership roles, and no hourly Partner speaks.",
+    "The hiring-process page contradicts itself on whether the video interview is required, three of its tips tiles show placeholder text, and Partner counts differ across pages (160,000+, 170,000+, 175,000+).",
+    "The most concrete benefit for hourly staff on the site, viewing hours, swapping shifts and requesting time off by phone, sits in a digital blog post framed around 2019, not on the store page.",
+    "On Comparably, 70 undated answers mix praise for benefits, teams and respect with complaints about managers and pay. Three say part-time Partners miss out, one of them on the stock program, which bears directly on the unexplained ownership line."
+  ],
+  "actions": [
+    "Explain the ownership promise where it is made: what Partners own, who qualifies and what it has meant, in figures.",
+    "Make the hiring-process page state one video-interview rule, replace the placeholder tiles and date the headcount figures.",
+    "Rebuild the store careers page around the work, the path up and an hourly Partner's own story."
+  ]
+},
+"dimensions": [
+  {
+    "id": "clarity", "score": 6, "max": 12, "assessable": true,
+    "why": "Each page has a readable headline, but the offer is split between four ideas of equal weight: many careers, every person counts, Partners as owners, and taking care of Texas. The home page's first paragraph speaks to the candidate. The hub and About pages lead with company facts such as annual sales, store numbers and the 1905 founding.",
+    "criteria": [
+      {"name": "Offer identifiable in one read", "score": 2, "max": 4, "assessable": true, "note": "The home page leads with ONE COMPANY, MANY CAREERS; the hub and About pages lead with other ideas, so the offer has to be pieced together."},
+      {"name": "Candidate benefit stated", "score": 2, "max": 4, "assessable": true, "note": "Some lines speak to the reader (the SORL and ATL outcomes, the supply-chain work description); the hub and About pages are mostly company description."},
+      {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "No page names one lead idea with supporting points beneath it."},
+      {"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "MWT, VPP, the Helping Here philosophy and store codes such as SA36 are not explained where they appear. Placeholder text and a stray template key also show."}
+    ]
+  },
+  {
+    "id": "differentiation", "score": 8, "max": 16, "assessable": true,
+    "why": "No lead claim depends on something only H-E-B has. Two come close, Partners as owners and the Texas footprint, but both only partly hold up when the name is swapped, because the material does not show what ownership involves or what Texas means for the work. Specific realities sit in secondary places: Own Brand products made in H-E-B's manufacturing facilities, a direct primary care clinic model with no insurance requirement, and the Joe V's Smart Shop format.",
+    "criteria": [
+      {"name": "Holds up when the name is swapped", "score": 2, "max": 5, "assessable": true, "note": "None of the four lead claims is only true of H-E-B; ownership and the Texas promise come closest. Employer-specific detail appears in secondary material: stories and the Manufacturing and Wellness blurbs."},
+      {"name": "Free of stock phrases", "score": 1, "max": 3, "assessable": true, "note": "The lead lines rest on stock phrases: endless opportunity, make a difference, innovate, world-class Digital teams, a supportive, inclusive, and thriving workplace."},
+      {"name": "Uses specific advantages", "score": 3, "max": 4, "assessable": true, "note": "Several specific realities appear (ownership, Own Brand manufacturing, the clinic model, SORL and ATL); only the clinic model is linked to what the work is like."},
+      {"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "Ownership is structural, but with the plan unexplained, any employer with a share plan could write the same sentence."},
+      {"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "WE ARE A PEOPLE COMPANY - WE JUST HAPPEN TO SELL GROCERIES and Here, Everyone Belongs are memorable phrasing, but neither says anything specific about the work."}
+    ]
+  },
+  {
+    "id": "proof", "score": 6, "max": 16, "assessable": true,
+    "why": "Of six promises, only career growth has meaningful support: dated career journeys in three stories, two named leadership programmes and one completion-based promotion figure. The ownership promise has no support on any page read. Care for people, the Texas mission and the digital promise rest on single anecdotes, company size, or a blog post whose figures describe an earlier period.",
+    "criteria": [
+      {"name": "Share of claims backed", "score": 2, "max": 6, "assessable": true, "note": "One core claim (career growth) is partly supported; the other three core claims and both supporting claims lack meaningful support."},
+      {"name": "Specific evidence", "score": 2, "max": 4, "assessable": true, "note": "Support exists for one of six claims; the ATL figure gives no period or participant count."},
+      {"name": "Evidence fits the claim", "score": 1, "max": 3, "assessable": true, "note": "Meaningful support covers only the growth claim, and only for people who completed a programme or rose to leadership."},
+      {"name": "Proof next to the claim", "score": 1, "max": 3, "assessable": true, "note": "The growth headline is on the home page; its support sits on the Students page and in the blog."}
+    ]
+  },
+  {
+    "id": "audience_fit", "score": 7, "max": 12, "assessable": true,
+    "why": "Role families get their own pages, and two are well served: the supply-chain page names the physical demands, and the Students page gives a month-by-month internship timeline. The store page, home to the only roles the site opens from age 16, is a list of 12 areas and an FAQ. No careers page read states pay, shifts or hours.",
+    "criteria": [
+      {"name": "Clear who it speaks to", "score": 2, "max": 3, "assessable": true, "note": "Separate pages for stores, supply chain, corporate, digital, healthcare and students; the hub and About pages speak to everyone."},
+      {"name": "Speaks to their decision factors", "score": 2, "max": 4, "assessable": true, "note": "Supply chain (conditions, pace) and students (timeline, programme outcomes) are covered; pay and schedules appear on no careers page read."},
+      {"name": "Adapted for different audiences", "score": 2, "max": 3, "assessable": true, "note": "The pages are segmented, but the shared line Each & Every Person Counts appears on only two of them, and store candidates get the least role-specific content."},
+      {"name": "Makes real choices", "score": 1, "max": 2, "assessable": true, "note": "Only the supply-chain page says who the work suits (heavy lifting, hot, cold and wet areas); the rest addresses everyone."}
+    ]
+  },
+  {
+    "id": "employee_truth", "score": 8, "max": 10, "assessable": true,
+    "why": "Employee voice is the strongest part of the material. Three stories name roles, places, years and real setbacks: an HR pilot that turned into nine months of mostly stocking shelves and bagging, an HR role through the pandemic, a market entry with no local store to train in. Culture on the official pages is still stated as values rather than shown.",
+    "criteria": [
+      {"name": "Employee voice", "score": 3, "max": 3, "assessable": true, "note": "Three attributable stories describe concrete events in the speaker's own words."},
+      {"name": "Work reality", "score": 2, "max": 3, "assessable": true, "note": "The supply-chain FAQ, a store of 150 Partners and 25,000+ customers a day in one story, and the app features in the digital post show some reality; the store page shows none."},
+      {"name": "Honest about difficulty", "score": 2, "max": 2, "assessable": true, "note": "The supply-chain page names heat, cold, wet conditions and a rapid pace; stories name a pilot that did not work as planned and how a training gap in a new market was solved."},
+      {"name": "Culture shown through practice", "score": 1, "max": 2, "assessable": true, "note": "Stories show practices (mentoring, a leader arranging a nutritionist, bussing new Partners to Houston for training); the About and hub pages state values only."}
+    ]
+  },
+  {
+    "id": "consistency", "score": 7, "max": 12, "assessable": true,
+    "why": "Careers and people run through most pages, and the voice is recognisably the same: Partners, Texas, the aisles wordplay. The hiring-process page contradicts itself on whether the video interview is required, and headcount figures differ between pages. The YouTube channel linked from the careers site carries no hiring content in the sample.",
+    "criteria": [
+      {"name": "Same core promise across touchpoints", "score": 3, "max": 5, "assessable": true, "note": "Careers pages and stories share the growth and people themes; the story series is titled Here, Everyone Belongs but tells career journeys; the YouTube sample drifts to products and suppliers."},
+      {"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Stories support growth; nothing supports ownership; supplier videos support a company story about Texas rather than an employee one."},
+      {"name": "Same voice throughout", "score": 2, "max": 2, "assessable": true, "note": "Partners, Texas references and the aisles wordplay recur across pages."},
+      {"name": "No contradictions", "score": 0, "max": 2, "assessable": true, "note": "The Candidate Toolkit says HireVue applies to some roles in Step 2 and is mandatory for all full and part time positions in its FAQ."}
+    ]
+  },
+  {
+    "id": "candidate_relevance", "score": 4, "max": 12, "assessable": true,
+    "why": "Only two of the four criteria could be assessed (6 of 12 points), because no job ad text could be read and the benefits pages were blocked. Reasons to join are given, but they rest on generic lines or on ownership that is not explained. The FAQs answer many practical questions, from age limits and scams to answering the video interview in Spanish or ASL.",
+    "criteria": [
+      {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Reasons are given (many careers, ownership, every person counts), but they are generic or unexplained."},
+      {"name": "Role reality", "score": 0, "max": 3, "assessable": false, "note": "Not assessed: job ad texts could not be read."},
+      {"name": "Decision facts (pay, hours, contract)", "score": 0, "max": 3, "assessable": false, "note": "Not assessed: job ads and the Partner Perks benefits page could not be read."},
+      {"name": "Questions anticipated", "score": 2, "max": 3, "assessable": true, "note": "Process questions are answered in detail; questions about the work itself are answered only for supply chain; the video-interview contradiction leaves one doubt open."}
+    ]
+  },
+  {
+    "id": "conversion", "score": 8, "max": 10, "assessable": true,
+    "why": "The next step is always visible: every area page has job links, talent pools exist for physicians and loss-prevention candidates, and the four-step process is laid out. Reasons to apply rarely sit next to the buttons, and the three tips tiles on the Candidate Toolkit hold placeholder text.",
+    "criteria": [
+      {"name": "Next step clear", "score": 3, "max": 3, "assessable": true, "note": "Find Jobs and Apply Now buttons per area, talent pools, and a route for people who are already Partners."},
+      {"name": "Reasons near the button", "score": 1, "max": 2, "assessable": true, "note": "The SORL and ATL buttons sit next to programme outcomes; elsewhere buttons sit next to one-line slogans."},
+      {"name": "Effort reduced", "score": 1, "max": 2, "assessable": true, "note": "Video-interview help is detailed (30-day reuse, Spanish and ASL, network test), but the resume, interview and HireVue tips tiles show placeholder text."},
+      {"name": "Button fits the stage", "score": 2, "max": 2, "assessable": true, "note": "Separate routes for current Partners, students, physicians and loss-prevention candidates, plus Ask A Recruiter videos."},
+      {"name": "Process explained", "score": 1, "max": 1, "assessable": true, "note": "Four steps, what happens after applying, and the internship timeline by month."}
+    ]
+  }
+],
+"strengths": [
+  {"title": "The warehouse and transport page names the hard parts", "text": "The supply-chain page says the work involves heavy lifting, selecting and packing, a rapid pace, hot areas near equipment, cold areas in walk-in coolers and freezers, and frequent wet conditions from cleaning and sanitizing. It is the only careers page read that says who the work suits, which makes it the model for the other pages."},
+  {"title": "Career journeys with names, roles and dates", "text": "Luis Martinez's story traces his path from Receiving Specialist at Joe V's Smart Shop to Floor Manager in 2012, a SORL graduate in 2018, Talent Manager in 2022, Store Team Leader in 2023 and Top Store Team Leader in March 2025. Justin Tippett's runs from store operations through five years leading the Continuous Improvement & Design team, Procurement and HR Director for San Antonio to leading the Joe V's division. Both name their mentors and the moments they hesitated."},
+  {"title": "Leadership programmes with a stated outcome", "text": "The Students page describes SORL as a store leadership rotational programme that, upon successful completion, gives the skills to become an Assistant Store Director, and states that 96% of ATL participants are promoted to Team Leader upon successful completion. The internship timeline gives months for applications, interviews, offers and the 10-week programme."},
+  {"title": "A hiring process explained down to the error messages", "text": "The Candidate Toolkit lays out four steps. The FAQs cover scams (recruiters contact candidates from H-E-B email addresses and never request payment), age limits by role, answering the video interview in a native language or ASL where applicable, reusing an interview with identical questions completed in the past 30 days, and checking application status."},
+  {"title": "Specific employer realities to build on", "text": "The site names Own Brand products made by Partners at H-E-B's manufacturing facilities (tortillas, jalapeño poppers, Swoon ice cream), a direct primary care clinic model with straightforward patient pricing and no insurance requirement that lets the healthcare team spend more time with patients, and the Joe V's Smart Shop format. These are the raw material for a less generic proposition."}
+],
+"problems": [
+  {
+    "severity": "high",
+    "title": "The most distinctive promise, that Partners are owners, is stated twice and explained nowhere.",
+    "evidence": [
+      "“Regularly named a top employer and retailer, H-E-B's more than 160,000 Partners (employees), who are owners in our company, are at the heart of what makes our business successful and great.” (Our Careers page)",
+      "The About page repeats the sentence with a different count, more than 175,000 Partners. The Digital page gives 170,000+ employees.",
+      "No page read names the plan, says who qualifies or shows what ownership has meant for Partners. One story lists VPP among Total Rewards programmes without explaining it."
+    ],
+    "why": "Of the four lead claims, this one comes closest to being true only of H-E-B, and it is the only one with no support at all on the pages read. The sentence is also unqualified: it presents Partners as owners without any condition. On Comparably, three of the 70 answers say part-time Partners miss out on benefits or hours, and one says part-time Partners cannot qualify for the stock program. That is one reviewer's account, not a fact, but it makes eligibility the obvious question for the page to answer.",
+    "flags": ["RF06", "RF05"]
+  },
+  {
+    "severity": "high",
+    "title": "The lead messages fit any large retailer: many careers, endless opportunity, every person counts.",
+    "evidence": [
+      "Home page headline ONE COMPANY, MANY CAREERS, followed by: “At H-E-B, a job is more than just a job - it's an opportunity for a rewarding career that allows you to use your unique talents and passions to innovate and make a difference across multiple areas of the business.”",
+      "Our Careers page: “Career opportunities at H-E-B are endless” and “At H-E-B, Each & Every Person Counts.”",
+      "“Regularly named a top employer and retailer” appears on two pages with no ranking, year or source."
+    ],
+    "why": "Swap the name for another grocer and each of these lines still reads true: none contains a figure, a place or a practice. The material that would make them H-E-B's own already exists elsewhere on the site. The ATL figure and the SORL path sit on the Students page, and the career journeys sit in the blog. The top-employer line names no ranking, so it claims more than the page shows.",
+    "flags": ["RF01", "RF02"]
+  },
+  {
+    "severity": "high",
+    "title": "The hiring-process page contradicts itself on whether the video interview is required.",
+    "evidence": [
+      "Step 2: “After you apply, for some of our roles, you may receive an email inviting you to complete an online interview (HireVue).” and “If the role you are applying to does not require a HireVue, a recruiter will be reviewing your application and will conduct initial interviews if you are selected.”",
+      "FAQ on the same page: “Yes, the HireVue video is mandatory for full and part time positions.” and “All candidates are required to complete their HireVue interview.”"
+    ],
+    "why": "The two statements cannot both be true. A candidate who receives no invitation cannot tell from the page whether something went wrong or the role does not use HireVue. The page does not say which rule applies, and the audit does not assume one.",
+    "flags": ["RF12"]
+  },
+  {
+    "severity": "medium",
+    "title": "The store page shows no work, and the clearest benefit for hourly staff is buried in an old tech blog post.",
+    "evidence": [
+      "Store page: “It takes hundreds of H-E-B Partners in each store to serve our communities. Whether you’re in search of a Part-time job or your next career, we have aisles and aisles of opportunities!” It is followed by a list of 12 areas and an FAQ on age, experience and the video interview.",
+      "The digital blog post Eyes on the Enterprise describes the MySchedule feature: Partners can view their hours, post or pick up shifts and request time off from their phones. The post is dated March 2025 but is framed around the 2019 Dreamforce conference."
+    ],
+    "why": "Store roles are the only ones the site opens from age 16, yet the store page says nothing about tasks, shifts or what each area involves. The supply-chain page, by contrast, names the lifting, the hot and cold areas and the pace. Shift tools are the kind of fact the store page lacks, but it is unclear whether the post's description and usage figures still hold today.",
+    "flags": ["RF11"]
+  },
+  {
+    "severity": "medium",
+    "title": "Every employee story read comes from a long-serving leader, under a series title about belonging.",
+    "evidence": [
+      "The four stories read are by the person responsible for Total Rewards programme design and Wellness Primary Care, a Top Store Team Leader at Joe V's, the leader of the Joe V's division, and a Director of Technology.",
+      "The series is titled Here, Everyone Belongs; the stories are mostly about career moves and mentors."
+    ],
+    "why": "The stories are the best evidence for growth in the material, but the two that give tenure describe journeys of 14 and 19 years that ended in leadership. Nothing shows the first year of a Checker, a Curbie or a warehouse selector. The growth claim is made for everyone, while its proof comes from people at the top of their paths.",
+    "flags": ["RF18"]
+  },
+  {
+    "severity": "medium",
+    "title": "Unfinished content and figures that do not match.",
+    "evidence": [
+      "Candidate Toolkit: the resume recommendations, interviewing best practices and HireVue tips tiles each read “Loren ipusm dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.”",
+      "About page: a visible line reads “LP.SKU-A1.TITLE_1”.",
+      "Partners: more than 160,000 (Our Careers), more than 175,000 (About), 170,000+ employees (Digital). Stores: more than 435 (Our Careers), 440+ (About FAQ). Clinics: 12 (Health & Wellness page), and currently 14 in a story dated May 29, 2026."
+    ],
+    "why": "The placeholder text sits exactly where the page promises help with applying. The differing counts may each be right for a different date, but no page gives a date, so a reader cannot tell which is current.",
+    "flags": []
+  },
+  {
+    "severity": "low",
+    "title": "The only social channel that could be read automatically carries no hiring content.",
+    "evidence": [
+      "YouTube @HEB, linked from the careers site footer: 15 videos from 2026-10-08 to 2026-10-22, of which 11 are local supplier spotlights, 3 are sports partnership videos and 1 is a recipe. None is about working at H-E-B."
+    ],
+    "why": "The careers home page tells candidates to follow H-E-B Careers on social media for hiring events. The careers accounts on Instagram, Facebook, X and LinkedIn could not be read automatically, so this finding covers YouTube only.",
+    "flags": []
+  }
+],
+"fixes": [
+  {
+    "title": "Explain the ownership promise next to the sentence that makes it",
+    "needs_new_data": true,
+    "steps": [
+      "On the Our Careers and About pages, follow the owners sentence with the plan's name, who qualifies (full-time, part-time, after how long) and what ownership has meant for Partners, in figures H-E-B is willing to publish.",
+      "Use one Partner count, with an as-of date, on both pages.",
+      "Add one Partner's own account of what being an owner means, ideally from a store or warehouse role.",
+      "If eligibility has conditions, state them in the same sentence."
+    ],
+    "why_first": "It is the lead promise closest to being H-E-B's alone, and nothing on the pages read supports it. Review answers already raise part-time eligibility, so the page currently prompts the question without answering it.",
+    "needs": ["Plan name, eligibility rules and any participation or value figures that can be published", "The current Partner count and its date", "One Partner willing to tell their ownership story"],
+    "effort": "medium",
+    "effort_note": "Two or three facts from Total Rewards and one story",
+    "who": ["Total Rewards (plan facts and eligibility)", "legal or finance (what may be published)", "employer brand team (copy)", "a store or warehouse Partner (story)"],
+    "check": ["What candidates ask about ownership at screening", "Whether review answers about part-time eligibility change in number or tone", "Clicks from the ownership section to job search"]
+  },
+  {
+    "title": "Make the hiring-process page state one rule and finish it",
+    "needs_new_data": true,
+    "steps": [
+      "Decide which video-interview rule is current and state it once, in the same words, in Step 2 and in the FAQ.",
+      "Replace the three placeholder tiles with real resume, interview and HireVue tips, or remove them.",
+      "Remove the stray LP.SKU-A1.TITLE_1 line on the About page.",
+      "Align the Partner, store and clinic counts across pages, each with an as-of date."
+    ],
+    "why_first": "It is the cheapest fix with the most direct effect on applicants, because the contradiction sits on the page meant to guide them through applying.",
+    "needs": ["Which roles require HireVue", "Current counts with dates", "Tips content from the recruiting team"],
+    "effort": "small",
+    "effort_note": "One internal decision on the rule, then copy edits",
+    "who": ["talent acquisition operations", "careers site owner", "recruiters (tips content)"],
+    "check": ["Number of applications left pending because the interview link was not clicked", "Candidate questions about HireVue reaching recruiters or support", "Whether placeholder text reappears after site updates"]
+  },
+  {
+    "title": "Give store candidates the work, the path up and an hourly Partner's voice",
+    "needs_new_data": true,
+    "steps": [
+      "For each of the 12 store areas, add two or three lines on what the work involves, using the supply-chain page as the model.",
+      "Bring the SORL and ATL descriptions onto the store page, with the 96% figure, its period and its participant count.",
+      "If MySchedule is in current use, describe the shift tools on the store page with current figures.",
+      "Add stories from hourly Partners in their first years, such as Checkers, Curbies and bakers, alongside the leadership journeys.",
+      "Where pay ranges or pay logic can be published, add them per area."
+    ],
+    "why_first": "It comes third because it needs new content from stores. The store page is where the site sends its 16-year-old applicants, and today it gives them the least to decide on.",
+    "needs": ["Short descriptions of each store area from store leaders", "Who can apply to SORL and ATL from store roles; the period and number of participants behind the 96% figure", "Whether MySchedule is current, with current figures", "Hourly Partners willing to share their stories", "Pay ranges or pay logic per area, if publishable"],
+    "effort": "large",
+    "effort_note": "New descriptions and stories gathered across store operations",
+    "who": ["store operations leaders", "recruiting", "Total Rewards (pay)", "hourly store Partners (stories)", "digital team (MySchedule facts)"],
+    "check": ["Applications per store area", "Share of store applicants who complete the video interview", "Questions about shifts and pay at screening"]
+  }
+],
+"rewrites": [
+  {
+    "title": "Our Careers page: the ownership paragraph",
+    "original": "At H-E-B, Each & Every Person Counts. Regularly named a top employer and retailer, H-E-B's more than 160,000 Partners (employees), who are owners in our company, are at the heart of what makes our business successful and great.",
+    "problem": "The page's most distinctive fact is tucked into a sentence about the business, next to a ranking with no source, and the page never says what ownership involves.",
+    "logic": "Lead with the ownership fact, keep its wording and count, drop the unsourced ranking, and leave a marked slot for the facts that would support it.",
+    "rewrite": "Here, employees are called Partners, and more than 160,000 Partners are owners in our company.\n\n[What ownership means: the plan, who qualifies and what it has meant for Partners, once confirmed]\n\nAt H-E-B, Each & Every Person Counts.",
+    "notes": [
+      {"kind": "confirm", "text": "Which Partner count is current (160,000 on this page, 175,000 on the About page) and as of when."},
+      {"kind": "confirm", "text": "Whether all Partners, including part-time Partners, are owners, or only those who meet conditions. If there are conditions, they belong in the first sentence."},
+      {"kind": "evidence", "text": "The plan's name, eligibility rules and what ownership has meant for Partners."},
+      {"kind": "evidence", "text": "Which rankings, years and criteria stand behind Regularly named a top employer and retailer, before the line is used again."}
+    ]
+  },
+  {
+    "title": "Candidate Toolkit: Step 2 and the video-interview FAQ",
+    "original": "STEP 2 Screening & Initial Interviews\nAfter you apply, for some of our roles, you may receive an email inviting you to complete an online interview (HireVue). Please check your junk mail if you do not receive an invitation to complete the online interview. Each HireVue is reviewed by our Recruiting team and allows us to better understand if you are the right fit for the role you are applying for.\nIf the role you are applying to does not require a HireVue, a recruiter will be reviewing your application and will conduct initial interviews if you are selected.\n\nFAQ: Yes, the HireVue video is mandatory for full and part time positions. […] All candidates are required to complete their HireVue interview.",
+    "problem": "Step 2 says the video interview applies to some roles; the FAQ on the same page says it is required for all full and part time positions.",
+    "logic": "Keep the practical help already on the page, move it into Step 2, and leave one slot for the rule, to be filled once and repeated word for word in the FAQ.",
+    "rewrite": "STEP 2 Screening & Initial Interviews\nAfter you apply, check your email, including junk mail, for an invitation to an online video interview (HireVue).\n[Which roles require HireVue: one rule, stated here and in the FAQ]\nEach HireVue is reviewed by our Recruiting team. The questions are listed in English and Spanish, and if applicable you can respond in your native language or ASL.\nIf you have completed a digital interview with identical questions in the past 30 days, you will not need to complete it again at this time. You will still need to click the link for the digital interview; otherwise your application stays pending completion.",
+    "notes": [
+      {"kind": "confirm", "text": "Whether HireVue is mandatory for all full and part time positions, as the FAQ says, or only for some roles, as Step 2 says."}
+    ]
+  },
+  {
+    "title": "Store careers page: the introduction",
+    "original": "It takes hundreds of H-E-B Partners in each store to serve our communities. Whether you’re in search of a Part-time job or your next career, we have aisles and aisles of opportunities!",
+    "problem": "The introduction is a slogan followed by a list of area names. It gives no fact about the work, the starting point or the path up, although the site publishes such facts on other pages.",
+    "logic": "Bring facts already published elsewhere on the site onto the store page, each with its original conditions, and mark the slots that need new information.",
+    "rewrite": "It takes hundreds of H-E-B Partners in each store to serve our communities, across 12 areas from Front End and Bakery to Curbside & eStore and the Meat Market.\n\nStarting out: the minimum age is 16 for Curbies, Shoppers, Baggers (Customer Service Assistants) and Checkers, and 18 for all other store positions. The experience required depends on the role, so read each job description before applying.\n[What the work in each area involves, and typical shifts]\n\nGrowing into leadership: our School of Retail Leadership (SORL) is a Store leadership rotational program. Upon successful completion, you will have the skills necessary to become an Assistant Store Director.\n[Who can apply to SORL from a store role]\n\nOne Partner's path, from his July 2025 story: Luis Martinez joined Joe V's Smart Shop as a Receiving Specialist and was promoted to Top Store Team Leader at Joe V's 9 in March 2025.",
+    "notes": [
+      {"kind": "confirm", "text": "Who can apply to SORL and ATL from store roles, and whether the ATL Team Leader role is a store role."},
+      {"kind": "evidence", "text": "A short description of the work in each store area, typical shifts, and pay ranges or pay logic if they can be published."},
+      {"kind": "confirm", "text": "Whether MySchedule is in current use, before shift tools are added to this page."},
+      {"kind": "evidence", "text": "A story from an hourly store Partner in their first years."}
+    ]
+  }
+],
+"questions": [
+  {"kind": "confirm", "for": "communication", "text": "What Partner ownership consists of: the plan, who qualifies (full-time and part-time, after how long) and how ownership is earned."},
+  {"kind": "evidence", "for": "communication", "text": "Participation or value figures for Partner ownership that H-E-B is willing to publish."},
+  {"kind": "confirm", "for": "communication", "text": "Which counts are current, and as of when: Partners (160,000+, 170,000+ or 175,000+), stores (435+ or 440+) and Wellness clinics (12 or 14)."},
+  {"kind": "confirm", "for": "communication", "text": "Whether HireVue is required for all full and part time positions or only for some roles."},
+  {"kind": "evidence", "for": "communication", "text": "Which rankings, years and criteria stand behind Regularly named a top employer and retailer."},
+  {"kind": "confirm", "for": "communication", "text": "Whether MySchedule and the PartnerNet app are in current use, and current usage figures."},
+  {"kind": "confirm", "for": "communication", "text": "Who can apply to SORL and ATL from store roles; whether ATL Team Leader roles are in stores; the period and number of participants behind the 96% figure."},
+  {"kind": "evidence", "for": "communication", "text": "Pay ranges or pay logic and typical shift patterns for store, warehouse and transport roles."},
+  {"kind": "evidence", "for": "communication", "text": "Stories from hourly store, warehouse and transport Partners."},
+  {"kind": "evidence", "for": "communication", "text": "What VPP, MWT and the Helping Here philosophy mean, in words a candidate outside H-E-B would understand."},
+  {"kind": "evidence", "for": "audit", "text": "The text of 8–12 current job ads across store hourly, warehouse and driver, pharmacy, corporate and digital roles, saved as text or screenshots."},
+  {"kind": "evidence", "for": "audit", "text": "The content of the Partner Perks and benefits pages."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the careers accounts on Instagram, Facebook, X and LinkedIn, and of recent Glassdoor and Indeed reviews (see the manual import list)."}
+],
+"genericity": [
+  {"claim": "ONE COMPANY, MANY CAREERS; “Career opportunities at H-E-B are endless” (home page, Our Careers, Grow Your Career navigation)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "some", "defensibility": "supportable", "why": "Fits any multi-format retailer unchanged; built from stock growth phrases (endless opportunities, grow your career). The ATL figure and career stories could support it, but they sit on other pages."},
+  {"claim": "At H-E-B, Each & Every Person Counts; Here, Everyone Belongs; WE ARE A PEOPLE COMPANY - WE JUST HAPPEN TO SELL GROCERIES (Our Careers, About, navigation, story series)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "none", "defensibility": "unowned", "why": "Contains no figure, practice or condition tied to H-E-B; the people-company line is memorable but would read as true for any grocer. Only single anecdotes in stories sit behind it."},
+  {"claim": "H-E-B's more than 160,000 Partners (employees), who are owners in our company (Our Careers; 175,000 on About)", "verdict": "partial", "substitution": "bends", "ubiquity": "rare", "specificity": "some", "defensibility": "supportable", "why": "Uses no stock phrases and rests on an ownership structure, so it would need changing for most employers. Without the plan, eligibility or results, an employer with any share plan could write the same line."},
+  {"claim": "H-E-B's Partners serve all Texans and demonstrate our collective commitment to take care of Texas (Our Careers, About, Health & Wellness)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The Texas footprint is specific (stores, more than 288 pharmacies, clinics), but the claim describes what the company does for customers, not what the work offers the employee."},
+  {"claim": "“Each position at H-E-B Digital is unique, but every career here promises to offer more than your average tech job.” (Digital page)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "some", "defensibility": "supportable", "why": "Built from stock phrases (hardest problems, world-class teams, forefront of the digital transformation). The PartnerNet post adds real detail, but its figures describe an earlier period and say little about what engineers own."}
+],
+"ledger": [
+  {"claim": "Many careers across the business, described as endless (home page, Our Careers, Grow Your Career navigation, stories)", "class": "core", "evidence": "ATL: 96% of participants promoted to Team Leader upon successful completion (Students page). SORL leads to the skills to become an Assistant Store Director upon successful completion (Students page). Dated career journeys of Luis Martinez, Justin Tippett and Brooke Brownlow (blog); a quote in the blog index about 20+ years across stores, HR, procurement, benefits, marketing and healthcare.", "strength": "moderate", "status": "partial", "comment": "Scope is narrower than the claim: the figure covers only participants who complete ATL and gives no period or participant count, and the stories are long careers of people now in leadership. Supports that upward and cross-functional moves happen; endless remains unsupported."},
+  {"claim": "Each & Every Person Counts; Here, Everyone Belongs; a people company (Our Careers, About, navigation, story series, Students)", "class": "core", "evidence": "Justin Tippett's account of a leader connecting him with a nutritionist; Brooke Brownlow's comment that the clinics can usually help Partners with a healthcare issue; Luis Martinez's account of his mentors (blog).", "strength": "weak", "status": "weak", "comment": "Single accounts, selected by the employer. The About page's commitment to diversity and inclusion has no practice or figure behind it."},
+  {"claim": "More than 160,000 Partners (175,000 on the About page) are owners in our company (Our Careers, About)", "class": "core", "evidence": "Not found. A story lists VPP among Total Rewards programmes, but the term is not explained, so it cannot be linked to ownership.", "strength": "none", "status": "none", "comment": "What is owned, through which plan, who qualifies and what it has meant are absent. The two pages also give different counts."},
+  {"claim": "Partners take care of Texas and make Texans' lives better (Our Careers, About, Health & Wellness, Digital internship)", "class": "core", "evidence": "More than 435 stores throughout Texas and Mexico (Our Careers); over 288 pharmacies and 12 clinics throughout Texas (Health & Wellness); supplier videos on YouTube.", "strength": "weak", "status": "weak", "comment": "Company and customer facts show reach, not what the work means for the employee. The clinic-model sentence on the Health & Wellness page is the one line that connects the mission to the work."},
+  {"claim": "Digital roles offer more than your average tech job and the hardest tech and digital problems (Digital page)", "class": "supporting", "evidence": "Eyes on the Enterprise: PartnerNet and MySchedule features; MySchedule accessed one million times per month; 55,000 weekly app users, up from 41,000 in October. Level Up onboarding description (Digital page).", "strength": "weak", "status": "weak", "comment": "The post is dated March 2025 but framed around the 2019 Dreamforce conference, so it is unclear whether the figures describe today. Product scale says little about what engineers own or solve; hardest and world-class remain unsupported."},
+  {"claim": "MySchedule gives Partners flexibility: viewing hours, posting or picking up shifts and requesting time off by phone (digital blog)", "class": "supporting", "evidence": "The same post: MySchedule is the most-used feature of the app suite, accessed one million times per month.", "strength": "weak", "status": "weak", "comment": "A direct description of a practice with a usage figure, but its time frame is earlier than the page date, and no careers page repeats it. Unclear whether it holds today."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

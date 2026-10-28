@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "ServiceNow",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 66,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 100,
+  "confidence": "high",
+  "reliability_note": "all 34 criteria assessed across six types of material; the careers pages were read through a tool that partly paraphrases, and no employee reviews could be read"
+},
+"verdict": "The job ads show concrete work, real conditions and real AI tasks. The careers pages lead with a product slogan and a people-first promise that fits any employer, and none of the five sampled ads outside the US states pay.",
+"notices": [
+  "The material was collected automatically from public pages on 27 October 2026. The careers site blocked direct reading, so its pages were captured with a tool that returns some text verbatim and paraphrases the rest. Quotations in this report use only the verbatim parts. Some sources may have been missed, and live pages may have changed since the capture date.",
+  "No employee reviews could be read on any review site, so the Promise and perception section shows the sites tried but no themes. Screenshots added as described under What to add for the full picture will fill it. Reviews never change the score."
+],
+"materials": [
+  {"name": "Careers home page", "type": "Careers page"},
+  {"name": "Life at ServiceNow (People Pact, benefits, work personas)", "type": "Employer value proposition"},
+  {"name": "How We Hire", "type": "Candidate communication"},
+  {"name": "Using AI During the Hiring Process", "type": "Candidate communication"},
+  {"name": "Early Careers (with three employee quotes)", "type": "Careers page and employee voice"},
+  {"name": "Team page: AI, Engineering & Product", "type": "Careers page"},
+  {"name": "Team page: Sales (with three employee testimonials)", "type": "Careers page and employee voice"},
+  {"name": "Location page: Ireland", "type": "Careers page"},
+  {"name": "Location page: India", "type": "Careers page"},
+  {"name": "Finance Intern, Undergrad Summer 2027 (Bay Area)", "type": "Job ad"},
+  {"name": "Sr Staff Software Engineer (Hyderabad)", "type": "Job ad"},
+  {"name": "Sr Mid-Market Account Executive (Tokyo)", "type": "Job ad"},
+  {"name": "Brand Strategist (San Diego)", "type": "Job ad"},
+  {"name": "Network Reliability and Resilience Manager (Montreal)", "type": "Job ad"},
+  {"name": "Forward Deployed Solution Engineer, Applied AI (Amsterdam)", "type": "Job ad"},
+  {"name": "Senior Auditor, Business & IT Operations (San Diego, remote)", "type": "Job ad"},
+  {"name": "Director, Product Design (Bangalore)", "type": "Job ad"},
+  {"name": "Senior Site Reliability Engineer, Federal (Santa Clara)", "type": "Job ad"},
+  {"name": "YouTube @servicenow, latest 15 videos", "type": "Social media"}
+],
+"sources": [
+  {"title": "ServiceNow Careers, home", "url": "https://careers.servicenow.com/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Life at ServiceNow", "url": "https://careers.servicenow.com/life-at-servicenow", "type": "Employer value proposition", "captured": "2026-10-27"},
+  {"title": "How We Hire", "url": "https://careers.servicenow.com/how-we-hire", "type": "Candidate communication", "captured": "2026-10-27"},
+  {"title": "Using AI During the Hiring Process at ServiceNow", "url": "https://careers.servicenow.com/using-ai-during-the-hiring-process", "type": "Candidate communication", "captured": "2026-10-27"},
+  {"title": "Early Careers", "url": "https://careers.servicenow.com/early-careers", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Teams: AI, Engineering, & Product", "url": "https://careers.servicenow.com/teams/ai-engineering-product", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Teams: Sales", "url": "https://careers.servicenow.com/teams/sales", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Locations: Ireland", "url": "https://careers.servicenow.com/locations/emea/ireland", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Locations: India", "url": "https://careers.servicenow.com/locations/apj/india", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Finance Intern - Undergrad Summer 2027", "url": "https://careers.servicenow.com/jobs/744000155588309/finance-intern-undergrad-summer-2027", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Sr Staff Software Engineer", "url": "https://careers.servicenow.com/jobs/744000153476294/sr-staff-software-engineer", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Sr Mid-Market Account Executive", "url": "https://careers.servicenow.com/jobs/744000150226966/sr-mid-market-account-executive", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Brand Strategist", "url": "https://careers.servicenow.com/jobs/744000141796459/brand-strategist", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Gestionnaire, Fiabilité et résilience du réseau", "url": "https://careers.servicenow.com/jobs/744000147525814/gestionnaire-fiabilite-et-resilience-du-reseau", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Forward Deployed Solution Engineer – Applied AI FDE", "url": "https://careers.servicenow.com/jobs/744000156764064/forward-deployed-solution-engineer-applied-ai-fde", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Senior Auditor – Business & IT Operations", "url": "https://careers.servicenow.com/jobs/744000157566579/senior-auditor-business-it-operations", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Director, Product Design", "url": "https://careers.servicenow.com/jobs/744000152588729/director-product-design", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Senior Site Reliability Engineer - Federal", "url": "https://careers.servicenow.com/jobs/744000157201202/senior-site-reliability-engineer-federal", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "ServiceNow on YouTube (@servicenow)", "url": "https://www.youtube.com/channel/UCLukrOQYSgsHUR_NSiVZndQ", "type": "Social media", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "Careers home, Life at ServiceNow, How We Hire, Using AI in hiring, Early Careers", "url": "https://careers.servicenow.com/", "kind": "Careers site, proposition, hiring process", "decision": "included", "reason": "The main candidate-facing pages; each adds content not found elsewhere"},
+  {"source": "Team pages: AI, Engineering & Product; Sales", "url": "https://careers.servicenow.com/teams/sales", "kind": "Careers site", "decision": "included", "reason": "One technical and one commercial team family"},
+  {"source": "Team pages: Marketing, User Experience, Digital Technology, Corporate Functions, teams index", "kind": "Careers site", "decision": "excluded", "reason": "Same template as the two team pages used; the index repeats the home-page team list"},
+  {"source": "Location pages: Ireland and India", "url": "https://careers.servicenow.com/locations/apj/india", "kind": "Careers site", "decision": "included", "reason": "One page each for Europe and Asia-Pacific"},
+  {"source": "About 40 other location pages (regions, countries, US cities)", "kind": "Careers site", "decision": "excluded", "reason": "Same template with repeated benefits and award text"},
+  {"source": "697 job ads in the careers-site sitemap", "kind": "Job ads", "decision": "included", "reason": "9 ads used, spread across engineering, sales, marketing, finance, audit, design and operations, intern to director level, in five countries"},
+  {"source": "The other 688 job ads", "kind": "Job ads", "decision": "excluded", "reason": "Same template with different titles; the total is reported as the hiring footprint only"},
+  {"source": "Job list, events and sitemap pages", "kind": "Careers site", "decision": "excluded", "reason": "Navigation pages without employer content"},
+  {"source": "Careers blog (redirects to the Life at Now blog on servicenow.com)", "url": "https://careers.servicenow.com/blog", "kind": "Employee stories", "decision": "unavailable", "reason": "Access denied to automated reading"},
+  {"source": "Blog post: How employees do their best work at ServiceNow (2025)", "kind": "Employee story", "decision": "unavailable", "reason": "Access denied to automated reading"},
+  {"source": "Culture hub and community Learn Out Loud posts found by search", "kind": "Employee stories", "decision": "excluded", "reason": "Not on the careers domain; the community post is a personal post by an individual employee"},
+  {"source": "Article cards on careers pages (Day in the Life: Customer Success Managers; intern and work-besties stories)", "kind": "Employee stories", "decision": "unavailable", "reason": "Only the titles were captured; the links could not be read"},
+  {"source": "SmartRecruiters job board for ServiceNow", "url": "https://careers.smartrecruiters.com/ServiceNow", "kind": "Job board", "decision": "excluded", "reason": "Duplicates the careers-site ads"},
+  {"source": "Handshake employer page", "url": "https://app.joinhandshake.com/employers/servicenow-38489", "kind": "Job board", "decision": "excluded", "reason": "Requires a login; found by search only"},
+  {"source": "YouTube @servicenow", "url": "https://www.youtube.com/channel/UCLukrOQYSgsHUR_NSiVZndQ", "kind": "Social media, open", "decision": "included", "reason": "Linked from the careers-site footer; channel title and description match the employer"},
+  {"source": "LinkedIn company page", "url": "https://www.linkedin.com/company/servicenow/", "kind": "Social media, closed", "decision": "manual", "reason": "Official (footer link); closed to automated reading"},
+  {"source": "LinkedIn ServiceNow Early Careers page", "kind": "Social media, closed", "decision": "manual", "reason": "Named in the early-careers FAQ; its link was not shown on the page"},
+  {"source": "Instagram @lifeatnow", "url": "https://www.instagram.com/lifeatnow/", "kind": "Social media, closed", "decision": "manual", "reason": "Official (footer link); people and culture account"},
+  {"source": "X @servicenow", "url": "https://x.com/servicenow", "kind": "Social media, closed", "decision": "manual", "reason": "Official (footer link); general corporate account"},
+  {"source": "Facebook", "url": "https://www.facebook.com/servicenow", "kind": "Social media, closed", "decision": "manual", "reason": "Official (footer link)"},
+  {"source": "TikTok @servicenow", "url": "https://www.tiktok.com/@servicenow?lang=en", "kind": "Social media, closed", "decision": "manual", "reason": "Official (footer link)"},
+  {"source": "Telegram and VK", "kind": "Social media", "decision": "excluded", "reason": "No account linked from the careers site; outside the global English-language market audited"},
+  {"source": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/ServiceNow-Reviews-E403326.htm", "kind": "Employee reviews", "decision": "manual", "reason": "Closed platform; showed a human-verification page"},
+  {"source": "Indeed company reviews", "url": "https://www.indeed.com/cmp/Servicenow/reviews", "kind": "Employee reviews", "decision": "unavailable", "reason": "Access denied to both reading methods; screenshots can be added"},
+  {"source": "Comparably", "url": "https://www.comparably.com/companies/servicenow", "kind": "Employee reviews", "decision": "unavailable", "reason": "The page is drawn by scripts and then refused access"},
+  {"source": "InHerSight", "kind": "Employee reviews", "decision": "unavailable", "reason": "No employer page found"},
+  {"source": "kununu", "url": "https://www.kununu.com/de/servicenow", "kind": "Employee reviews", "decision": "unavailable", "reason": "Showed a human-verification page"},
+  {"source": "Third-party articles and review-site mirrors found by search", "kind": "Other", "decision": "excluded", "reason": "Not published by the employer; search results only"}
+],
+"social": [
+  {
+    "platform": "YouTube",
+    "account": "@servicenow",
+    "url": "https://www.youtube.com/channel/UCLukrOQYSgsHUR_NSiVZndQ",
+    "purpose": "General corporate channel: customer stories, product launches and research, with some people and culture videos",
+    "sample": "15 videos, 25 September to 23 October 2026; titles and descriptions read, videos not watched",
+    "rhythm": "15 videos in about four weeks",
+    "people_share": "3 of 15 videos feature employees by their description (Living your best life, Hispanic Heritage Month, Work besties); 2 more are Learn Out Loud conversations about learning and changing careers",
+    "themes": [
+      "The People Pact pillar Live Your Best Life has its own video, so the careers-site promise reaches this channel",
+      "One promise appears only here: a description credits “a culture of flexibility and genuine support”, wording the careers pages reviewed do not use",
+      "Work besties also appears as an article card on the India location page",
+      "None of the 15 descriptions links to the careers site or a job; the links go to servicenow.com, ServiceNow University, a product site and research pages"
+    ],
+    "notes": "9 of the 15 videos are customer, product or research content. Views are shown on the channel for context only."
+  }
+],
+"perception": {
+  "sample": [
+    {"platform": "Glassdoor", "reviews": 0, "period": "none", "rating": "not captured: the site showed a human-verification page"},
+    {"platform": "Indeed", "reviews": 0, "period": "none", "rating": "not captured: access denied"},
+    {"platform": "Comparably", "reviews": 0, "period": "none", "rating": "not captured: page drawn by scripts, then access denied"},
+    {"platform": "kununu", "reviews": 0, "period": "none", "rating": "not captured: human-verification page"},
+    {"platform": "InHerSight", "reviews": 0, "period": "none", "rating": "not captured: no employer page found"}
+  ],
+  "thin": true,
+  "themes": [],
+  "caveat": "No review text could be read, so no themes are reported and nothing can be said yet about how reviewers see the promises in this report. Screenshots of the Glassdoor and Indeed review pages, saved in social/reviews/, would fill this section."
+},
+"manual_import": [
+  {"platform": "LinkedIn company page", "url": "https://www.linkedin.com/company/servicenow/", "capture": ["Header with bio and follower count", "The latest 9–12 posts", "3–5 recent posts about people, work or hiring, opened with their captions", "Pinned posts", "The sections of the Life tab"]},
+  {"platform": "LinkedIn ServiceNow Early Careers page", "capture": ["Find the page through the early-careers FAQ, which names it", "Header, latest 9–12 posts, 3–5 posts about people or hiring with captions, pinned posts"]},
+  {"platform": "Instagram @lifeatnow", "url": "https://www.instagram.com/lifeatnow/", "capture": ["Profile header", "Grid of the latest 9–12 posts", "3–5 posts about people or work, opened with their captions", "Pinned posts"]},
+  {"platform": "X @servicenow", "url": "https://x.com/servicenow", "capture": ["Profile header", "Recent posts about people, work or hiring", "Pinned post"]},
+  {"platform": "Facebook", "url": "https://www.facebook.com/servicenow", "capture": ["Page header", "The latest 9–12 posts", "3–5 posts about people or work"]},
+  {"platform": "TikTok @servicenow", "url": "https://www.tiktok.com/@servicenow?lang=en", "capture": ["Profile header", "The latest 9–12 videos with captions", "Pinned videos"]},
+  {"platform": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/ServiceNow-Reviews-E403326.htm", "capture": ["The rating summary with the rating, review count and date", "At least 15 recent reviews from the last 24 months, without author names"]},
+  {"platform": "Indeed reviews", "url": "https://www.indeed.com/cmp/Servicenow/reviews", "capture": ["The rating summary with the rating, review count and date", "At least 15 recent reviews from the last 24 months, without author names"]}
+],
+"scope": {
+  "reviewed": [
+    "Nine pages of careers.servicenow.com: home, Life at ServiceNow, How We Hire, Using AI During the Hiring Process, Early Careers, two team pages (AI, Engineering & Product; Sales) and two location pages (Ireland, India)",
+    "9 of the 697 job ads in the careers-site sitemap: engineering, sales, marketing, finance, audit, design and operations, from intern to director, in the US, India, Japan, Canada and the Netherlands",
+    "The latest 15 videos on the ServiceNow YouTube channel, by title and description"
+  ],
+  "not_reviewed": [
+    "Employee reviews: Glassdoor, Indeed, Comparably, kununu and InHerSight could not be read automatically",
+    "LinkedIn, Instagram, X, Facebook and TikTok: closed platforms, listed for manual import",
+    "Employee stories on the Life at Now blog: access denied",
+    "The other 688 job ads, about 40 location pages and four team pages",
+    "The interview itself, recruiter emails and offer communication",
+    "The content of the YouTube videos beyond their descriptions"
+  ]
+},
+"summary": {
+  "points": [
+    "The job ads carry the best material. They name the work, the schedule, travel, team size and the reporting line, and one ad states plainly what the role is not.",
+    "The AI promise on the home page has proof, but on other pages: 8 of the 9 sampled ads describe AI tasks or ask for AI experience, while the home page offers only the slogan.",
+    "The people promise is the weak core. “We put people first” and the wellbeing pillar rest on benefit names without amounts and on awards whose criteria are not given.",
+    "Pay appears only in the US: the 4 sampled US ads state a base pay rate or range, and the 5 ads in India, Japan, Canada and the Netherlands state no pay and no benefits.",
+    "The word “Flexible” on every sampled ad means at least two office days a week, but that definition sits only on the Life at page."
+  ],
+  "actions": [
+    "Rebuild the “Why join” blocks on the home and Life at pages around practices you already publish: work personas, Launchpad Academy and the AI work described in the ads.",
+    "Add pay, or how pay is set, and the local benefits to job ads outside the US.",
+    "Give each benefit its content (how long, how much, who qualifies) and replace the sales-team hobby testimonials with accounts of the sales work."
+  ]
+},
+"dimensions": [
+  {
+    "id": "clarity", "score": 6, "max": 12, "assessable": true,
+    "why": "The home page opens with the company's AI mission and only then turns to people. A candidate has to combine two ideas from two pages to work out the offer. The Life at page does give the people promise a structure: three People Pact pillars.",
+    "criteria": [
+      {"name": "Employer offer identifiable", "score": 2, "max": 4, "assessable": true, "note": "An offer exists, but the first screen is about the platform's purpose (“Join the team putting AI to work for people.”); the offer to employees comes second and is spread across two pages."},
+      {"name": "Candidate benefit explicit", "score": 2, "max": 4, "assessable": true, "note": "Life at speaks to “you” and lists benefits; the home page gives much of its space to customers, revenue milestones and the founding story."},
+      {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "Life at has one lead idea with three pillars; on the home page AI and people sit side by side with equal weight."},
+      {"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "Mostly plain, with unexplained terms: “AI control tower for business reinvention”, Now Platform, the Value Selling process and the work persona labels in ads."}
+    ]
+  },
+  {
+    "id": "differentiation", "score": 8, "max": 16, "assessable": true,
+    "why": "None of the five core claims depends on anything only ServiceNow has: four fit any comparable employer, and the award claim partly sets you apart. Specific material exists (Launchpad Academy, work personas, AI tasks on the ServiceNow AI Platform), but it sits in secondary pages and ads.",
+    "criteria": [
+      {"name": "Holds up when the name is swapped", "score": 2, "max": 5, "assessable": true, "note": "No core claim breaks under substitution. Employer-specific detail appears only in secondary material: job ads, the early-careers page, location pages."},
+      {"name": "Avoids stock phrases", "score": 1, "max": 3, "assessable": true, "note": "The reason to join is carried by lexicon phrases: “dream-chasing, future-shaping”, “make a real impact”, “Your success is our success.”, “award-winning culture”."},
+      {"name": "Employer-specific advantages", "score": 3, "max": 4, "assessable": true, "note": "Three specifics are tied to a promise: Launchpad Academy to growth, work personas to work mode, AI tasks in ads to the AI promise. Others, such as the Dublin team's size or the plan to double the India team, are not linked to an offer."},
+      {"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "The AI promise rests partly on the company's own platform; the people promise rests on nothing a comparable employer could not also say."},
+      {"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "“Put AI to work for people” recurs on five careers pages and in ad intros, but it describes the product, not what working here is like."}
+    ]
+  },
+  {
+    "id": "proof", "score": 9, "max": 16, "assessable": true,
+    "why": "Four of seven claims have meaningful support, all of it moderate: AI work, early-career growth, real work for interns and the hiring process. Three core claims (people first, wellbeing, award-winning culture) rest on benefit names and award titles without criteria. Most proof sits away from the promise it supports.",
+    "criteria": [
+      {"name": "How many claims are backed", "score": 3, "max": 6, "assessable": true, "note": "Four claims partly supported; three of the five core claims only weakly supported."},
+      {"name": "How specific the proof is", "score": 2, "max": 4, "assessable": true, "note": "About half the claims have support, and that support is moderate: named programmes and practices without outcome figures."},
+      {"name": "Proof matches the claim", "score": 2, "max": 3, "assessable": true, "note": "Support shows some claims; the detailed growth proof covers early-career hires only."},
+      {"name": "Proof sits next to the claim", "score": 2, "max": 3, "assessable": true, "note": "Growth and hiring proof sit on the same page as their promise; the AI proof is in job ads, away from the home-page slogan."}
+    ]
+  },
+  {
+    "id": "audience_fit", "score": 8, "max": 12, "assessable": true,
+    "why": "Each page has a clear audience: students and graduates, team families, locations, single roles. Early careers is well adapted. The sales page and the non-US ads leave out facts their audiences need to decide.",
+    "criteria": [
+      {"name": "Who it speaks to", "score": 3, "max": 3, "assessable": true, "note": "Audiences are explicit by page: early careers, engineering and product, sales, Ireland, India, and the role in each ad."},
+      {"name": "Addresses decision factors", "score": 2, "max": 4, "assessable": true, "note": "Engineering ads describe the technical problems in detail and US ads give pay; the sales material gives no pay or commission logic, and progression for experienced hires is not described."},
+      {"name": "Adapted by audience", "score": 2, "max": 3, "assessable": true, "note": "Early careers and engineering are adapted on a shared core; the sales page uses hobby testimonials, and the location pages repeat one template."},
+      {"name": "Makes real choices", "score": 1, "max": 2, "assessable": true, "note": "Real choices appear in ads and the hiring rules (third shift, up to 30% travel, no AI in evaluations); the proposition itself addresses everyone."}
+    ]
+  },
+  {
+    "id": "employee_truth", "score": 7, "max": 10, "assessable": true,
+    "why": "The ads show the work in detail. Employee voice is short and polished, and on the sales page it is about life outside work. The careers pages name no difficulty; only the Federal SRE ad names a demand and what comes with it.",
+    "criteria": [
+      {"name": "Employee voice", "score": 2, "max": 3, "assessable": true, "note": "Three early-career quotes attributed by role and three sales testimonials, all short and positive. Stories on the blog could not be read."},
+      {"name": "What the work is like", "score": 3, "max": 3, "assessable": true, "note": "Ads give tasks, tools, schedules and conditions: the SRE shift pattern, FDE sprints and travel, a director leading 8–10 designers and/or managers, telephone sales with monthly, quarterly and annual objectives."},
+      {"name": "Difficulties named", "score": 1, "max": 2, "assessable": true, "note": "Demands appear as requirements in ads; the careers pages name none, and only the SRE ad says how a demand is offset (shift bonuses, four-day week)."},
+      {"name": "Culture shown through practice", "score": 1, "max": 2, "assessable": true, "note": "Some practices are named (belonging groups, paid volunteer time, Launchpad Academy, work personas); the culture itself is told through People Pact slogans."}
+    ]
+  },
+  {
+    "id": "consistency", "score": 9, "max": 12, "assessable": true,
+    "why": "The AI line travels well: home, Life at, early careers, the hiring page and ad intros all carry it. The People Pact reaches the home page, Life at and YouTube but not the ads. The sales page proves customer loyalty rather than anything about working there.",
+    "criteria": [
+      {"name": "Same core promise", "score": 4, "max": 5, "assessable": true, "note": "Most touchpoints carry the AI line; the sales team page drifts to customer success."},
+      {"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "AI tasks in ads support the AI story; the renewal rate and hobby testimonials on the sales page are off that story."},
+      {"name": "Same voice", "score": 2, "max": 2, "assessable": true, "note": "The careers pages and ad intros sound like one employer."},
+      {"name": "No contradictions", "score": 1, "max": 2, "assessable": true, "note": "Minor tensions: the Tokyo ad's title names an account executive while its captured description reads as an inside sales role; the home page shows 234 roles in total and 281 for Marketing alone."}
+    ]
+  },
+  {
+    "id": "candidate_relevance", "score": 10, "max": 12, "assessable": true,
+    "why": "Role reality is strong in the ads, and two FAQs answer practical questions directly. The reason to join stays general, and the ads outside the US leave pay and benefits out.",
+    "criteria": [
+      {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Reasons are given (people first, AI, benefits, awards), but in general terms."},
+      {"name": "Role reality", "score": 3, "max": 3, "assessable": true, "note": "Ads describe tasks, team and conditions; the remote Senior Auditor ad names the role it reports to."},
+      {"name": "Facts needed to decide", "score": 2, "max": 3, "assessable": true, "note": "The work persona appears in all 9 sampled ads; pay and benefits appear in the 4 US ads only."},
+      {"name": "Candidate questions answered", "score": 3, "max": 3, "assessable": true, "note": "The FAQs cover technical background, reapplying, how many roles to apply for, paid internships, return offers, sponsorship, response time, AI use and accommodations."}
+    ]
+  },
+  {
+    "id": "conversion", "score": 9, "max": 10, "assessable": true,
+    "why": "The next step is always visible: job search with filters, programme buttons and a talent community for people without a matching role. The hiring steps and the expected response time are published. Decision facts rarely sit next to the buttons.",
+    "criteria": [
+      {"name": "Next step is clear", "score": 3, "max": 3, "assessable": true, "note": "“See Open Jobs” with search and a location filter on the first screen; programme buttons on the early-careers page."},
+      {"name": "Reasons near the button", "score": 1, "max": 2, "assessable": true, "note": "Early-careers buttons sit next to programme facts; the home-page button has none."},
+      {"name": "Effort explained", "score": 2, "max": 2, "assessable": true, "note": "You start with a resume or CV, may apply to as many roles as you like, and can ask for accommodations."},
+      {"name": "Button fits the stage", "score": 2, "max": 2, "assessable": true, "note": "Different buttons for different stages: open jobs, internships, ServiceNow University courses, the talent community."},
+      {"name": "Process described", "score": 1, "max": 1, "assessable": true, "note": "Three steps and an aim to update candidates within a couple of weeks."}
+    ]
+  }
+],
+"strengths": [
+  {"title": "Job ads show the work and its conditions", "text": "The Federal SRE ad states: “The Federal SRE Team has 3 shifts that provide 24x7 production support for our Government Community Cloud infrastructure.” It adds the shift days and hours (third shift, 10-hour days, Wednesday to Saturday), shift bonuses for second and third shifts and a four-day week. The Sr Staff Software Engineer ad says: “This is not a machine learning or AI research role; the engineer does not train foundation models.” Other ads give travel (up to 30% for the Forward Deployed Solution Engineer) and team size (8–10 designers and/or managers for the design director)."},
+  {"title": "The AI promise reaches the work itself", "text": "8 of the 9 sampled ads describe AI tasks or ask for AI experience, in engineering, audit, finance, design, marketing, sales and site reliability. The Senior Auditor builds AI-enabled tools to automate manual audit steps and documents them for the team to reuse. The Sr Staff Software Engineer directs AI coding agents and sets how the organization does. Here the slogan on the home page has work behind it."},
+  {"title": "Early careers answers practical questions", "text": "Launchpad Academy is described as “Our year-long development program for new early-career hires.”, with monthly workshops, mentorship and support through the first year. The FAQ says internships are paid, that you can reapply and apply to as many positions as you like, and that interns may receive a full-time offer or a return internship, based on performance and business needs. The finance intern ad gives a base pay of $37.56 an hour."},
+  {"title": "The hiring process is published with its rules", "text": "How We Hire sets out three steps (application, interview, decision) and an aim to update candidates within a couple of weeks. The AI page says what candidates may use AI for, what they may not, and what happens if they break the rules. The FAQs also cover visa sponsorship and accommodations."}
+],
+"problems": [
+  {
+    "severity": "high",
+    "title": "The lead message is about the product, and the people promise beneath it could belong to any employer.",
+    "evidence": [
+      "Home page, first screen: “Calling all AI-native, dream-chasing, future-shaping types” and “Join the team putting AI to work for people.”",
+      "Home page, second block: “We put people first”, followed by a description of the People Pact and of Fortune and Forbes recognition (paraphrased in the capture).",
+      "Life at: “We believe that when people are prioritized, they do their best work.”"
+    ],
+    "why": "The first screen says what the company's platform does, not what working there offers. The people promise that follows contains no figure, practice or condition. The specifics that would anchor it (work personas, Launchpad Academy, the AI tasks in the ads) are on other pages.",
+    "flags": ["RF03", "RF01"]
+  },
+  {
+    "severity": "high",
+    "title": "Outside the US, the sampled job ads state no pay and no benefits.",
+    "evidence": [
+      "The four US ads state pay as a guideline: $37.56 an hour for the finance intern, $94,000 to $155,100 for the Senior Auditor, $123,900 to $216,800 for the Brand Strategist and $127,600 to $216,900 for the Federal SRE. Each also lists health plans, a 401(k) with company match and other benefits.",
+      "The ads for Hyderabad, Bangalore, Tokyo, Montreal and Amsterdam show no pay and no benefits section in the capture.",
+      "India page: “India is home to our second-largest employee base, with offices in Hyderabad, Bangalore, and Mumbai.” It shows 71 open jobs."
+    ],
+    "why": "For five of the nine sampled roles the reward side of the offer is blank. The India location page lists six benefits, but the material does not say whether they apply to the roles advertised, and the ads do not carry them.",
+    "flags": []
+  },
+  {
+    "severity": "medium",
+    "title": "The wellbeing and benefits promise rests on names without content.",
+    "evidence": [
+      "Life at and the Ireland page carry the same six items: “Generous family leave”, “Matched donations”, “Annual learning stipends”, “Flexible PTO”, “Competitive retirement plan”, “Paid volunteer time”.",
+      "Life at: “Your wellbeing is key to living your best life.”"
+    ],
+    "why": "None of the six items states a length, an amount or who qualifies, so “generous” and “competitive” cannot be checked. Nothing else in the material backs the wellbeing pillar.",
+    "flags": ["RF06"]
+  },
+  {
+    "severity": "medium",
+    "title": "Company success stands in for proof about working here.",
+    "evidence": [
+      "Life at: “We wouldn't be the fastest-growing enterprise software company in the world if we didn't dream big.” No source or measure is given.",
+      "Sales page: “we're humbled to call 85% of the Fortune 500 our customers”, next to a renewal rate of 97% to 99% in recent years (paraphrased in the capture).",
+      "The home-page timeline runs through the first customer, the NYSE listing, $1 billion in revenue and the S&P 500.",
+      "The award strip mixes workplace awards with business lists such as “Fortune 500” and “#2 in Computer Software”."
+    ],
+    "why": "These facts describe commercial success. The material does not say what they mean for someone joining, and the superlative has no stated basis.",
+    "flags": ["RF22", "RF02", "RF04"]
+  },
+  {
+    "severity": "medium",
+    "title": "The sales team page shows employees' hobbies, not the sales work.",
+    "evidence": [
+      "Executive Administrator, Sales: “I have been playing roller derby for 18 years now, and I am a three-time Olympic Gold Medalist!”",
+      "Customer Service Solution Sales Manager: “Our family is a volunteer puppy raiser for Military Working Dogs for the Department of Defense.”"
+    ],
+    "why": "All three testimonials on the page are about life outside work. No employee on the page talks about targets, customers or how the team works, while the Tokyo sales ad asks the hire to meet or exceed monthly, quarterly and annual sales objectives.",
+    "flags": ["RF11", "RF22"]
+  },
+  {
+    "severity": "medium",
+    "title": "The “Flexible” label on job ads hides its meaning: at least two office days a week.",
+    "evidence": [
+      "All 9 sampled ads show a work persona: “Flexible” or “Flexible or Remote”.",
+      "Only the Life at page defines it: Flexible means working from the assigned workplace two or more days per week, within the state, province, region or country of employment (paraphrased in the capture).",
+      "A YouTube description speaks of “a culture of flexibility and genuine support”."
+    ],
+    "why": "Read alone, the label does not say the role involves office days. The definition exists and is concrete, so the fix is to carry it into each ad.",
+    "flags": ["RF19"]
+  },
+  {
+    "severity": "medium",
+    "title": "The AI-in-hiring page promises transparency but describes only the candidate's side.",
+    "evidence": [
+      "“We will always be transparent about how we use AI in the hiring process.”",
+      "The page then sets detailed rules for candidates: no AI or outside help in evaluations unless permitted, no recording of interviews, and possible disqualification or a rescinded offer. The company's own AI use is described in one general passage about efficiency and human oversight (paraphrased in the capture)."
+    ],
+    "why": "The promise is specific; the page does not say which hiring steps use AI or what it does. The gap sits on the page written to build trust in the process.",
+    "flags": ["RF18"]
+  }
+],
+"fixes": [
+  {
+    "title": "Rebuild “Why join” around practices you already publish",
+    "needs_new_data": false,
+    "steps": [
+      "On the home page, keep the AI line and add one sentence on what the work involves, drawn from the ads: for example, automating audit steps with AI or directing AI coding agents.",
+      "Under “We put people first”, show three concrete items already in the material: the work personas with their definitions, Launchpad Academy for new early-career hires, and paid internships.",
+      "On Life at, put one named practice under each People Pact pillar."
+    ],
+    "why_first": "It uses only facts you already publish, and it addresses the weakest part of the score: a people promise that fits any employer.",
+    "needs": ["Sign-off from the owners of the persona policy and Launchpad Academy to feature them on the home page"],
+    "effort": "small",
+    "effort_note": "Rewriting two page sections with existing facts",
+    "who": ["employer brand team", "careers site editor", "talent acquisition"],
+    "check": [
+      "Whether the first two screens of the home page name at least one practice and one working condition",
+      "Clicks from the home page to job search and to Life at",
+      "Whether recruiters still hear first-call questions about office days"
+    ]
+  },
+  {
+    "title": "Publish pay and benefits in job ads outside the US",
+    "needs_new_data": true,
+    "steps": [
+      "Add a pay range, or a sentence on how pay is set, to ads in India, Japan, Canada, the Netherlands and other non-US markets.",
+      "Add a local benefits block to each ad. For India, check that the six benefits on the location page apply to the advertised roles before reusing them.",
+      "Where pay cannot be published, tell candidates at which step they will learn it."
+    ],
+    "why_first": "Pay is the largest missing decision fact in the sample, and the gap covers five of nine roles, including the market described as the second-largest employee base.",
+    "needs": ["Pay ranges or pay logic per country", "Local benefits per country", "A specialist check of pay-disclosure rules in each country"],
+    "effort": "large",
+    "effort_note": "Needs input from compensation and regional HR in several countries",
+    "who": ["total rewards and compensation", "regional talent acquisition leads", "employment-law specialists per country"],
+    "check": [
+      "The share of non-US ads with a pay or benefits section",
+      "Whether recruiters in those markets report fewer pay questions at the first call"
+    ]
+  },
+  {
+    "title": "Give the benefits content and the sales page real work stories",
+    "needs_new_data": true,
+    "steps": [
+      "For each of the six benefits, state the length, amount or rule: weeks of family leave, the learning stipend, volunteer days, how flexible PTO works.",
+      "Replace the three hobby testimonials on the sales page with sales employees describing their targets, customers, team and what is hard. Use their own words; do not draft quotes for them.",
+      "State what the Fortune and Great Place to Work awards measured, or move business rankings off the culture strip."
+    ],
+    "why_first": "These are the weakly supported core claims. Each needs facts or voices only the company can supply, so it follows the two fixes that can start with known owners.",
+    "needs": ["Benefit details", "Two or three sales employees willing to be interviewed", "Award criteria"],
+    "effort": "medium",
+    "effort_note": "Collecting benefit facts and running a few employee interviews",
+    "who": ["benefits team", "sales leaders and sales employees", "employer brand team"],
+    "check": [
+      "Whether every benefit on Life at has a number or a rule",
+      "Job clicks from the sales team page"
+    ]
+  }
+],
+"rewrites": [
+  {
+    "title": "Home heading and Life at intro: the people promise",
+    "original": "We put people first\n\nWe believe that when people are prioritized, they do their best work.",
+    "problem": "Both lines fit any employer. The proof that would anchor them is on other pages.",
+    "logic": "Keep the heading and show three practices the material already describes, with their conditions kept.",
+    "rewrite": "We put people first. Here is what that means in practice.\n\nYou know where you will work. Our job ads show the work persona for the role. Flexible: at your assigned workplace two or more days a week. Remote: outside a ServiceNow workplace. Required in office: at your assigned workplace the whole week, where the role needs it. Flexible and remote employees work within their state, province, region or country of employment.\n\nStarting your career? Launchpad Academy is a year-long development program for new early-career hires, with monthly workshops, mentorship and support throughout your first year.\n\nOur internships are paid.",
+    "notes": [
+      {"kind": "evidence", "text": "Weeks of family leave, the learning stipend amount and volunteer days, to add a line on benefits"},
+      {"kind": "confirm", "text": "Whether every job ad shows its work persona, not only the nine reviewed"}
+    ]
+  },
+  {
+    "title": "Job ad: the work persona line",
+    "original": "Flexible or Remote",
+    "problem": "The label does not tell a candidate that Flexible includes office days.",
+    "logic": "Carry the Life at definition into the ad, with its condition on where people may work.",
+    "rewrite": "Work persona: Flexible or Remote.\nFlexible means working from your assigned workplace two or more days a week. Remote means working outside a ServiceNow workplace. Either way, you work within your state, province, region or country of employment.",
+    "notes": [
+      {"kind": "confirm", "text": "Which of the two personas applies to this role, and who decides"}
+    ]
+  },
+  {
+    "title": "Using AI page: the transparency promise",
+    "original": "We will always be transparent about how we use AI in the hiring process.",
+    "problem": "The page does not then say where AI is used.",
+    "logic": "Keep the promise and follow it with the human steps the material already describes; list the missing facts below the copy.",
+    "rewrite": "We will always be transparent about how we use AI in the hiring process.\n\nA member of our Talent Acquisition team reviews your application and tells you whether you will move forward. Once the interviews are complete, the hiring team debriefs and makes the final decision.",
+    "notes": [
+      {"kind": "evidence", "text": "Which hiring steps use AI tools, what they do, and where a person reviews the result"}
+    ]
+  }
+],
+"questions": [
+  {"kind": "evidence", "for": "communication", "text": "Pay ranges, or how pay is set, for roles outside the US"},
+  {"kind": "confirm", "for": "communication", "text": "Whether the six benefits on the India location page apply to every role in India, including the Hyderabad and Bangalore roles reviewed"},
+  {"kind": "evidence", "for": "communication", "text": "Weeks of family leave, the learning stipend amount, paid volunteer days and the rules of flexible PTO"},
+  {"kind": "evidence", "for": "communication", "text": "Which hiring steps use AI tools, what they do and where a person reviews the result"},
+  {"kind": "evidence", "for": "communication", "text": "What the Fortune and Great Place to Work awards measured"},
+  {"kind": "evidence", "for": "communication", "text": "The source and measure behind “the fastest-growing enterprise software company in the world”"},
+  {"kind": "evidence", "for": "communication", "text": "Outcomes of the growth programmes: how many interns return or receive offers, how people move on after Launchpad Academy, internal moves for experienced hires"},
+  {"kind": "confirm", "for": "communication", "text": "Whether every job ad shows its work persona, and who decides between Flexible and Remote"},
+  {"kind": "confirm", "for": "audit", "text": "Whether the Tokyo role is an account executive or an inside sales role; the captured description reads as inside sales"},
+  {"kind": "confirm", "for": "audit", "text": "The role counts on the home page: the capture shows 234 roles in total and 281 for Marketing"},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the Glassdoor and Indeed review pages, to fill the Promise and perception section"},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the LinkedIn Life tab and of Instagram @lifeatnow, the two accounts most focused on people"},
+  {"kind": "evidence", "for": "audit", "text": "Copies of two or three recent employee stories from the Life at Now blog, which could not be read automatically"}
+],
+"genericity": [
+  {"claim": "“Calling all AI-native, dream-chasing, future-shaping types” and “Join the team putting AI to work for people.” (home page)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The lines contain no employer-specific information, so a comparable AI software employer could reuse them unchanged. “future-shaping” follows the lexicon pattern “shape the future”. The detail that would anchor the claim, AI tasks on the ServiceNow AI Platform, is in the job ads, not in the claim."},
+  {"claim": "“We put people first” (home) and “We believe that when people are prioritized, they do their best work.” (Life at)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "some", "defensibility": "unowned", "why": "Built on the lexicon construction “we care”. The People Pact is named, but its three pillars are slogans, so nothing ties the claim to ServiceNow."},
+  {"claim": "“Launch your career, grow your skills, and make a real impact.” (early careers) and “Your success is our success.” (Life at)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "some", "defensibility": "supportable", "why": "Lexicon phrases (career growth, make an impact). Launchpad Academy and ServiceNow University are specific but sit beside the claim, not in it; naming them in the headline would move it up."},
+  {"claim": "“Your wellbeing is key to living your best life.” (Life at)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "No figure, practice or condition in the claim, and the benefits beneath it are names without amounts."},
+  {"claim": "“award-winning culture”, with the award strip (home, Ireland, India)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "Another employer would have to swap the named awards and years, so the claim bends. The strip mixes workplace awards with business lists and gives no criteria."}
+],
+"ledger": [
+  {"claim": "You will help put AI to work for people, in an AI-native team (home first screen; repeated on Life at, early careers, the hiring page and ad intros)", "class": "core", "evidence": "8 of the 9 sampled ads describe AI tasks or ask for AI experience. The Sr Staff Software Engineer sets the AI architecture for agentic HR experiences and directs AI coding agents; the Senior Auditor builds AI-enabled tools to automate audit steps; the Forward Deployed Solution Engineer builds LLM pipelines with customers; the finance intern ad looks for an AI-first mindset. The Montreal ad capture shows no AI content.", "strength": "moderate", "status": "partial", "comment": "Direct and specific for the roles sampled. It covers a sample of roles while the claim speaks for the whole team, it sits in ads rather than next to the claim, and it shows little of what AI work means in sales and operations roles."},
+  {"claim": "ServiceNow puts its people first through the People Pact: do your best work, live your best life, fulfil the purpose together (home, Life at, YouTube)", "class": "core", "evidence": "Six benefit names without amounts; nine belonging groups named; award titles with years, such as Fortune 100 Best Companies to Work For 2026; one early-career employee calling the company supportive.", "strength": "weak", "status": "weak", "comment": "Award criteria are not given, the benefits have no content, and the quote is one person's adjectives. Nothing shows what putting people first changes in practice."},
+  {"claim": "You will grow your career through learning and mentorship (Life at, early careers, location pages)", "class": "core", "evidence": "Launchpad Academy: a year-long programme for new early-career hires with monthly workshops and mentorship (early careers). ServiceNow University: free courses and certifications. Annual learning stipends (no amount). Tuition reimbursement (India page). Interns may receive a full-time offer or a return internship, based on performance and business needs; high-performing finance interns may be considered for the Finance Development Rotation Program (both paraphrased in the capture).", "strength": "moderate", "status": "partial", "comment": "Named programmes with content, but no outcomes. The detailed mechanisms are for early-career hires; for experienced hires the material names a stipend and a learning platform only."},
+  {"claim": "Your wellbeing and life outside work are supported (Life at, Live your best life pillar; one YouTube video)", "class": "core", "evidence": "Benefit names: generous family leave, flexible PTO, paid volunteer time, wellbeing days (India); mental health resources and family planning support (paraphrased in the capture). The work personas define where people work.", "strength": "weak", "status": "weak", "comment": "The benefits are named without length, amount or eligibility. The work personas are concrete but concern location, not wellbeing."},
+  {"claim": "An award-winning culture (home, Ireland, India)", "class": "core", "evidence": "Award titles with years and scope, such as Fortune 100 Best Companies to Work For 2026, GPTW certified in 15 countries, GPTW India's Best Companies to Work For 2025.", "strength": "weak", "status": "weak", "comment": "The awards show that assessments took place; what they measured is not stated. The strip also includes business rankings that say nothing about the workplace."},
+  {"claim": "Early-career hires get real work and impact from day one (early careers)", "class": "supporting", "evidence": "The finance intern ad lists concrete tasks: analysing financial data, building models, preparing insights for budgets and forecasts, supporting month-end and quarter-close work. An Associate Software Engineer says: “I came back after my internship because ServiceNow trusted me with real work early on, and I stay because I still get to build things that actually matter (and break them responsibly).”", "strength": "moderate", "status": "partial", "comment": "Direct for one intern role and one person; narrower than a promise about every early-career role from day one."},
+  {"claim": "Hiring is fair, human-first and transparent about AI (How We Hire, Using AI page)", "class": "supporting", "evidence": "Three published steps; a Talent Acquisition team member reviews applications (paraphrased in the capture); an aim to update candidates within a couple of weeks; explicit rules on candidate AI use and recording, with their consequences; a route to request accommodations.", "strength": "moderate", "status": "partial", "comment": "The process and the candidate rules are concrete. The company's own AI use in hiring is described only in general terms, so the transparency part of the promise has little behind it."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

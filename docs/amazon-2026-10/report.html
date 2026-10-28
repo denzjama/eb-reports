@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "Amazon",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {"value": 71, "provisional": false, "withheld": false, "coverage": 100, "confidence": "high", "reliability_note": "all 34 criteria assessed across six types of material (proposition pages, careers sites, job ads, a YouTube channel, an employee story, hiring-process pages), collected automatically from public pages on 27 October 2026"},
+"verdict": "Amazon tells hourly candidates exactly what the shifts, benefits and physical work involve, but leads with promises it does not back: unmatched scale for corporate candidates, and industry-leading wages with no pay rate for hourly ones.",
+"notices": [
+"The material was collected automatically from Amazon's public pages on 27 October 2026. Some sources may have been missed, and live pages may have changed since then. Facts about Amazon were read as what candidates are shown; they were not independently checked.",
+"No employee reviews could be read: Indeed, Comparably and Kununu blocked automated access, InHerSight returned an empty profile, and Glassdoor is closed to automatic collection. The promise-and-perception comparison is therefore empty. Reviews never enter the score."
+],
+"materials": [
+{"name": "amazon.jobs home page", "type": "Careers page"},
+{"name": "amazon.jobs Teams", "type": "Careers page"},
+{"name": "How We Hire", "type": "Hiring process"},
+{"name": "Interview loop", "type": "Hiring process"},
+{"name": "Our Workplace", "type": "Employer proposition"},
+{"name": "Leadership Principles", "type": "Employer proposition"},
+{"name": "Benefits and Stock", "type": "Careers page"},
+{"name": "Together at Amazon (inclusive experiences)", "type": "Employer proposition"},
+{"name": "Non-technical roles for undergraduates and graduates", "type": "Careers page"},
+{"name": "FAQ hub (headings only)", "type": "Hiring process"},
+{"name": "Why Choose Amazon (hourly)", "type": "Employer proposition"},
+{"name": "Hourly benefits by schedule", "type": "Careers page"},
+{"name": "Hourly hiring process", "type": "Hiring process"},
+{"name": "Hourly career advancement", "type": "Careers page"},
+{"name": "Shifts and schedules", "type": "Careers page"},
+{"name": "Fulfillment Center Warehouse Associate role page", "type": "Job ad"},
+{"name": "Customer Service Associate role page", "type": "Job ad"},
+{"name": "Water Infrastructure Engineer, AWS (Arlington, VA)", "type": "Job ad"},
+{"name": "Transportation Area Manager (Byhalia, MS)", "type": "Job ad"},
+{"name": "Strategic Sourcing Manager (Seattle, WA)", "type": "Job ad"},
+{"name": "Software Development Engineer, Amazon Customer Service (Seattle, WA)", "type": "Job ad"},
+{"name": "Software Development Engineer II, SageMaker AI Inference (Bellevue, WA)", "type": "Job ad"},
+{"name": "Software Development Engineer 2027, graduate (UK)", "type": "Job ad"},
+{"name": "Career Choice and Amazon Leo story (Amazon newsroom)", "type": "Employee story"},
+{"name": "YouTube @AmazonJobs, 15 latest videos", "type": "Social media"}
+],
+"sources": [
+{"title": "Amazon Careers: Impact the Future, Today", "url": "https://www.amazon.jobs/en/", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Teams", "url": "https://www.amazon.jobs/content/en/teams", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "How We Hire", "url": "https://www.amazon.jobs/content/en/how-we-hire", "type": "Hiring process", "captured": "2026-10-27"},
+{"title": "Interview loop", "url": "https://www.amazon.jobs/content/en/how-we-hire/interview-loop", "type": "Hiring process", "captured": "2026-10-27"},
+{"title": "Our Workplace", "url": "https://www.amazon.jobs/content/en/our-workplace", "type": "Employer proposition", "captured": "2026-10-27"},
+{"title": "Leadership Principles", "url": "https://www.amazon.jobs/content/en/our-workplace/leadership-principles", "type": "Employer proposition", "captured": "2026-10-27"},
+{"title": "Benefits and Stock", "url": "https://www.amazon.jobs/content/en/benefits", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Together at Amazon", "url": "https://www.amazon.jobs/content/en/our-workplace/inclusive-experiences", "type": "Employer proposition", "captured": "2026-10-27"},
+{"title": "Non-Technical Roles for Undergraduate Students and Graduates", "url": "https://www.amazon.jobs/content/en/career-programs/university/undergraduate-non-tech", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Frequently Asked Questions (category headings only)", "url": "https://www.amazon.jobs/content/en/faq", "type": "Hiring process", "captured": "2026-10-27"},
+{"title": "Why Choose Amazon (hourly)", "url": "https://hiring.amazon.com/why-amazon", "type": "Employer proposition", "captured": "2026-10-27"},
+{"title": "Employee benefits and perks for hourly associates", "url": "https://hiring.amazon.com/why-amazon/benefits", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Our Hiring Process (hourly)", "url": "https://hiring.amazon.com/hiring-process", "type": "Hiring process", "captured": "2026-10-27"},
+{"title": "Career Advancement (hourly)", "url": "https://hiring.amazon.com/why-amazon/career-advancement", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Shifts and Schedules", "url": "https://hiring.amazon.com/why-amazon/shifts-and-schedules", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Fulfillment Center Warehouse Associate", "url": "https://hiring.amazon.com/job-opportunities/fulfillment-center-jobs", "type": "Job ad (role page)", "captured": "2026-10-27"},
+{"title": "Customer Service Jobs", "url": "https://hiring.amazon.com/job-opportunities/customer-service-jobs", "type": "Job ad (role page)", "captured": "2026-10-27"},
+{"title": "Water Infrastructure Engineer, AWS Water Team (ADC)", "url": "https://www.amazon.jobs/en/jobs/10590209/water-infrastructure-engineer-aws-water-team-adc", "type": "Job ad", "captured": "2026-10-27"},
+{"title": "Transportation Area Manager", "url": "https://www.amazon.jobs/en/jobs/10589932/transportation-area-manager", "type": "Job ad", "captured": "2026-10-27"},
+{"title": "Strategic Sourcing Manager (Indirect), Global Corporate Procurement", "url": "https://www.amazon.jobs/en/jobs/10590182/strategic-sourcing-manager-indirect-global-corporate-procurement", "type": "Job ad", "captured": "2026-10-27"},
+{"title": "Software Development Engineer, Amazon Customer Service", "url": "https://www.amazon.jobs/en/jobs/10590246/software-development-engineer-amazon-customer-service", "type": "Job ad", "captured": "2026-10-27"},
+{"title": "Software Development Engineer II, SageMaker AI Inference", "url": "https://www.amazon.jobs/en/jobs/10588004/software-development-engineer-ii-sagemaker-ai-inference", "type": "Job ad", "captured": "2026-10-27"},
+{"title": "Software Development Engineer - 2027 (UK)", "url": "https://www.amazon.jobs/en/jobs/10590147/software-development-engineer-2027", "type": "Job ad", "captured": "2026-10-27"},
+{"title": "Amazon's career launchpad takes warehouse employees from packing boxes to building satellites for Amazon Leo", "url": "https://www.aboutamazon.com/news/workplace/amazon-career-choice-project-kuiper-satellites", "type": "Employee story", "captured": "2026-10-27"},
+{"title": "Amazon Jobs YouTube channel", "url": "https://www.youtube.com/@amazonjobs", "type": "Social media", "captured": "2026-10-27"}
+],
+"source_map": [
+{"source": "amazon.jobs home", "url": "https://www.amazon.jobs/en/", "kind": "Careers site", "decision": "included", "reason": "Official and current"},
+{"source": "Teams", "url": "https://www.amazon.jobs/content/en/teams", "kind": "Careers site", "decision": "included", "reason": "Official list of teams"},
+{"source": "How We Hire", "url": "https://www.amazon.jobs/content/en/how-we-hire", "kind": "Hiring process", "decision": "included", "reason": "Official hiring overview"},
+{"source": "Interview loop", "url": "https://www.amazon.jobs/content/en/how-we-hire/interview-loop", "kind": "Hiring process", "decision": "included", "reason": "Official; its sub-sections were captured as headings only"},
+{"source": "Our Workplace", "url": "https://www.amazon.jobs/content/en/our-workplace", "kind": "Employer proposition", "decision": "included", "reason": "Official"},
+{"source": "Leadership Principles", "url": "https://www.amazon.jobs/content/en/our-workplace/leadership-principles", "kind": "Employer proposition", "decision": "included", "reason": "Official statement of values"},
+{"source": "Benefits and Stock", "url": "https://www.amazon.jobs/content/en/benefits", "kind": "Careers site", "decision": "included", "reason": "Official US benefits overview"},
+{"source": "Together at Amazon", "url": "https://www.amazon.jobs/content/en/our-workplace/inclusive-experiences", "kind": "Employer proposition", "decision": "included", "reason": "Official; inclusion, accommodations, employee-led groups"},
+{"source": "University: non-technical roles", "url": "https://www.amazon.jobs/content/en/career-programs/university/undergraduate-non-tech", "kind": "Careers site (students)", "decision": "included", "reason": "Official entry-level pathway"},
+{"source": "FAQ hub", "url": "https://www.amazon.jobs/content/en/faq", "kind": "Hiring process", "decision": "included", "reason": "Official; only category headings were rendered, answers not captured"},
+{"source": "Why Choose Amazon (hourly)", "url": "https://hiring.amazon.com/why-amazon", "kind": "Employer proposition (hourly)", "decision": "included", "reason": "Separate official site for hourly roles"},
+{"source": "Hourly benefits", "url": "https://hiring.amazon.com/why-amazon/benefits", "kind": "Careers site (hourly)", "decision": "included", "reason": "Official; benefits by schedule type (the chart image was not captured)"},
+{"source": "Hourly hiring process", "url": "https://hiring.amazon.com/hiring-process", "kind": "Hiring process (hourly)", "decision": "included", "reason": "Official"},
+{"source": "Hourly career advancement", "url": "https://hiring.amazon.com/why-amazon/career-advancement", "kind": "Careers site (hourly)", "decision": "included", "reason": "Official"},
+{"source": "Shifts and schedules", "url": "https://hiring.amazon.com/why-amazon/shifts-and-schedules", "kind": "Careers site (hourly)", "decision": "included", "reason": "Official"},
+{"source": "Fulfillment centre role page", "url": "https://hiring.amazon.com/job-opportunities/fulfillment-center-jobs", "kind": "Job ad (hourly role page)", "decision": "included", "reason": "Official role page for a mass hourly role; not an individual posting"},
+{"source": "Customer service role page", "url": "https://hiring.amazon.com/job-opportunities/customer-service-jobs", "kind": "Job ad (hourly role page)", "decision": "included", "reason": "Official role page"},
+{"source": "Job 10590209 Water Infrastructure Engineer", "url": "https://www.amazon.jobs/en/jobs/10590209/water-infrastructure-engineer-aws-water-team-adc", "kind": "Job ad", "decision": "included", "reason": "Current; AWS infrastructure engineering"},
+{"source": "Job 10589932 Transportation Area Manager", "url": "https://www.amazon.jobs/en/jobs/10589932/transportation-area-manager", "kind": "Job ad", "decision": "included", "reason": "Current; operations management"},
+{"source": "Job 10590182 Strategic Sourcing Manager", "url": "https://www.amazon.jobs/en/jobs/10590182/strategic-sourcing-manager-indirect-global-corporate-procurement", "kind": "Job ad", "decision": "included", "reason": "Current; corporate procurement"},
+{"source": "Job 10590246 SDE, Amazon Customer Service", "url": "https://www.amazon.jobs/en/jobs/10590246/software-development-engineer-amazon-customer-service", "kind": "Job ad", "decision": "included", "reason": "Current; software"},
+{"source": "Job 10588004 SDE II, SageMaker AI Inference", "url": "https://www.amazon.jobs/en/jobs/10588004/software-development-engineer-ii-sagemaker-ai-inference", "kind": "Job ad", "decision": "included", "reason": "Current; software and AI"},
+{"source": "Job 10590147 SDE 2027 (UK graduate)", "url": "https://www.amazon.jobs/en/jobs/10590147/software-development-engineer-2027", "kind": "Job ad", "decision": "included", "reason": "The only graduate engineering ad captured; outside the US focus"},
+{"source": "Career Choice and Amazon Leo story", "url": "https://www.aboutamazon.com/news/workplace/amazon-career-choice-project-kuiper-satellites", "kind": "Employee story", "decision": "included", "reason": "Employees in their own words, published by Amazon's newsroom"},
+{"source": "YouTube @AmazonJobs", "url": "https://www.youtube.com/@amazonjobs", "kind": "Social account", "decision": "included", "reason": "Linked from the amazon.jobs footer; careers content"},
+{"source": "Utility and navigation pages on amazon.jobs (cookies, impressum, privacy, locations, categories)", "url": "https://www.amazon.jobs/en", "kind": "Careers site (utility)", "decision": "excluded", "reason": "Legal or navigation pages with no candidate content of their own"},
+{"source": "University operations landing page", "url": "https://www.amazon.jobs/en/landing_pages/university-ops-internal", "kind": "Careers site", "decision": "excluded", "reason": "Redirected to the home page"},
+{"source": "Working at Amazon pages (guessed addresses)", "url": "https://www.amazon.jobs/content/en/working-at-amazon", "kind": "Careers site", "decision": "unavailable", "reason": "Page not found"},
+{"source": "Job IDs 10562282 and 3055525", "url": "", "kind": "Job ad", "decision": "unavailable", "reason": "Page not found; the ads are no longer open"},
+{"source": "All amazon.jobs ads", "url": "", "kind": "Job ad group", "decision": "excluded", "reason": "Context only: the public search reported 10,000 hits (looks like a display limit) and 1,169 for US software development. Describes hiring volume, not quality"},
+{"source": "hiring.amazon.com sitemap (about 720 pages, mostly per-city pages)", "url": "https://hiring.amazon.com", "kind": "Careers site group", "decision": "excluded", "reason": "Same template with a different city; one or two pages of each distinct kind were captured. Culture sub-pages, referral, military, refugees, students, application guide and FAQ were not fetched"},
+{"source": "About 30 role-specific interview-prep pages", "url": "https://www.amazon.jobs/content/en/how-we-hire", "kind": "Hiring process group", "decision": "excluded", "reason": "Same template per role family; the process is covered by How We Hire and Interview loop"},
+{"source": "Employees talk about their experiences working at Amazon (newsroom)", "url": "", "kind": "Employee story", "decision": "excluded", "reason": "Long-dated press response, not current candidate material"},
+{"source": "Other newsroom employee stories", "url": "", "kind": "Employee story", "decision": "excluded", "reason": "Not fetched; some are old"},
+{"source": "LinkedIn Amazon Careers and Amazon company page", "url": "https://www.linkedin.com/showcase/amazon-careers", "kind": "Social account", "decision": "manual", "reason": "Closed platform; linked from amazon.jobs"},
+{"source": "Instagram @insideamazon", "url": "https://www.instagram.com/insideamazon", "kind": "Social account", "decision": "manual", "reason": "Closed platform; linked from amazon.jobs"},
+{"source": "Facebook InsideAmazon", "url": "https://www.facebook.com/InsideAmazon", "kind": "Social account", "decision": "manual", "reason": "Closed platform; linked from amazon.jobs"},
+{"source": "X @amazonnews", "url": "https://x.com/amazonnews", "kind": "Social account", "decision": "excluded", "reason": "Corporate news account, not a careers account"},
+{"source": "TikTok, Telegram, VK", "url": "", "kind": "Social accounts", "decision": "excluded", "reason": "No official careers account found or linked from the careers site"},
+{"source": "Glassdoor", "url": "", "kind": "Reviews", "decision": "manual", "reason": "Closed platform; not collected automatically"},
+{"source": "Indeed reviews", "url": "https://www.indeed.com/cmp/Amazon.com/reviews", "kind": "Reviews", "decision": "unavailable", "reason": "Security check refused automated access"},
+{"source": "Comparably", "url": "https://www.comparably.com/companies/amazon", "kind": "Reviews", "decision": "unavailable", "reason": "Captcha"},
+{"source": "Kununu", "url": "https://www.kununu.com/us/amazon", "kind": "Reviews", "decision": "unavailable", "reason": "Human-verification page"},
+{"source": "InHerSight", "url": "https://www.inhersight.com/company/amazon", "kind": "Reviews", "decision": "unavailable", "reason": "Page opened but showed no ratings or reviews"},
+{"source": "Third-party pages found in search", "url": "", "kind": "Aggregators", "decision": "excluded", "reason": "Not official"}
+],
+"social": [
+{"platform": "YouTube", "account": "@AmazonJobs", "url": "https://www.youtube.com/@amazonjobs", "purpose": "Recruiting: explainers for hourly roles, accessibility in hiring, one recruiter vacancy", "sample": "Latest 15 videos, 23 Oct 2023 to 1 May 2026. Titles and descriptions read; the videos themselves were not watched", "rhythm": "13 of 15 uploaded between 23 and 26 Oct 2023, then one in Nov 2024 (a re-upload) and one in May 2026", "people_share": "15 of 15 are about jobs, work or hiring. Whether employees speak in them cannot be told from the descriptions", "themes": ["11 of 15 describe a specific hourly role with its tasks and conditions, for example cold refrigerated areas with gear provided, heights up to 35 feet, orders over 50 pounds", "2 of 15 (one a re-upload) cover a DeafNation event and name five accommodation and wellness programmes", "1 of 15, the most viewed in the sample, promises higher warehouse pay; its description gives no figure", "1 of 15 recruits executive recruiters"], "notes": "The descriptions repeat the hiring site's themes: shifts, training, accessibility. The Leadership Principles and Career Choice are not named in any of the 15 descriptions. 6 of 15 descriptions link to a hiring page or an application page. View counts are context only."}
+],
+"perception": {
+"sample": [
+{"platform": "Glassdoor", "reviews": 0, "period": "none", "rating": "not collected: closed platform"},
+{"platform": "Indeed", "reviews": 0, "period": "none", "rating": "not captured: security check"},
+{"platform": "Comparably", "reviews": 0, "period": "none", "rating": "not captured: captcha"},
+{"platform": "Kununu", "reviews": 0, "period": "none", "rating": "not captured: human-verification page"},
+{"platform": "InHerSight", "reviews": 0, "period": "none", "rating": "not captured: profile showed no ratings"}
+],
+"thin": true,
+"themes": [],
+"caveat": "No review text could be read on 27 October 2026, so this section has no themes. Comparing what Amazon promises with what reviewers say needs the review screenshots listed under What to add for the full picture."
+},
+"manual_import": [
+{"platform": "LinkedIn: Amazon Careers", "url": "https://www.linkedin.com/showcase/amazon-careers", "capture": ["Header with bio and follower count", "Grid of the latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, opened with captions", "Pinned posts"]},
+{"platform": "LinkedIn: Amazon company page", "url": "https://www.linkedin.com/company/amazon", "capture": ["The same as above", "Every section of the Life tab"]},
+{"platform": "Instagram: @insideamazon", "url": "https://www.instagram.com/insideamazon", "capture": ["Profile header with bio and followers", "Grid of the latest 9 to 12 posts", "3 to 5 captions about people, work or hiring", "Pinned posts"]},
+{"platform": "Facebook: InsideAmazon", "url": "https://www.facebook.com/InsideAmazon", "capture": ["Page header", "Latest 9 to 12 posts", "3 to 5 posts about people, work or hiring, with captions"]},
+{"platform": "Glassdoor reviews", "url": "https://www.glassdoor.com", "capture": ["Rating page for Amazon", "15 to 30 reviews from the last 24 months", "Separate screenshots for corporate and for warehouse or operations roles"]},
+{"platform": "Indeed reviews", "url": "https://www.indeed.com/cmp/Amazon.com/reviews", "capture": ["Rating page", "15 to 30 reviews from the last 24 months"]},
+{"platform": "Comparably", "url": "https://www.comparably.com/companies/amazon", "capture": ["Rating page", "Recent reviews"]},
+{"platform": "InHerSight", "url": "https://www.inhersight.com/company/amazon", "capture": ["Rating page and reviews, if they show once logged in"]},
+{"platform": "Kununu", "url": "https://www.kununu.com/us/amazon", "capture": ["Rating page", "Recent reviews"]}
+],
+"scope": {
+"reviewed": [
+"25 public sources captured on 27 October 2026: 10 pages of amazon.jobs (corporate and university careers), 7 pages of hiring.amazon.com (US hourly roles, including 2 role pages), 6 individual job ads (5 in the US, 1 UK graduate role), 1 employee story from the Amazon newsroom, and the latest 15 videos of the Amazon Jobs YouTube channel",
+"A map of 47 sources found, with what was used, excluded or unavailable and why"
+],
+"not_reviewed": [
+"Employee reviews on Glassdoor, Indeed, Comparably, Kununu and InHerSight (closed or blocked to automatic reading)",
+"LinkedIn, Instagram and Facebook accounts linked from amazon.jobs (closed platforms)",
+"AWS-specific careers pages, Whole Foods Market, Zoox, MGM and Prime Video studios, and careers sites outside the US or in other languages",
+"FAQ answers and interview-loop sub-sections (captured as headings only), the hourly benefits chart (an image), and the content of the videos",
+"The interview experience itself and what employees say outside official channels"
+]
+},
+"summary": {
+"points": [
+"You run two employer brands. hiring.amazon.com gives hourly candidates shift windows, weekly hour bands, benefits by schedule type with their 90-day conditions, and the physical demands. amazon.jobs opens with \"Impact the future, today\" and a paragraph a comparable employer could publish unchanged.",
+"The hourly offer leads with \"Industry-leading wages\", yet none of the 7 hourly pages captured gives a pay rate. The only hourly pay figure in the material is a related-article headline on the Amazon newsroom.",
+"Your most ownable idea is Career Choice and the promise that you can build a future at Amazon or somewhere else. It is the only core promise that is fully specific to Amazon and it appears on three pages, but it leads neither site, and its participation figure appears as 200,000, more than 250,000 and more than 300,000.",
+"The Leadership Principles are the most specific asset for corporate roles: they state hard expectations openly and show up in interview preparation and job duties. Growth for corporate employees has no named mechanism or figure behind it.",
+"No employee reviews could be read, so the perception layer is empty. On YouTube, 13 of the 15 latest videos were uploaded within four days in October 2023."
+],
+"actions": [
+"Publish hourly starting pay by role and location where \"Industry-leading wages\" stands now.",
+"Rebuild the amazon.jobs lead around the Leadership Principles and give corporate growth a named mechanism and figures.",
+"Settle on one dated Career Choice figure and make building a future at Amazon or somewhere else the headline of hourly growth."
+]
+},
+"dimensions": [
+{"id": "clarity", "score": 7, "max": 12, "assessable": true, "why": "The hourly site gives one plain offer on its first screen: pay and benefits, training, and choice over when you work, each with its own section. The corporate site opens with a promise about impact and scale, and the next page moves to principles, benefits and inclusion without returning to it. A few internal terms go unexplained.", "criteria": [
+{"name": "Offer clear at first read", "score": 2, "max": 4, "assessable": true, "note": "Two offers on two sites; the corporate one describes Amazon's reach across customer services, not what working there gives you."},
+{"name": "Candidate benefit stated", "score": 3, "max": 4, "assessable": true, "note": "Hourly pages and job ads speak in terms of what you get, with specifics; the amazon.jobs proposition pages are mostly company description."},
+{"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "The hourly page has a lead and four supporting sections; the corporate lead idea is not picked up by the pages that follow."},
+{"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "Bar Raisers, blue badge/FTE and peculiar culture appear without explanation; the hourly site is plain."}
+]},
+{"id": "differentiation", "score": 11, "max": 16, "assessable": true, "why": "Two of the five core promises could only be Amazon's: the Leadership Principles and Career Choice. The corporate headline and the pay promise fit any comparable employer, and the shift menu could be copied by publishing the same practice. The idea that Amazon funds training whether you stay or leave appears on three pages but leads none.", "criteria": [
+{"name": "Holds up when the name is swapped", "score": 3, "max": 5, "assessable": true, "note": "Only true of Amazon: the Leadership Principles and Career Choice. Fits anyone: the pay promise. The impact headline and the shift menu mostly hold, through Amazon's range of customer services and a published practice."},
+{"name": "Avoids stock phrases", "score": 2, "max": 3, "assessable": true, "note": "The home page and the pay copy rely on stock phrases (endless opportunities, industry-leading, state-of-the-art); the principles and hourly pages outweigh them with specifics."},
+{"name": "Employer-specific advantages", "score": 3, "max": 4, "assessable": true, "note": "Career Choice, the principles, Anytime Pay, the $110 shoe credit and the shift structure are specific; on the corporate site they are not the basis of the offer."},
+{"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "The education promise rests on a stated investment in tuition; the lead corporate promise and the pay promise rest on nothing a comparable employer could not also claim."},
+{"name": "Memorable idea", "score": 2, "max": 2, "assessable": true, "note": "Building a future at Amazon or somewhere else appears on three pages and says something concrete about what you get."}
+]},
+{"id": "proof", "score": 10, "max": 16, "assessable": true, "why": "Four of the seven promises have meaningful support, including three of the five core ones. The shift promise is the only one with strong support, on its own page. The impact headline, the pay promise and corporate growth rest on weak evidence: a company fact, pay mechanics without a rate, and mentoring duties in two ads.", "criteria": [
+{"name": "Claims backed by evidence", "score": 4, "max": 6, "assessable": true, "note": "Shifts supported; principles, Career Choice and inclusion partly supported; impact, pay and corporate growth weakly supported."},
+{"name": "Evidence is specific", "score": 2, "max": 4, "assessable": true, "note": "About half the promises have support, mostly of moderate strength; only the shift promise has strong evidence."},
+{"name": "Evidence fits the claim", "score": 2, "max": 3, "assessable": true, "note": "Support demonstrates some promises; for the principles and Career Choice it covers a narrower group than the claim."},
+{"name": "Proof next to the claim", "score": 2, "max": 3, "assessable": true, "note": "Career Choice figures sit next to the promise; evidence for shifts and principles sits on other pages or in job ads."}
+]},
+{"id": "audience_fit", "score": 9, "max": 12, "assessable": true, "why": "Separate sites give hourly and corporate candidates their own front doors with different decision facts. The corporate home page still addresses everyone from warehouse floor to HQ at once. The principles state uncomfortable expectations openly.", "criteria": [
+{"name": "Audience clear", "score": 2, "max": 3, "assessable": true, "note": "The hourly site is explicit; the amazon.jobs home page speaks to every Amazonian at once."},
+{"name": "Decision factors covered", "score": 3, "max": 4, "assessable": true, "note": "Shifts, benefits and physical demands for hourly roles; technical problems, salary ranges and on-call for engineers. Hourly pay rates and corporate work mode are missing."},
+{"name": "Adapted by audience", "score": 2, "max": 3, "assessable": true, "note": "Messages are adapted, but the shared core is thin: the principles do not appear on the hourly pages captured."},
+{"name": "Real choices", "score": 2, "max": 2, "assessable": true, "note": "The principles say many people may think the standards are unreasonably high; role pages and ads state weight limits, temperatures and night and weekend work."}
+]},
+{"id": "employee_truth", "score": 9, "max": 10, "assessable": true, "why": "Work reality is the strongest part of the material: tasks, weights, temperatures, shift times, on-call duties and a day in the life for two corporate roles. Difficulties are named together with how they are handled. Employee voice is thin on the careers sites; the one detailed story is on the newsroom.", "criteria": [
+{"name": "Employee voice", "score": 2, "max": 3, "assessable": true, "note": "Three named employees speak concretely in the newsroom story; the careers-site text carries one quoted line."},
+{"name": "What the work is like", "score": 3, "max": 3, "assessable": true, "note": "Fulfilment centre tasks and conditions, shift windows, a day in the life for the SageMaker and sourcing roles."},
+{"name": "Difficulties named", "score": 2, "max": 2, "assessable": true, "note": "Lifting up to 49 pounds, facilities between 60°F and 90°F, cold areas and heights in role videos, an unpaid pre-hire appointment, on-call rotations."},
+{"name": "Culture shown through practice", "score": 2, "max": 2, "assessable": true, "note": "Principles written as behaviours, Candid Chats in the hiring process, Learning Associate Ambassadors, code ownership including on-call."}
+]},
+{"id": "consistency", "score": 7, "max": 12, "assessable": true, "why": "The two sites tell different but compatible stories, and job ads repeat the principles' vocabulary. The same proof appears with different numbers, Earth's best employer is both a goal and a fact, and one ad describes a startup feel while the home page leads with unmatched scale.", "criteria": [
+{"name": "Same core promise", "score": 3, "max": 5, "assessable": true, "note": "Most touchpoints carry either the principles or the hourly offer; the home-page impact idea disappears after the first screen."},
+{"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Career Choice proof repeats across four touchpoints with three different participation figures; corporate growth has no proof anywhere."},
+{"name": "Tone and message", "score": 1, "max": 2, "assessable": true, "note": "Hourly pages are plain and warm, corporate pages lofty; the sourcing ad's startup framing sits against the home page's scale framing."},
+{"name": "No contradictions", "score": 1, "max": 2, "assessable": true, "note": "No direct contradiction about the employee experience; unresolved tensions over participation figures and Earth's best employer."}
+]},
+{"id": "candidate_relevance", "score": 9, "max": 12, "assessable": true, "why": "The material answers many practical questions: schedules, benefits, process and requirements. The largest gaps are the hourly pay rate and, for corporate roles, work mode and a specific reason to choose Amazon.", "criteria": [
+{"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Specific reasons on the hourly site; generic ones on amazon.jobs."},
+{"name": "What the role involves", "score": 2, "max": 3, "assessable": true, "note": "Most job ads describe tasks and team; no corporate ad states work mode, and the customer service page lists labels such as Stay Busy and Great Team Environment."},
+{"name": "Facts needed to decide", "score": 2, "max": 3, "assessable": true, "note": "Salary ranges in all five US corporate ads, hourly benefits with conditions; no hourly rate, and no pay in the UK graduate ad."},
+{"name": "Questions anticipated", "score": 3, "max": 3, "assessable": true, "note": "No resume needed, about twenty minutes to apply, unpaid pre-hire appointment, Day 1 attire, a result within five business days after the interview for undergraduates, accommodations, and one ad that encourages applying without every preferred qualification."}
+]},
+{"id": "conversion", "score": 9, "max": 10, "assessable": true, "why": "Each page ends with a clear next step suited to its audience, and the hourly process is laid out up to Day 1. Corporate job ads put the apply button above the description, far from the salary range at the end.", "criteria": [
+{"name": "Next step clear", "score": 3, "max": 3, "assessable": true, "note": "Apply now on every ad; job searches by shift and location on hourly pages."},
+{"name": "Decision facts near the button", "score": 1, "max": 2, "assessable": true, "note": "Hourly pages place the button after the benefits; corporate ads put it before the description, with salary at the end."},
+{"name": "Effort reduced", "score": 2, "max": 2, "assessable": true, "note": "No resume, about twenty minutes, 29 interview-prep resources, accommodations."},
+{"name": "Button fits the audience", "score": 2, "max": 2, "assessable": true, "note": "Talent-community sign-up for students, Candid Chats, shift-specific job searches."},
+{"name": "Process described", "score": 1, "max": 1, "assessable": true, "note": "Hourly steps up to Day 1; four undergraduate steps with a result within five business days after the interview."}
+]}
+],
+"strengths": [
+{"title": "Hourly benefits are spelled out by schedule, with their conditions", "text": "The hourly benefits page splits benefits by regular schedules of 30 to 40, 20 to 29 and 0 to 19 hours a week, plus seasonal schedules. It says which items start after 90 days of employment and that part-time dental and vision cover only the employee. A candidate can see what each schedule includes before choosing it."},
+{"title": "Shift times and weekly hours are given as numbers", "text": "Shifts and Schedules gives start and end windows: early morning shifts typically start between 4:00 and 6:00 a.m. and end between 2:00 and 4:00 p.m.; evening and overnight shifts typically start between 10:00 p.m. and 4:00 a.m. Hour bands are 40, 30 to 39, 20 to 29, and a minimum of 4 for flex time. The page also states the limits: shifts vary by job type and part-time hours depend on business needs."},
+{"title": "The hard parts of hourly work are stated", "text": "The fulfilment centre page lists lifting up to 49 pounds, a fast-paced warehouse and facilities kept between 60°F and 90°F. YouTube role descriptions mention cold refrigerated areas with gear provided and heights up to 35 feet. The hiring-process page says plainly: \"You don’t get paid to go to a pre-hire appointment — it is part of the application process.\""},
+{"title": "Every US corporate ad captured states a salary range", "text": "All five US job ads give a base salary range tied to the location, for example 70,000 to 90,900 USD a year for the Transportation Area Manager in Byhalia, MS, and say the package includes sign-on payments and restricted stock units. The Water Infrastructure Engineer ad also encourages candidates to apply even if they do not meet all the preferred qualifications."},
+{"title": "Career Choice is backed with figures, conditions and named people", "text": "The career advancement page shows $579+ million invested in tuition and 400+ educational partners in the United States. The newsroom story describes a six-month satellite technician certification with Lake Washington Institute of Technology and three employees who moved from operations into Amazon Leo, in their own words: soldering and riveting in class, tuition covered."},
+{"title": "The Leadership Principles say uncomfortable things out loud", "text": "\"Leaders have relentlessly high standards — many people may think these standards are unreasonably high.\" Other principles oblige people to challenge decisions they disagree with and then commit, and to accomplish more with less. The principles appear under interview preparation, and job ads turn ownership into duties: the graduate engineering ad says an SDE-I owns the entire lifecycle of their code, including on-call duties."}
+],
+"problems": [
+{"severity": "high", "title": "The hourly pay promise is a superlative with no pay rate behind it", "evidence": ["Why Choose Amazon leads its benefits section with \"Industry-leading wages\", followed only by weekly pay, overtime above 40 hours and time-and-a-half for holidays.", "The customer service role page lists \"Competitive Pay\" with no figure.", "The YouTube video \"Amazon Warehouses Just Increased Wages\" invites viewers to cash in on higher pay; its description gives no rate.", "The only hourly pay figure in the material is a related-article headline on the newsroom story: \"Amazon raises minimum starting pay for full-time core operations employees to $20/hour, with average pay reaching nearly $24/hour\""], "why": "Pay is the first item of the hourly offer, and none of the 7 hourly pages captured states a rate. Nothing in the material supports the comparison in industry-leading. The pay figure that does exist sits on a different site, covers full-time core operations employees only, and has no date in the captured text.", "flags": ["RF02", "RF06"]},
+{"severity": "high", "title": "The amazon.jobs lead promise could belong to any large employer, and nothing on the site backs it", "evidence": ["\"Every Amazonian, from warehouse floor to corporate HQ, shares a drive to impact the future, today. Our unmatched scale offers every employee endless opportunities to reimagine how customers shop, stream, eat, connect and live. United by our peculiar culture of curiosity, bold ownership and fearless initiative, we channel our customer obsession into making everyday impact—big and small.\""], "why": "The paragraph is built from stock phrases (impact, endless opportunities) and a superlative (unmatched scale). Its only specific content is the list of things customers do, which describes Amazon's businesses, not the work. No page captured shows what endless opportunities means for an employee, and the Our Workplace page that follows does not return to the impact idea.", "flags": ["RF01", "RF13"]},
+{"severity": "medium", "title": "Growth for corporate roles is asserted without a mechanism; the growth proof you have belongs to hourly staff", "evidence": ["\"Amazon employees are encouraged to enter different roles, take on new challenges, and learn new skills. Our internal transfer opportunities and career development programs help employees build their careers.\" (Benefits and Stock)", "\"That’s why you’ll find endless knowledge-sharing, mentorship and other career-advancing resources here to help you develop into a better-rounded professional.\" (Water Infrastructure Engineer ad)", "The only development mechanism named on amazon.jobs is Career Choice, in the Leadership Principles. The newsroom story describes it as open to most hourly full-time and part-time employees after 90 days of continuous employment."], "why": "No programme, path or figure is given for corporate employees. Whether corporate employees can use Career Choice is not stated, so the growth proof in the material cannot be read as support for corporate growth.", "flags": ["RF14"]},
+{"severity": "medium", "title": "Career Choice participation is given as three different numbers", "evidence": ["The hourly career advancement page shows 200,000 participants and counting, with no date or scope.", "\"Since 2012, more than 250,000 employees worldwide have used Career Choice to pursue a wide variety of new education efforts.\" (newsroom story)", "A photo caption in the same story puts the figure at more than 300,000.", "The career advancement page shows $579+ million invested in tuition, with no period."], "why": "This is the one core promise that is fully specific to Amazon, and its headline figure changes between pages and within one article. The material does not say which figure is current or whether 200,000 counts the US only.", "flags": ["RF12"]},
+{"severity": "medium", "title": "Earth's Best Employer appears both as a fact and as a goal", "evidence": ["The hourly page is titled \"Why Amazon Is A Great Place To Work & Earth’s Best Employer\".", "\"We’re on a mission to become Earth’s best employer — that means providing options for our associates.\" (Shifts and Schedules)", "The Leadership Principles list it as \"Strive to be Earth’s Best Employer\"."], "why": "The page title states the superlative as present fact; two other pages present it as an aim. Nothing in the material measures it.", "flags": ["RF02"]},
+{"severity": "medium", "title": "Employee voice sits outside the careers sites", "evidence": ["Across the text of the 17 careers-site pages captured, the only employee words are one line on the career advancement page, \"Career Choice will make your future better\", attributed to a former Delivery Station associate.", "The one full employee story, three named employees moving from warehouses to Amazon Leo, is on the Amazon newsroom and is written by a policy communications lead.", "No corporate employee speaks in any captured page; the intern videos on the university page were not read."], "why": "The newsroom story has first-person detail about night shifts, coursework and tuition. The careers sites carry corporate narration instead.", "flags": []},
+{"severity": "medium", "title": "Corporate ads do not say how the work is organised, and the graduate ad has no pay", "evidence": ["None of the six corporate job ads captured says whether the role is office-based, hybrid or remote. The hourly customer service page does separate in-office and remote roles.", "The UK graduate engineering ad states no pay; all five US ads do."], "why": "Location is given but work mode is not, which leaves a practical part of each corporate offer unclear.", "flags": []},
+{"severity": "low", "title": "A few internal terms go unexplained", "evidence": ["\"From details on loop interviews to Bar Raisers to Candid Chats, these resources will help you land the right role.\" (How We Hire; Candid Chats is explained further down, Bar Raisers is not)", "\"Bachelor's degree or equivalent, or 2+ years of Amazon (blue badge/FTE) experience\" (Transportation Area Manager ad)"], "why": "These terms are not explained in the candidate-facing material captured, so their meaning may be unclear to a reader without internal context.", "flags": ["RF19"]}
+],
+"fixes": [
+{"title": "Put the hourly starting pay on hiring.amazon.com and drop the industry-leading claim", "needs_new_data": true, "steps": ["On Why Choose Amazon, replace the Industry-leading wages heading with the starting rate for the roles and locations it covers; keep weekly pay, overtime and holiday pay beneath it.", "Show the local starting rate on each role page (fulfilment centre, customer service) next to the job search button.", "Use the same figure in the YouTube pay video description and in place of Competitive Pay on the customer service page.", "Remove the superlative unless you can publish the comparison it rests on."], "why_first": "Pay leads the hourly offer, and it is the one decision fact missing from a site that otherwise answers schedules, benefits and process in detail.", "needs": ["Current starting rate by role and location, with the date", "Which roles the newsroom figure of $20/hour for full-time core operations employees covers, and whether it is current"], "effort": "medium", "effort_note": "One data request to compensation, then edits to three pages and one video description", "who": ["compensation team (rates by role and site)", "hourly recruiting marketing (page copy)", "legal (pay advertising requirements by state)"], "check": ["Whether every hourly role page shows a rate after the change", "How often pay comes up as a question at pre-hire appointments", "Whether the hiring site, YouTube and the newsroom show the same figure"]},
+{"title": "Lead amazon.jobs with what only Amazon can say: the Leadership Principles and growth you can show", "needs_new_data": true, "steps": ["Replace the home-page paragraph with the Leadership Principles as the lead idea, including the uncomfortable lines on high standards and disagree-and-commit, and link each to where it shows up in hiring and in work.", "Publish the interview-loop sections that connect the principles to interviews as readable text.", "Give the growth claim on the benefits page a mechanism: named programmes for corporate staff and internal-transfer figures with a period, or state plainly who Career Choice is for.", "Add two or three corporate employee stories with the same level of detail as the Amazon Leo story."], "why_first": "The home page is the entry point for every corporate role, and its promise is the least specific in the material, while the principles are among the most specific.", "needs": ["Internal transfer or promotion figures for corporate employees, with a period", "Names and content of corporate development programmes", "Corporate employees willing to tell their story"], "effort": "large", "effort_note": "New data from HR analytics, new stories and a home-page rewrite", "who": ["employer brand team", "HR analytics (transfer data)", "learning and development (programme details)", "hiring managers and employees (stories)"], "check": ["Whether the home page names at least one practice a candidate can see again in interviews", "Whether candidates refer to the principles in first screening calls", "How many corporate job ads link to an employee story"]},
+{"title": "Make the Career Choice numbers agree so the most distinctive promise does not undercut itself", "needs_new_data": true, "steps": ["Pick one current participation figure, give its date and scope (US or worldwide), and use it on the career advancement page and in newsroom stories.", "Add the period to the $579+ million tuition figure.", "State eligibility in one sentence where the figures are: after 90 days, which schedule types, and whether Higher Education Support is the same programme.", "Make the line about building your future at Amazon or somewhere else the headline of the hourly growth section; it already appears on three pages."], "why_first": "A small edit that protects the most distinctive promise in the material, and fix 2 relies on it.", "needs": ["The current participation figure, its date and scope", "The period covered by the tuition total"], "effort": "medium", "effort_note": "One confirmation from the programme team, then small edits to two pages and one story", "who": ["Career Choice programme team", "newsroom editors", "hourly recruiting marketing"], "check": ["Whether every page citing a participation figure shows the same number and date", "Whether eligibility questions about Career Choice drop in candidate enquiries"]}
+],
+"rewrites": [
+{"title": "Hourly pay block on Why Choose Amazon", "original": "Industry-leading wages\nPlus, get weekly pay, overtime for more than 40 hours, and time-and-a-half for holidays", "problem": "The heading claims a comparison the material never shows, and the block gives no rate.", "logic": "Lead with pay facts already on your pages, keep the shift premiums with their original most and may, and leave the rate as information to add.", "rewrite": "Pay\nGet weekly pay, overtime for more than 40 hours, and time-and-a-half for holidays.\nWith Anytime Pay, you can access your money directly after your shift.\nMost early morning shifts, and most evening and overnight shifts, earn more per hour. Weekend shifts may have a higher pay rate per hour.", "notes": [{"kind": "evidence", "text": "Starting rate for each hourly role and location, with the date, to add as the first line."}, {"kind": "confirm", "text": "Whether the newsroom figure of $20/hour minimum starting pay for full-time core operations employees is current, and which advertised roles it covers."}]},
+{"title": "amazon.jobs home-page paragraph", "original": "Every Amazonian, from warehouse floor to corporate HQ, shares a drive to impact the future, today. Our unmatched scale offers every employee endless opportunities to reimagine how customers shop, stream, eat, connect and live. United by our peculiar culture of curiosity, bold ownership and fearless initiative, we channel our customer obsession into making everyday impact—big and small.", "problem": "Stock phrases and an unsupported superlative; the only specifics describe Amazon's customers, not the work.", "logic": "Lead with the Leadership Principles, which are specific to Amazon, keep one demanding line verbatim, and use the education programme only with its stated scope.", "rewrite": "Work by our 16 Leadership Principles\nWe use them every day, whether we're discussing ideas for new projects or deciding on the best way to solve a problem. They are also part of how to prepare for our interview loop.\nThey are demanding: \"Leaders have relentlessly high standards — many people may think these standards are unreasonably high.\" Leaders are obligated to respectfully challenge decisions when they disagree, and to commit wholly once a decision is determined.\nThey also commit leaders to their employees' personal success, whether that be at Amazon or elsewhere. Career Choice is open to most hourly full-time and part-time employees after 90 days of continuous employment and covers tuition costs for a wide range of educational opportunities.", "notes": [{"kind": "evidence", "text": "What growth looks like for corporate employees: named programmes and internal-transfer figures with a period, to add before this copy goes live."}, {"kind": "confirm", "text": "Whether corporate employees can use Career Choice."}]}
+],
+"questions": [
+{"kind": "evidence", "for": "communication", "text": "Current hourly starting pay by role and location, with the date."},
+{"kind": "confirm", "for": "communication", "text": "Whether the newsroom figure of $20/hour minimum starting pay for full-time core operations employees is current, and which hourly roles and locations it covers."},
+{"kind": "confirm", "for": "communication", "text": "Which Career Choice participation figure is current (200,000; more than 250,000; more than 300,000), as of what date, and whether it counts the US or the world."},
+{"kind": "confirm", "for": "communication", "text": "The period covered by the $579+ million invested in tuition."},
+{"kind": "confirm", "for": "communication", "text": "Whether Higher Education Support, described for regular full-time roles, is the same programme as Career Choice, which the benefits page also lists for part-time regular employees."},
+{"kind": "confirm", "for": "communication", "text": "Whether corporate employees can use Career Choice."},
+{"kind": "confirm", "for": "communication", "text": "Whether Earth's Best Employer is meant as a goal or as a present claim, and if a present claim, what it rests on."},
+{"kind": "evidence", "for": "communication", "text": "Named development programmes and internal-transfer figures, with a period, for corporate employees."},
+{"kind": "evidence", "for": "communication", "text": "Work mode (office, hybrid, remote) for each corporate job ad."},
+{"kind": "evidence", "for": "communication", "text": "Pay for the UK graduate engineering role."},
+{"kind": "evidence", "for": "communication", "text": "Corporate and hourly employees willing to tell their story on the careers sites."},
+{"kind": "evidence", "for": "audit", "text": "Screenshots of LinkedIn Amazon Careers, the company Life tab, Instagram @insideamazon and Facebook InsideAmazon."},
+{"kind": "evidence", "for": "audit", "text": "Rating pages and 15 to 30 recent reviews from Glassdoor (corporate and warehouse separately), Indeed, Comparably, InHerSight and Kununu."},
+{"kind": "evidence", "for": "audit", "text": "The FAQ answers and interview-loop sub-sections, captured only as headings, and the hourly benefits chart."}
+],
+"genericity": [
+{"claim": "\"Every Amazonian, from warehouse floor to corporate HQ, shares a drive to impact the future, today. Our unmatched scale offers every employee endless opportunities to reimagine how customers shop, stream, eat, connect and live.\" (amazon.jobs home)", "verdict": "generic", "substitution": "bends", "ubiquity": "ubiquitous", "specificity": "some", "defensibility": "unowned", "why": "Built from stock phrases (impact, endless opportunities) plus a superlative. The list of customer activities ties it loosely to Amazon's businesses, but says nothing about the work, and nothing in the material anchors it to employees."},
+{"claim": "A culture run on the 16 Leadership Principles, used every day (Leadership Principles page, Our Workplace, interview loop, job ads)", "verdict": "partial", "substitution": "breaks", "ubiquity": "common", "specificity": "high", "defensibility": "supportable", "why": "The named set of principles and its wording are Amazon's, written as behaviours and placed in interview preparation. Words like ownership and curiosity are stock; the evidence that the principles shape daily work is limited to a few job ads."},
+{"claim": "\"Get access to new skills training, tuition support, a variety of certifications, and much more, so that you can build your future at Amazon – or somewhere else.\" (hourly career advancement page)", "verdict": "distinctive", "substitution": "breaks", "ubiquity": "common", "specificity": "high", "defensibility": "owned", "why": "Depends on a named programme with figures, conditions, a named college partner and employee accounts, and on a stated tuition investment. Saying you may leave is a deliberate choice that a comparable employer would have to fund to copy."},
+{"claim": "Hourly pay: \"Industry-leading wages\" with weekly pay, overtime and holiday pay (Why Choose Amazon); \"Competitive Pay\" (customer service page)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "some", "defensibility": "unowned", "why": "Stock reward phrases with no rate and no comparison. Anytime Pay is the only named element."},
+{"claim": "A wide range of shifts: early morning, daytime, weekend, evening or overnight, with fixed or flexible schedules (Why Choose Amazon, Shifts and Schedules)", "verdict": "partial", "substitution": "bends", "ubiquity": "rare", "specificity": "high", "defensibility": "supportable", "why": "Precise windows and hour bands, with stated limits. A comparable employer could publish the same menu only by running the same practice."}
+],
+"ledger": [
+{"claim": "Every employee gets endless opportunities to impact the future at Amazon's scale (amazon.jobs home; echoed in the graduate engineering ad and the undergraduate page)", "class": "core", "evidence": "The Transportation Area Manager ad says Amazon distributes over a billion shipments each year. Job ads describe reach for specific roles: the graduate engineering ad says SDE challenges influence millions of customers, sellers and products; the SageMaker ad says every improvement the team ships affects cost, speed and customer experience.", "strength": "weak", "status": "weak", "comment": "Shipment volume is a company fact and does not show what an employee gets. The role-level statements are themselves claims, made for a few roles, while the promise covers every employee. Nothing shows what endless opportunities consist of."},
+{"claim": "A distinctive culture run on the Leadership Principles, used every day (home, Our Workplace, Leadership Principles, interview loop, job ads)", "class": "core", "evidence": "The Leadership Principles page sets out 16 principles as behaviours. How We Hire names loop interviews, Bar Raisers and Candid Chats; the interview loop page lists the principles under what to expect and how to prepare. The graduate engineering ad says an SDE-I owns the entire lifecycle of their code, including on-call duties; the sourcing ad has the manager present to leaders up to three levels above.", "strength": "moderate", "status": "partial", "comment": "Practices tied to the principles are shown in hiring and in some roles, without outcomes, and the interview-loop sections were captured as headings only. The evidence covers a handful of roles; the claim covers the whole company."},
+{"claim": "Great pay for hourly associates, \"Industry-leading wages\" (Why Choose Amazon; Competitive Pay on the customer service page; the pay video on YouTube)", "class": "core", "evidence": "Weekly pay, overtime above 40 hours, time-and-a-half for holidays and Anytime Pay (Why Choose Amazon). Shifts and Schedules says most early morning and most evening and overnight shifts earn more per hour. A related-article headline on the newsroom story gives $20/hour minimum starting pay for full-time core operations employees.", "strength": "weak", "status": "weak", "comment": "These are pay mechanics, not a pay level. The $20 figure is on another site, covers full-time core operations employees only and has no date in the captured text, so it is unclear whether it applies to the roles advertised now. No comparison supports industry-leading."},
+{"claim": "Amazon pays for training and education so hourly employees can build a future at Amazon or somewhere else (Why Choose Amazon, career advancement page, benefits page, Leadership Principles, newsroom story)", "class": "core", "evidence": "Career advancement page: 200,000 participants and counting, $579+ million invested in tuition, 400+ educational partners in the United States, 10 programs, 35+ pathways and certifications. Benefits page: Career Choice after 90 days for regular full and reduced-time and part-time employees. Newsroom story: a six-month satellite technician certification with Lake Washington Institute of Technology and three named employees who moved from operations into Amazon Leo.", "strength": "moderate", "status": "partial", "comment": "The funding mechanism is specific and has stated conditions. Career outcomes rest on three accounts in one story and one quoted line. The participation figure differs across pages and the tuition total has no period, so the scale of the programme is unclear."},
+{"claim": "A wide range of shifts and schedules so hourly associates can work around their lives (Why Choose Amazon, Shifts and Schedules, fulfilment centre page, YouTube)", "class": "core", "evidence": "Shifts and Schedules gives start and end windows for early morning, day, night and weekend shifts, weekly hour bands (40; 30 to 39; 20 to 29; a minimum of 4 for flex time) and fixed, flexible and combined schedule types, and says shifts and schedule types vary by job type and part-time hours depend on business needs.", "strength": "strong", "status": "strong", "comment": "Same proposition, direct and specific, with its limits stated beside the facts."},
+{"claim": "An inclusive workplace that empowers people (Our Workplace, Together at Amazon, Why Choose Amazon, YouTube)", "class": "supporting", "evidence": "Together at Amazon lists five example accommodations (varied assessment and testing formats, interview modifications, help with appointments before starting, sign-language interpreting, communication access real-time translation) and eleven employee-led groups. How We Hire offers Candid Chats with a member of an employee-led group during the interview process. The DeafNation videos name five accommodation and wellness programmes.", "strength": "moderate", "status": "partial", "comment": "Practices without outcomes: nothing shows how employees experience inclusion."},
+{"claim": "Corporate employees grow through internal transfers, development programmes and mentorship (Benefits and Stock, Our Workplace, undergraduate page, job ads)", "class": "supporting", "evidence": "Two job ads include mentoring in the duties: the SageMaker ad (mentoring newer engineers) and the sourcing ad (mentoring sourcing peers). The Leadership Principles name Career Choice as a development mechanism.", "strength": "weak", "status": "weak", "comment": "Mentoring duties in two ads are an input, not a growth outcome. Career Choice is described elsewhere as open to most hourly employees, and the material does not say whether corporate employees can use it, so it cannot count here. No programme names, paths or transfer figures for corporate roles."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

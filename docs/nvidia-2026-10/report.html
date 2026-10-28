@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "NVIDIA",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 64,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 100,
+  "confidence": "high",
+  "reliability_note": "all 34 criteria assessed; six types of material (proposition page, careers pages, 8 job ads, 3 employee stories, hiring process, one social channel), collected automatically from public pages on 2026-10-27"
+},
+"verdict": "Specific where candidates make decisions: pay ranges, benefit figures and a step-by-step hiring process. Generic where NVIDIA introduces itself: the headline promises fit any tech employer, and the best evidence of NVIDIA-only work sits in blog stories rather than on the careers pages.",
+"notices": [
+  "The material was collected automatically from NVIDIA's public careers site, Workday job portal, NVIDIA Life blog, YouTube channel and Comparably on 2026-10-27. Some sources may have been missed, and live pages may have changed since. Job-ad text was read from each ad's page description field, which holds the full ad. Glassdoor, Indeed and kununu refused automated access, and Instagram, LinkedIn, Facebook and X are closed platforms; see “What to add for the full picture”.",
+  "Facts about NVIDIA in the material were assessed as evidence shown to candidates. They were not independently checked. Employee reviews are reported separately and do not affect the score."
+],
+"materials": [
+  {"name": "Careers home", "type": "Careers page"},
+  {"name": "Life at NVIDIA", "type": "Employer value proposition"},
+  {"name": "U.S. Benefits home", "type": "Careers page"},
+  {"name": "University Recruiting", "type": "Careers page"},
+  {"name": "Inclusion and Belonging", "type": "Careers page"},
+  {"name": "Teams in Action", "type": "Careers page"},
+  {"name": "How We Hire, with FAQ", "type": "Candidate communication"},
+  {"name": "Job ad: Senior GPU Validation Engineer (JR2028848), Santa Clara", "type": "Job ad"},
+  {"name": "Job ad: Go-to-Market Strategy Intern, Summer 2027 (JR2028642), Santa Clara", "type": "Job ad"},
+  {"name": "Job ad: Senior Customer Success Operations Manager (JR2028873), Santa Clara", "type": "Job ad"},
+  {"name": "Job ad: Director, Rack Scale Software Architecture (JR2012499), Santa Clara", "type": "Job ad"},
+  {"name": "Job ad: Customer Technical Program Management Intern, Summer 2027 (JR2028512), Santa Clara", "type": "Job ad"},
+  {"name": "Job ad: Data Application Engineer, Enterprise Data Management (JR2024551), Santa Clara", "type": "Job ad"},
+  {"name": "Job ad: Solutions Architect, Enterprise (JR2027583), Australia, remote", "type": "Job ad"},
+  {"name": "Job ad: Manager, Engineering, Data Center Management (JR1997726), Santa Clara", "type": "Job ad"},
+  {"name": "NVIDIA Life blog index", "type": "Employee story"},
+  {"name": "Story: Sakeena Fiza, validation engineer (Sep 23, 2026)", "type": "Employee story"},
+  {"name": "Story: 2,000 interns (Jul 30, 2026)", "type": "Employee story"},
+  {"name": "Story: Jaiveer Singh, robotics software engineer (Jun 30, 2026)", "type": "Employee story"},
+  {"name": "YouTube @NVIDIA, latest 15 videos", "type": "Social media"},
+  {"name": "Comparably reviews page", "type": "Employee reviews (not scored)"}
+],
+"sources": [
+  {"title": "Jobs at NVIDIA | NVIDIA Careers", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Life, Culture, Career at NVIDIA", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/life-at-nvidia/", "type": "Employer value proposition", "captured": "2026-10-27"},
+  {"title": "Benefits and Support Programs | NVIDIA Benefits", "url": "https://www.nvidia.com/en-us/benefits/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "How We Hire", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/how-we-hire/", "type": "Candidate communication", "captured": "2026-10-27"},
+  {"title": "University Recruiting and Early-Talent Programs", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/university-recruiting/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Inclusion Support and Resources", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/inclusion/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Teams and Areas of Work (Teams in Action)", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/teams-in-action/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Senior GPU Validation Engineer, JR2028848", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-GPU-Validation-Engineer_JR2028848", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Go-to-Market Strategy Intern, NPN AI Consulting, Summer 2027, JR2028642", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Go-to-Market-Strategy-Intern--NPN-AI-Consulting---Summer-2027_JR2028642", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Senior Customer Success Operations Manager, JR2028873", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Customer-Success-Operations-Manager_JR2028873", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Director, Rack Scale Software Architecture, JR2012499", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Director--Rack-Scale-Software-Architecture_JR2012499", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Customer Technical Program Management Intern, OEMs System Partner, Summer 2027, JR2028512", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Customer-Technical-Program-Management-Intern--OEMs-System-Partner---Summer-2027_JR2028512", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Data Application Engineer, Enterprise Data Management, JR2024551", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Data-Application-Engineer--Enterprise-Data-Management_JR2024551", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Solutions Architect, Enterprise, JR2027583 (Australia, remote)", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Australia-Remote/Solutions-Architect---Enterprise_JR2027583", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Manager, Engineering, Data Center Management, JR1997726", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Manager--Engineering---Data-Center-Management_JR1997726", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "NVIDIA Life blog index", "url": "https://blogs.nvidia.com/blog/category/corporate/nvidia-life/", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "Sakeena Fiza Helps NVIDIA Hardware Succeed at Scale", "url": "https://blogs.nvidia.com/blog/nvidia-life-sakeena-fiza/", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "2,000 Interns, One Mission: Shape the Future of AI at NVIDIA", "url": "https://blogs.nvidia.com/blog/2026-interns/", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "How Jaiveer Singh Is Helping Robots and Developers Move Faster", "url": "https://blogs.nvidia.com/blog/nvidia-life-jaiveer-singh/", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "YouTube @NVIDIA", "url": "https://www.youtube.com/channel/UCHuiy8bXnmK5nisYHUd1J5g", "type": "Social media", "captured": "2026-10-27"},
+  {"title": "NVIDIA Employee Reviews | Comparably", "url": "https://www.comparably.com/companies/nvidia/reviews", "type": "Employee reviews", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "Careers home, Life at NVIDIA, How We Hire, University Recruiting, Inclusion and Belonging, Teams in Action", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/", "kind": "Careers site", "decision": "included", "reason": "Official candidate-facing pages; each covers a different part of the offer"},
+  {"source": "U.S. Benefits home", "url": "https://www.nvidia.com/en-us/benefits/", "kind": "Careers site", "decision": "included", "reason": "Official benefits overview linked from the careers menu"},
+  {"source": "About 90 benefit sub-pages (ESPP, parental leave, mental health and others)", "url": "https://www.nvidia.com/en-us/benefits/", "kind": "Careers site", "decision": "excluded", "reason": "Plan-level detail; the benefits home and Life at NVIDIA summarise them"},
+  {"source": "Duplicate careers URLs, applicant privacy policy, recruitment-scams notice, events calendar", "url": "", "kind": "Careers site", "decision": "excluded", "reason": "Duplicates, legal text or event listings"},
+  {"source": "About 30 regional NVIDIA sites", "url": "", "kind": "Careers site", "decision": "excluded", "reason": "Out of scope: the audit covers the global careers presence in US English"},
+  {"source": "100 job ads in the Workday portal sitemap", "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite", "kind": "Job ads", "decision": "included", "reason": "8 ads taken from an even sample across role families, levels (intern to director) and locations (7 Santa Clara, 1 Australia). The count is what the sitemap lists, not total openings"},
+  {"source": "About 52 other sampled ads (Israel, India, Germany, UK, Taiwan and other locations; more Santa Clara engineering roles)", "url": "", "kind": "Job ads", "decision": "excluded", "reason": "Same template or outside the US market; sampling limit"},
+  {"source": "Job aggregators re-posting NVIDIA ads", "url": "", "kind": "Job ads", "decision": "excluded", "reason": "Not official"},
+  {"source": "NVIDIA Life blog: index and three recent stories", "url": "https://blogs.nvidia.com/blog/category/corporate/nvidia-life/", "kind": "Employee stories", "decision": "included", "reason": "Linked from Life at NVIDIA; the three most recent stories, different roles"},
+  {"source": "Older NVIDIA Life stories and award posts", "url": "", "kind": "Employee stories", "decision": "excluded", "reason": "Sampling limit, older than 24 months, or award news rather than stories"},
+  {"source": "YouTube @NVIDIA", "url": "https://www.youtube.com/channel/UCHuiy8bXnmK5nisYHUd1J5g", "kind": "Social media", "decision": "included", "reason": "Linked from the careers site footer; read for people and hiring content"},
+  {"source": "Telegram t.me/NVIDIA", "url": "https://t.me/NVIDIA", "kind": "Social media", "decision": "excluded", "reason": "Not linked from the careers site and its description does not identify the employer"},
+  {"source": "Instagram @nvidialife and @nvidia, LinkedIn, Facebook, X", "url": "https://www.instagram.com/nvidialife", "kind": "Social media", "decision": "manual", "reason": "Official and linked from the careers site, but closed to automated collection"},
+  {"source": "Comparably", "url": "https://www.comparably.com/companies/nvidia/reviews", "kind": "Employee reviews", "decision": "included", "reason": "Readable; short undated answers selected by the platform"},
+  {"source": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/NVIDIA-Reviews-E7633.htm", "kind": "Employee reviews", "decision": "manual", "reason": "Refused automated access with a security check"},
+  {"source": "Indeed", "url": "https://www.indeed.com/cmp/Nvidia/reviews", "kind": "Employee reviews", "decision": "manual", "reason": "Refused automated access with a security check"},
+  {"source": "kununu", "url": "", "kind": "Employee reviews", "decision": "unavailable", "reason": "Human-verification page"},
+  {"source": "InHerSight", "url": "", "kind": "Employee reviews", "decision": "unavailable", "reason": "Profile shown as unrated and not currently available"}
+],
+"social": [
+  {"platform": "YouTube", "account": "@NVIDIA", "url": "https://www.youtube.com/channel/UCHuiy8bXnmK5nisYHUd1J5g", "purpose": "General corporate channel: keynotes, products, partners. Linked from the careers site footer", "sample": "15 videos, 2026-10-23 to 2026-10-27", "rhythm": "15 videos in 5 days, during GTC Berlin. The sample is too short to give a monthly rate", "people_share": "0 of 15", "themes": ["GTC Berlin keynote and highlights", "robotics and autonomous vehicles", "partner stories (Nokia, Audi)", "national AI programmes (France, UK, Kazakhstan)"], "notes": "No title or description in the sample mentions careers, jobs or employees, and none links to the careers site. NVIDIA's people channel is Instagram @nvidialife, linked from Life at NVIDIA; it is closed to automated reading and was not reviewed."}
+],
+"perception": {
+  "sample": [
+    {"platform": "Comparably", "reviews": 42, "period": "not shown: answers carry no dates", "rating": "Shown on Comparably on 2026-10-27: 4.5/5 overall; 280 employee reviews, of which 87% positive; 559 participants and 4,682 ratings"}
+  ],
+  "thin": true,
+  "themes": [
+    {"theme": "Pay and stock", "tone": "positive", "promise": "Benefits that take care of you and your family, ESPP", "match": "consistent", "note": "Answers praise the base salary, ESPP and stock awards. A few ask for larger bonuses or stock grants, and one says there are no performance bonuses."},
+    {"theme": "Working hours and workload", "tone": "negative", "promise": "Life at NVIDIA: a commitment to employees' mental and physical health", "match": "tension", "note": "Several answers, mostly marked as from engineering, describe long hours, late-evening meetings and pressure to work more. The careers material says nothing about hours, so a candidate has no official description to set against this."},
+    {"theme": "Colleagues and team", "tone": "positive", "promise": "An eclectic, passionate group; seamless collaboration", "match": "consistent", "note": "Answers describe smart, open and cooperative colleagues and little micromanagement. One asks for better information sharing, and one says employees are left on their own."},
+    {"theme": "Growth and promotion", "tone": "mixed", "promise": "Endless opportunities; mentoring, job shadowing and leadership development", "match": "tension", "note": "A few answers ask for better growth opportunities, learning resources and merit-based promotion. The careers pages give no mechanism to set against this."},
+    {"theme": "Leadership and management", "tone": "mixed", "promise": "The project is the boss, even for the CEO", "match": "mixed", "note": "Answers praise leaders who listen and care. Others ask for better internal communication and for middle management to have more authority."},
+    {"theme": "Inclusion", "tone": "mixed", "promise": "Everyone has a voice. Everyone belongs.", "match": "mixed", "note": "Comparably lists a Best Company For Diversity 2026 award. One answer asks for diversity training and transparency, and another asks for women to be promoted."},
+    {"theme": "Hiring process", "tone": "positive", "promise": "How We Hire: clear steps and timing", "match": "consistent", "note": "Answers describe a clear, punctual process and two-way technical discussions. One improvement request is about interviewer courtesy."}
+  ],
+  "caveat": "Only Comparably could be read. Its answers are a selection made by the platform from its reviews, are undated, and one is an unrelated joke. Glassdoor and Indeed refused automated access."
+},
+"manual_import": [
+  {"platform": "Instagram @nvidialife (NVIDIA's people and careers account)", "url": "https://www.instagram.com/nvidialife", "capture": ["profile header with bio and follower count", "grid of the latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, opened with captions", "pinned posts"]},
+  {"platform": "LinkedIn company page and its Life tab", "url": "https://www.linkedin.com/company/nvidia", "capture": ["page header", "latest posts about people or hiring", "every section of the Life tab"]},
+  {"platform": "Instagram @nvidia", "url": "https://www.instagram.com/nvidia", "capture": ["recruiting or people posts only, with captions"]},
+  {"platform": "Facebook and X", "url": "https://www.facebook.com/NVIDIA", "capture": ["header", "latest 9 to 12 posts", "any careers or people posts (X: https://twitter.com/nvidia)"]},
+  {"platform": "Glassdoor and Indeed reviews (save in social/reviews/)", "url": "https://www.glassdoor.com/Reviews/NVIDIA-Reviews-E7633.htm", "capture": ["rating page with date and review count", "most recent reviews from the last 24 months", "Indeed: https://www.indeed.com/cmp/Nvidia/reviews"]}
+],
+"scope": {
+  "reviewed": [
+    "Seven careers pages, including Life at NVIDIA, US benefits, university recruiting, inclusion, teams and the hiring process",
+    "8 current job ads from the Workday portal: 7 in Santa Clara and 1 in Australia, from intern to director",
+    "3 NVIDIA Life employee stories from June to September 2026, plus the blog index",
+    "The latest 15 videos on YouTube @NVIDIA",
+    "Comparably reviews, as a separate perception layer outside the score"
+  ],
+  "not_reviewed": [
+    "Instagram @nvidialife, LinkedIn Life tab, Facebook and X: closed platforms",
+    "Glassdoor, Indeed and kununu: refused automated access",
+    "Regional careers sites, non-English job ads and the roughly 90 benefit sub-pages",
+    "The Onsite Policy linked from How We Hire, the hiring-areas page and the events calendar",
+    "The interview experience itself and anything employees say outside the channels listed"
+  ]
+},
+"summary": {
+  "points": [
+    "The facts a candidate needs to decide are published. 7 of the 8 sampled job ads give a base salary range by level, equity eligibility and an application deadline, and the benefits copy states figures such as up to 22 weeks of fully paid parental leave.",
+    "None of the six headline promises, including “Like No Place You’ve Ever Worked”, depends on anything only NVIDIA has. The NVIDIA-only material sits in blog stories and job ads, one or more clicks away from the careers home: a first system-level Rubin GPU enumeration, Isaac ROS growing out of an intern project, an intern tool used by DRIVE engineers.",
+    "Growth and “the project is the boss” are each backed by one or two anecdotes. The strongest growth example, Jaiveer Singh's intern project becoming the work he now leads, appears in a robotics story and not where growth is promised.",
+    "How We Hire contradicts itself. It says every candidate must complete an onsite interview before an offer, and its FAQ says interns typically do phone interviews only.",
+    "On Comparably, a thin and undated sample, answers praise pay, stock and colleagues. Several describe long hours. The careers material does not mention hours or workload at all."
+  ],
+  "actions": [
+    "Move existing NVIDIA-only proof (Rubin bring-up, Isaac ROS, intern projects) onto the careers home and Life at NVIDIA, next to the headline.",
+    "Fix How We Hire: state which candidates must do an onsite interview, and say so separately for interns.",
+    "Give growth a mechanism: what the mentoring, job-shadowing and leadership programmes involve, and intern-to-hire figures. Until then, drop “endless opportunities”."
+  ]
+},
+"dimensions": [
+  {"id": "clarity", "score": 7, "max": 12, "assessable": true,
+   "why": "Five ideas compete for the lead on the careers home: being unlike other workplaces, following your passion, solving the world's hardest problems, the project as boss, and belonging. Candidate benefits are concrete on the benefits page and in job ads. The home and Life pages mostly describe the company, and some internal terms are not explained.",
+   "criteria": [
+     {"name": "Employer offer identifiable", "score": 2, "max": 4, "assessable": true, "note": "An offer can be pieced together (hard technical work plus strong benefits), but the first screen splits it across five ideas."},
+     {"name": "Candidate benefit explicit", "score": 3, "max": 4, "assessable": true, "note": "Benefits are written from the candidate's side with figures (parental leave, giving match, pay ranges). Job-ad openers and Teams in Action are company-first."},
+     {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "“Do your life’s work” recurs across pages but does not organise them. Several ideas carry equal weight."},
+     {"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "Careers pages are mostly plain. WWFO, ProViz, Team Green and Speed of Light appear without explanation."}
+   ]},
+  {"id": "differentiation", "score": 9, "max": 16, "assessable": true,
+   "why": "None of the six core claims stops being true when another employer's name is put in. Two partly set NVIDIA apart because specifics stand behind them: the benefit figures, and the named products in stories and team pages. Those specifics live on secondary pages, not in the headline promise.",
+   "criteria": [
+     {"name": "Survives a name swap", "score": 2, "max": 5, "assessable": true, "note": "No core claim breaks under substitution. The hard-problems and benefits claims mostly hold only for NVIDIA, through supporting detail on other pages."},
+     {"name": "Avoids category clichés", "score": 2, "max": 3, "assessable": true, "note": "The home page leans on stock phrases (make an impact, change the world, endless opportunities). Job ads and stories carry specific content."},
+     {"name": "Employer-specific advantages", "score": 3, "max": 4, "assessable": true, "note": "Rubin, Isaac ROS, DRIVE, Omniverse, the Insider Chat and Ignite are named, but none is used as the basis of the headline offer."},
+     {"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "Work on NVIDIA's own platforms is structural and could not be copied honestly. The headline promise does not rest on it."},
+     {"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "“Do your life’s work” and “The project is the boss” are memorable, but the material shows no practice behind either."}
+   ]},
+  {"id": "proof", "score": 9, "max": 16, "assessable": true,
+   "why": "Four of seven claims are partly supported: the work itself, care through benefits, inclusion, and real work for interns. None is fully supported. The headline, the project-over-hierarchy claim and the growth promise rest on one anecdote or on nothing. The most precise facts, pay ranges and benefit figures, are basic conditions and count under candidate questions.",
+   "criteria": [
+     {"name": "Claims backed by evidence", "score": 3, "max": 6, "assessable": true, "note": "Four of seven claims partly supported, none fully. Three of the six core claims have only weak support."},
+     {"name": "Specific evidence", "score": 2, "max": 4, "assessable": true, "note": "About half the claims have support, and it is moderate: practices and anecdotes without outcome figures."},
+     {"name": "Evidence matches the claim", "score": 2, "max": 3, "assessable": true, "note": "Support covers some claims. The benefit figures cover US benefits, while the heading promises benefits for all."},
+     {"name": "Evidence close to the claim", "score": 2, "max": 3, "assessable": true, "note": "Benefit figures sit next to the benefits claim. Proof for the work and growth claims sits in blog stories, away from the careers home."}
+   ]},
+  {"id": "audience_fit", "score": 8, "max": 12, "assessable": true,
+   "why": "Students and graduates get a page that adapts by programme: internship, Ignite, MBA, PhD and new college grads. Job ads are precise about role and level. The home and Life pages address no one in particular, and non-US candidates see US benefits and, in the Australia ad, no pay or benefits.",
+   "criteria": [
+     {"name": "Audience defined", "score": 2, "max": 3, "assessable": true, "note": "Clear in job ads and on the university page. The proposition pages speak to everyone."},
+     {"name": "Decision factors addressed", "score": 3, "max": 4, "assessable": true, "note": "Technical problems, tools, pay and benefits are covered with specifics. Work mode, hours and progression are not."},
+     {"name": "Adapted to different audiences", "score": 2, "max": 3, "assessable": true, "note": "Early-career audiences get adapted content and quotes. Experienced business candidates and non-US candidates get only job ads."},
+     {"name": "Real choices and trade-offs", "score": 1, "max": 2, "assessable": true, "note": "Few explicit choices about the job. The clearest are interview rules: an onsite interview, and no outside tools such as ChatGPT."}
+   ]},
+  {"id": "employee_truth", "score": 8, "max": 10, "assessable": true,
+   "why": "Named employees describe concrete work: seeing a Rubin GPU work at system level for the first time, reproducing failures and probing signals during validation, intern projects with real users. Difficulty appears only as hints such as pressure, fast pace and Speed of Light. Culture pages mix practices (Insider Chat, ten resource groups, allyship training) with adjectives.",
+   "criteria": [
+     {"name": "Employee voice", "score": 3, "max": 3, "assessable": true, "note": "Stories quote named employees and interns describing specific events and projects."},
+     {"name": "What the work is like", "score": 3, "max": 3, "assessable": true, "note": "Job ads list tasks and tools in detail. The validation story describes lab bring-up and how failures are traced."},
+     {"name": "Difficulties named", "score": 1, "max": 2, "assessable": true, "note": "Pressure and pace are mentioned without saying what they mean in hours or deadlines."},
+     {"name": "Culture shown through practice", "score": 1, "max": 2, "assessable": true, "note": "The inclusion and hiring pages show practices. The Life page's culture section and the home page rely on adjectives."}
+   ]},
+  {"id": "consistency", "score": 7, "max": 12, "assessable": true,
+   "why": "“Do your life’s work” and care for employees' families recur across the careers, benefits, university and hiring pages. Job ads replace that promise with a superlative and three different openers, and the YouTube sample carries no people content. How We Hire contradicts itself on onsite interviews.",
+   "criteria": [
+     {"name": "Same core promise", "score": 3, "max": 5, "assessable": true, "note": "Careers pages align. Job ads and the YouTube sample drift away from the promise."},
+     {"name": "Evidence tells one story", "score": 2, "max": 3, "assessable": true, "note": "Stories back the hard-work story and benefits back the care story. The job-ad superlatives back nothing on the careers pages."},
+     {"name": "Tone and message", "score": 2, "max": 2, "assessable": true, "note": "Recognisably one employer across pages, stories and ads."},
+     {"name": "No contradictions", "score": 0, "max": 2, "assessable": true, "note": "How We Hire requires an onsite interview before any offer and also says interns typically do phone interviews only."}
+   ]},
+  {"id": "candidate_relevance", "score": 8, "max": 12, "assessable": true,
+   "why": "Job ads say what the role involves and what it pays: 7 of 8 give a base salary range by level, equity eligibility and an application deadline. None of the seven Santa Clara ads states the work mode. The hiring FAQ answers practical questions, and nothing in the material says what is hard about the work.",
+   "criteria": [
+     {"name": "Reason to join", "score": 2, "max": 3, "assessable": true, "note": "Reasons are given (hard technical work, benefit figures), but the headline reasons are generic."},
+     {"name": "Role reality", "score": 2, "max": 3, "assessable": true, "note": "Tasks, team and requirements are concrete in ads. Conditions such as work mode and team size are mostly missing."},
+     {"name": "Decision facts", "score": 2, "max": 3, "assessable": true, "note": "Pay ranges, equity and deadlines in 7 of 8 ads. Work mode is missing, and the Australia ad has no pay."},
+     {"name": "Candidate doubts answered", "score": 2, "max": 3, "assessable": true, "note": "The FAQ covers how many roles to apply for, timing, referrals, accommodations and feedback shared across teams. Workload and pace are not addressed."}
+   ]},
+  {"id": "conversion", "score": 8, "max": 10, "assessable": true,
+   "why": "The next step is clear: search and apply on the site or with LinkedIn, upload a resume, or ask an employee for a referral. The process is described step by step, with interview lengths and timing. Calls to action on the careers pages are generic and sit apart from the facts that support a decision.",
+   "criteria": [
+     {"name": "Next step clear", "score": 3, "max": 3, "assessable": true, "note": "Get Started Here, the three-step How We Hire, LinkedIn apply and resume upload."},
+     {"name": "Decision facts near the call to action", "score": 1, "max": 2, "assessable": true, "note": "Pay and deadline sit near the end of job ads. Careers-page calls to action stand alone."},
+     {"name": "Effort reduced", "score": 2, "max": 2, "assessable": true, "note": "Interview length, coding exercise format, ID rules, the accommodation phone number and recruiter help are explained."},
+     {"name": "Call to action fits the audience", "score": 1, "max": 2, "assessable": true, "note": "The university page and the referral route fit their audience. Elsewhere the call to action is generic."},
+     {"name": "Process explained", "score": 1, "max": 1, "assessable": true, "note": "Stages, interview formats and expected timing are described."}
+   ]}
+],
+"strengths": [
+  {"title": "Pay is published, by level", "text": "7 of the 8 sampled job ads state a base salary range, split by level where more than one applies, together with equity eligibility and the date until which applications are accepted. For example, the Data Application Engineer ad gives 168,000–264,500 USD for Level 4 and 196,000–310,500 USD for Level 5, and both internship ads give an hourly rate of 20–71 USD. Each ad also says how the salary is set: by location, experience and the pay of employees in similar positions."},
+  {"title": "Benefits come with figures", "text": "Life at NVIDIA states up to 22 weeks of fully paid parental leave, unlimited reimbursement for adoption and surrogacy expenses, up to $10,000 a year in charity matching for all employees and interns, and more than $300 million in ESPP value to employees and interns last year. The US benefits page adds that in-network preventive care is covered 100% under every medical plan. These figures give the care promise its only solid support."},
+  {"title": "The hiring process is explained in practical detail", "text": "How We Hire sets out three stages, says interviews usually last 30–60 minutes each, describes a HackerRank coding exercise for technical roles, warns that unapproved tools such as ChatGPT disqualify a candidate, and lists ID and escort rules for the onsite visit. The FAQ says how many roles to apply for, when to expect contact and that interview feedback may be shared across teams. The Insider Chat is described precisely: an optional 15-minute meeting with a Community Resource Group member, offered to all candidates during the final interview, which does not influence hiring decisions."},
+  {"title": "Stories show work only NVIDIA can offer", "text": "The validation story describes Sakeena Fiza seeing the NVIDIA Rubin GPU work at system level for the first time, and how validation engineers reproduce failures, vary conditions and probe signals. The intern story names seven interns and their projects, including a tool that, in the intern's words, over 1,500 engineers across the NVIDIA DRIVE platform can use to check the status of their code. Jaiveer Singh's story says the Isaac ROS work he now leads began as his intern project. A comparable employer could not publish these accounts unchanged."},
+  {"title": "Early-career candidates get their own path", "text": "The university page separates internships, Ignite, MBA, PhD and new college grad programmes. Each comes with its own description and an attributed quote, and the page states a minimum internship length of 12 weeks and that internships are the primary pipeline for new college grad and early-in-career hiring."}
+],
+"problems": [
+  {"severity": "high", "title": "The headline promise could belong to any tech employer, and the proof that it is NVIDIA sits elsewhere",
+   "evidence": ["Careers home and Life at NVIDIA headline: “Like No Place You’ve Ever Worked”", "Life at NVIDIA: “We don’t fall back on policy, trends, or norms.”", "The specifics that only NVIDIA has (Rubin GPU bring-up, Isaac ROS, DRIVE intern tool) appear in NVIDIA Life blog stories, not on the careers home or Life at NVIDIA."],
+   "why": "The headline claims difference without saying what is different. The pages under it restate the claim, and the award list (Fortune No. 5 with no year, a Glassdoor list, JUST Capital 2025) gives no criteria. The stories that do show work found nowhere else are reachable only through a link to the blog. So the most visible promise is also the least supported one.",
+   "flags": ["RF01", "RF15", "RF23"]},
+  {"severity": "high", "title": "How We Hire gives two incompatible answers on onsite interviews",
+   "evidence": ["“As part of our interview process, you will complete an onsite, in-person interview at our office before you can be considered for an offer (see our Onsite Policy for more information).”", "FAQ: “Interns will typically complete phone interviews only.”", "FAQ: “For full-time roles, you’ll typically be asked to participate in phone interviews, followed by virtual or in-person interviews.”"],
+   "why": "Whether travel to an office is required is a practical decision point, especially for students. The page states a requirement for everyone and then describes interns and full-time candidates as interviewing by phone or video. The linked Onsite Policy may explain the exceptions, but it was not part of the material reviewed.",
+   "flags": ["RF12"]},
+  {"severity": "high", "title": "Growth is promised as endless, with no mechanism or figures",
+   "evidence": ["Inclusion and Belonging: “There are endless opportunities at NVIDIA, and you have the opportunity to explore them all.”", "Same page: “We provide tailored mentoring programs, job-shadowing experiences, and leadership development opportunities.”", "University page: “Through our best-in-class programs, we also provide powerful upleveling and organic growth tools to help professionals pivot industries and pursue lifelong learning.”"],
+   "why": "The programmes are named but not described: who can join, how often, what happens. The only growth example is Jaiveer Singh's move from intern to leading Isaac ROS, and it sits in a robotics story. “Best-in-class” is a superlative with no comparison behind it.",
+   "flags": ["RF14", "RF02"]},
+  {"severity": "medium", "title": "Superlatives replace facts in job ads and benefits copy",
+   "evidence": ["Six of the eight sampled ads close with a variant of this sentence: “NVIDIA is widely considered to be one of the technology world’s most desirable employers.”", "“Our ESPP is one of the best in the industry, delivering more than $300 million in value to our employees and interns last year alone.”", "“NVIDIA has one of the nation’s best parental policies, including up to 22 weeks of fully paid leave, unlimited reimbursements for adoption and surrogacy expenses, and plans that cover in vitro fertilization and egg freezing.”"],
+   "why": "The material supports none of these comparisons. In the benefits sentences the superlative sits in front of strong, specific facts that can stand on their own. In the job ads the boilerplate takes the place where the careers-page promise or a team fact could go.",
+   "flags": ["RF02"]},
+  {"severity": "medium", "title": "Hours, pace and workload are not described anywhere",
+   "evidence": ["Sakeena Fiza story: “For Fiza, the pressure of the work is inseparable from the pleasure of it.”", "Teams in Action, Auto: “Join a fast-paced, forward-looking team and help us transform transportation.”", "Data center manager ad: “Work closely with customers and internal teams to resolve issues at Speed of Light.”"],
+   "why": "The material hints at intensity but never says what it means in hours, deadlines, on-call duty or meeting times. Life at NVIDIA promises a commitment to employees' mental and physical health without describing how workload is handled. Several Comparably answers describe long hours and late meetings. Those are individual opinions and do not affect the score, but nothing official describes this side of the job.",
+   "flags": ["RF24"]},
+  {"severity": "medium", "title": "Candidates outside the US get a thinner offer than the headings suggest",
+   "evidence": ["Life at NVIDIA heading: “Great Benefits for All”", "Benefits home: “Explore all the NVIDIA benefits and support programs available in the United States to help your physical, mental, and financial health and overall well-being—so you can do your life’s work.”", "The Australia Solutions Architect ad states no pay, benefits, closing date or equal-opportunity text, all of which appear in the seven Santa Clara ads."],
+   "why": "The heading reads as a promise to everyone, while the supporting page is scoped to the United States. The material does not say which benefits apply elsewhere. None of the seven Santa Clara ads states whether the role is onsite, hybrid or remote.",
+   "flags": ["RF18"]},
+  {"severity": "low", "title": "Two sampled job ads have production errors",
+   "evidence": ["JR2028848: the ad's address names a Senior GPU Validation Engineer role, while its text describes a Software Development Engineer in Test role.", "JR2027583 (Australia): the bullet about creating or running Proof of Concept and Demos appears twice, followed by the stray word “undefined”."],
+   "why": "These are small but visible errors on a primary conversion page. The first leaves a candidate unsure which job they would apply for.",
+   "flags": []}
+],
+"fixes": [
+  {"title": "Put the NVIDIA-only proof next to the headline",
+   "needs_new_data": false,
+   "steps": [
+     "On the careers home, replace the paragraph under the headline with two or three short accounts taken from existing stories: Sakeena Fiza and the first system-level Rubin GPU enumeration, Jaiveer Singh and Isaac ROS, the DRIVE intern tool.",
+     "On Life at NVIDIA, add a work section that links each Teams in Action area to one story.",
+     "Keep “Like No Place You’ve Ever Worked” only if the copy under it says, with these examples, what is different. Otherwise replace it."
+   ],
+   "why_first": "It uses material that already exists, and it addresses the problem on the most visible page.",
+   "needs": ["Consent of the featured employees to appear on the careers home", "Stories for non-engineering roles (sales, operations, business) so the lead does not speak only to engineers"],
+   "effort": "medium",
+   "effort_note": "Rewriting and laying out two pages with existing stories; new stories for other functions later",
+   "who": ["employer brand team", "careers site editor", "NVIDIA Life blog editors", "featured employees"],
+   "check": ["click-through from the careers home to stories and open positions", "whether candidates mention specific teams or products in recruiter screens"]},
+  {"title": "Make How We Hire say one thing about onsite interviews",
+   "needs_new_data": true,
+   "steps": [
+     "Confirm with talent acquisition which candidates must complete an onsite interview before an offer.",
+     "State the rule separately for full-time roles and for interns, in the main text and in the FAQ, and summarise the Onsite Policy on the page."
+   ],
+   "why_first": "It is the only direct contradiction in the material, and it concerns a practical decision about travel.",
+   "needs": ["The current onsite rule for full-time candidates and for interns", "Any exceptions by location or role"],
+   "effort": "small",
+   "effort_note": "One policy answer and two paragraph edits",
+   "who": ["talent acquisition operations", "university recruiting", "careers site editor"],
+   "check": ["how often intern candidates ask recruiters whether they must travel", "how many scheduled onsite interviews are cancelled for travel reasons"]},
+  {"title": "Replace “endless opportunities” with how growth works",
+   "needs_new_data": true,
+   "steps": [
+     "Describe each named programme: mentoring, job shadowing, leadership development. Say who can join, how people are selected and what it involves.",
+     "Publish figures that already exist internally, such as the share of interns who join full time, or internal moves in a stated year.",
+     "Link Jaiveer Singh's story from the growth section as one example, with his name attached."
+   ],
+   "why_first": "Growth is a core promise with only weak support, and it is also a theme where Comparably answers express tension.",
+   "needs": ["Programme descriptions and eligibility", "Intern conversion or internal mobility figures, with year and population", "Two or three more attributed growth stories"],
+   "effort": "large",
+   "effort_note": "Gathering programme facts and figures across HR, then new content",
+   "who": ["learning and development", "HR analytics", "university recruiting", "employer brand team"],
+   "check": ["whether recruiters still get the question “how do people grow here?” at first calls", "visits to the growth section and onward clicks to open positions"]}
+],
+"rewrites": [
+  {"title": "Careers home: the paragraph under the headline",
+   "original": "You’ll solve some of the world’s hardest problems and discover never-before-seen ways to improve the quality of life for people everywhere. From healthcare to robots. Self-driving cars to blockbuster movies. And a growing list of new opportunities every single day. Watch this video for a glimpse at why NVIDIA is like no place you've ever worked.",
+   "problem": "The paragraph claims hard problems and difference but names no problem, team or person. A comparable employer could publish it unchanged.",
+   "logic": "Replace the claim with three attributed examples from NVIDIA's own stories. Each keeps the person's name and the scope of what they said or did, so no individual experience is presented as company policy.",
+   "rewrite": "What the work looks like here\n\nSakeena Fiza, a validation engineer, remembers seeing the NVIDIA Rubin GPU work at a system level for the first time. Her team's job is to find how a new system can break before customers depend on it.\n\nJaiveer Singh leads the team behind NVIDIA Isaac ROS. That work began as his intern project.\n\nHenry Anyimadu, an intern on the autonomous vehicles software team, built a project that, in his words, over 1,500 engineers across the NVIDIA DRIVE platform can use to check on the status of their code.\n\nMeet the teams: AI, research, hardware, auto, graphics, robotics, gaming and data center.",
+   "notes": [
+     {"kind": "confirm", "text": "Whether Sakeena Fiza, Jaiveer Singh and Henry Anyimadu agree to appear on the careers home, and whether their roles are still current."},
+     {"kind": "evidence", "text": "One comparable example for a business or customer-facing role, so the lead is not only about engineering."}
+   ]},
+  {"title": "Inclusion and Belonging: the growth paragraph",
+   "original": "NVIDIA has always been fearless about taking on new challenges, and we encourage and support employees who share the same values. There are endless opportunities at NVIDIA, and you have the opportunity to explore them all. We provide tailored mentoring programs, job-shadowing experiences, and leadership development opportunities.",
+   "problem": "“Endless opportunities” is a stock phrase with nothing behind it. The programmes are named but not described.",
+   "logic": "Drop the unlimited claim, keep the programme names exactly as stated, and add the growth facts the material already contains, with their scope and attribution.",
+   "rewrite": "How growth works here\n\nWe provide tailored mentoring programs, job-shadowing experiences, and leadership development opportunities.\n\nOur internship program is our primary pipeline for new college grads and early-in-career hiring. One example: Jaiveer Singh joined NVIDIA full time after an internship with the robotics team, and the Isaac ROS work he now leads began as his intern project.",
+   "notes": [
+     {"kind": "evidence", "text": "For each programme: who can take part, how people are selected and what it involves."},
+     {"kind": "evidence", "text": "Intern-to-full-time or internal mobility figures, with the year and the group they cover."}
+   ]},
+  {"title": "Job ad JR1997726: the closing paragraph",
+   "original": "NVIDIA is widely considered to be one of the technology world’s most desirable employers. We have some of the most forward-thinking and hardworking people on the planet working for us. If you're creative and autonomous, we want to hear from you!",
+   "problem": "Two unsupported superlatives fill the space just before the pay information. They say nothing about this team.",
+   "logic": "Replace them with what the ad itself says the manager will own and lead, then keep the call to action.",
+   "rewrite": "In this role you will manage and lead a distributed team of software engineers and own the OpenBMC based manageability stack for NVIDIA's next generation Data Center Compute Systems. If you're creative and autonomous, we want to hear from you!",
+   "notes": [
+     {"kind": "evidence", "text": "Team size and locations of the distributed team, and whether the role is onsite, hybrid or remote."}
+   ]}
+],
+"questions": [
+  {"kind": "confirm", "for": "communication", "text": "Must interns complete an onsite, in-person interview before an offer, given that the FAQ says interns typically do phone interviews only? And must every full-time candidate?"},
+  {"kind": "confirm", "for": "communication", "text": "Is the Insider Chat on How We Hire the same practice as the meetings with employees from candidates' representative communities described on the Inclusion page? If so, the Inclusion page could name it."},
+  {"kind": "confirm", "for": "communication", "text": "Which benefits behind “Great Benefits for All” apply outside the United States, for example to the Australia Solutions Architect role?"},
+  {"kind": "confirm", "for": "communication", "text": "Which year does “last year” refer to in the ESPP figure of more than $300 million, and which year's Fortune list is the No. 5 ranking from?"},
+  {"kind": "confirm", "for": "communication", "text": "Which title is correct for JR2028848: Senior GPU Validation Engineer or Software Development Engineer in Test?"},
+  {"kind": "confirm", "for": "communication", "text": "What population and countries does the pay-parity statement on the Inclusion page cover, and how is parity measured?"},
+  {"kind": "evidence", "for": "communication", "text": "What the mentoring, job-shadowing and leadership development programmes involve, who can join, and intern-to-hire or internal mobility figures."},
+  {"kind": "evidence", "for": "communication", "text": "Work mode (onsite, hybrid or remote) for the Santa Clara roles."},
+  {"kind": "evidence", "for": "communication", "text": "What hours, pace and on-call duty look like in engineering teams, and how workload is managed."},
+  {"kind": "evidence", "for": "communication", "text": "What the Glassdoor, Fortune and JUST Capital lists measured, so the awards can be explained next to the claim."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of Instagram @nvidialife and the LinkedIn Life tab, the two channels most likely to carry people content."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of recent Glassdoor and Indeed reviews (last 24 months), to give the perception layer dated reviews and enough volume to count themes."}
+],
+"genericity": [
+  {"claim": "“Like No Place You’ve Ever Worked” (careers home and Life at NVIDIA)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "none", "defensibility": "unowned", "why": "Claims difference without naming one. Any employer could reuse it unchanged, and nothing attached to it says what is different."},
+  {"claim": "You'll solve some of the world's hardest problems and do your life's work (careers home, Life at NVIDIA, University, How We Hire)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The wording fits any tech employer. The supporting stories and team pages tie it to NVIDIA's own products (Rubin, Isaac ROS, DRIVE, Omniverse), but that link is made on other pages."},
+  {"claim": "“The project is the boss—even for our CEO.” (careers home)", "verdict": "generic", "substitution": "survives", "ubiquity": "rare", "specificity": "none", "defensibility": "unowned", "why": "Own words and memorable, but no practice, decision or example sits behind it, so another employer could say it as easily. One employee quote on the university page about leadership not depending on title is the only related material."},
+  {"claim": "“Everyone has a voice. Everyone belongs.” (Inclusion and Belonging; also on the careers home)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "some", "defensibility": "supportable", "why": "The line is built from stock inclusion language. The ten named resource groups, the CARE Allyship Program and the Insider Chat are specific, but they sit apart from the line, and the Insider Chat is on a different page."},
+  {"claim": "Great Benefits for All: programs that look after you and your family (Life at NVIDIA, Benefits)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "high", "defensibility": "supportable", "why": "“Great benefits” is a stock phrase, but the figures (22 weeks of fully paid parental leave, $10,000 giving match, the ESPP value) belong to NVIDIA. Another employer could match them only by offering the same."},
+  {"claim": "“There are endless opportunities at NVIDIA, and you have the opportunity to explore them all.” (Inclusion and Belonging)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Built from a stock phrase. The programmes listed after it have names but no content."}
+],
+"ledger": [
+  {"claim": "NVIDIA is unlike any place you have worked (careers home, Life at NVIDIA)", "class": "core", "evidence": "Award list on Life at NVIDIA: Fortune 100 Best Companies to Work For, No. 5, with no year; a Glassdoor list of best employers in Tech and AI; JUST Capital's 2025 rankings. No criteria are given.", "strength": "weak", "status": "weak", "comment": "Rankings show that an assessment took place, not what is different. The surrounding copy restates the claim. Information needed: what each list measured."},
+  {"claim": "You will solve some of the world's hardest problems and do your life's work (careers home, Life at NVIDIA, University, How We Hire, Teams in Action)", "class": "core", "evidence": "Sakeena Fiza story: seeing the Rubin GPU work at system level for the first time, and the validation workflow. Intern story: seven named interns with projects. Jaiveer Singh story: Isaac ROS. Teams in Action names DRIVE, Omniverse and DGX. Job ads list detailed technical tasks.", "strength": "moderate", "status": "partial", "comment": "Several attributed accounts from different roles, but each is one person's experience chosen by the employer, so the support is moderate. “The world's hardest” is a comparison the material does not support."},
+  {"claim": "The project is the boss, even for the CEO; leadership is not restricted by title (careers home, University page)", "class": "core", "evidence": "Neha, Technical Security Product Manager, on the university page says leadership isn't restricted by title or seniority and that she has the autonomy to guide her team. Paul, MBA intern, mentions resources and autonomy.", "strength": "weak", "status": "weak", "comment": "Two short anecdotes. No practice shows how project needs override hierarchy."},
+  {"claim": "Everyone has a voice and belongs (careers home, Inclusion and Belonging, Life at NVIDIA)", "class": "core", "evidence": "Inclusion page: ten named Community Resource Groups plus support groups for neurodiversity, caregivers and working parents; the CARE Allyship Program trains people; pay parity achieved for the past several years. How We Hire: the Insider Chat is offered to all candidates in the final interview. Quotes from five named employees.", "strength": "moderate", "status": "partial", "comment": "Practices with content, but outcome figures are missing. The pay-parity statement gives no data or population. It is unclear whether the Insider Chat is the same practice as the community meetings mentioned on the Inclusion page."},
+  {"claim": "NVIDIA takes care of you and your family, with great benefits for all (Life at NVIDIA, Benefits, Inclusion)", "class": "core", "evidence": "Life at NVIDIA: up to 22 weeks of fully paid parental leave; unlimited adoption and surrogacy reimbursement; IVF and egg-freezing cover; up to $10,000 a year in charity matching for all employees and interns; more than $300 million in ESPP value last year. Benefits page: in-network preventive care covered 100% under every NVIDIA medical plan. Sam, Data Center, on support during his military deployment.", "strength": "moderate", "status": "partial", "comment": "Specific policies placed directly next to the claim. The benefits page covers the United States, while the heading says for all. The ESPP figure covers one past year. The “one of the best” comparisons are not supported."},
+  {"claim": "There are endless opportunities to grow (careers home, Inclusion and Belonging, University page)", "class": "core", "evidence": "Mentoring, job-shadowing and leadership development programmes are named without content. University page: internships are the primary pipeline for new college grad hiring. Jaiveer Singh joined full time after an internship, and the work he now leads began as his intern project.", "strength": "weak", "status": "weak", "comment": "One anecdote and named programmes with no description or figures. Information needed: programme content and internal mobility figures."},
+  {"claim": "Interns do real work on real projects (University page, intern story)", "class": "supporting", "evidence": "Intern story (Jul 30, 2026): over 2,000 interns from nearly 300 universities in summer 2026; seven named interns describe their projects, for example a code-status tool that, in the intern's words, over 1,500 DRIVE engineers can use, and board bring-up on LPU accelerators. University page quotes from four named interns.", "strength": "moderate", "status": "partial", "comment": "Specific, attributed and recent, but seven accounts chosen from more than 2,000 interns. They show that such projects exist, not how common they are."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

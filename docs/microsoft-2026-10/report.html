@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "Microsoft",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+"value": 69,
+"provisional": false,
+"withheld": false,
+"coverage": 100,
+"confidence": "high",
+"reliability_note": "all 34 criteria assessed; five types of material (employer proposition, careers pages, job ads, employee stories, hiring process), collected automatically from public pages on 2026-10-27"
+},
+"verdict": "Microsoft's job ads and programme pages give specific, checkable detail: pay ranges, in-office days, rotation lengths. The pages that state the offer lead with the mission and “growth mindset”, which a comparable employer could reuse unchanged, and back them with customer figures instead of the proof published elsewhere on the site.",
+"notices": [
+"The material was collected automatically from Microsoft's public pages on 2026-10-27. Some sources may have been missed, and live pages may have changed since. Stand-alone job-ad pages could not be read, so the four ads reviewed are the ones embedded in the early-careers and neurodiversity pages.",
+"No social posts were read: Microsoft's people and careers accounts are on closed platforms, and Glassdoor and Indeed blocked automated access. See “What to add for the full picture”. Reviews from Comparably are shown in their own section and are not part of the score."
+],
+"materials": [
+{"name": "Careers home page", "type": "Careers page"},
+{"name": "Culture page", "type": "Employer proposition"},
+{"name": "Benefits page (including hybrid work and pay)", "type": "Careers page"},
+{"name": "Diversity and inclusion page", "type": "Careers page"},
+{"name": "Early in profession page", "type": "Careers page"},
+{"name": "Neurodiversity hiring page", "type": "Careers page"},
+{"name": "Communities datacenter pathway page", "type": "Careers page"},
+{"name": "How we hire", "type": "Hiring process"},
+{"name": "Early in profession hiring tips", "type": "Hiring process"},
+{"name": "Job ad: Digital Sales Specialist, AI Business Solutions, German speaking (Dublin)", "type": "Job ad"},
+{"name": "Job ad: Specialist Recruiter, Early-in-Profession (Dublin and two other locations)", "type": "Job ad"},
+{"name": "Job ad: Customer Success Account Management (United States, remote)", "type": "Job ad"},
+{"name": "Job ad: Data Center Technicians, IT internship, Neurodiversity Hiring Program (Toronto)", "type": "Job ad"},
+{"name": "The Code of Us story hub", "type": "Employee stories"},
+{"name": "Story: A path with many lanes (November 2023)", "type": "Employee story"},
+{"name": "Story: Embracing the unplanned path (September 2023)", "type": "Employee story"},
+{"name": "Comparably employee reviews", "type": "Employee reviews (not scored)"}
+],
+"sources": [
+{"title": "Home | Microsoft Careers", "url": "https://careers.microsoft.com/v2/global/en/home.html", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Culture | Microsoft Careers", "url": "https://careers.microsoft.com/v2/global/en/life-at-microsoft/culture.html", "type": "Employer proposition", "captured": "2026-10-27"},
+{"title": "Benefits | Microsoft Careers", "url": "https://careers.microsoft.com/v2/global/en/life-at-microsoft/benefits.html", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "How we hire | Microsoft Careers", "url": "https://careers.microsoft.com/v2/global/en/hiring-tips", "type": "Hiring process", "captured": "2026-10-27"},
+{"title": "Student interviewing | Microsoft Careers", "url": "https://careers.microsoft.com/v2/global/en/hiring-tips/student-interviewing", "type": "Hiring process", "captured": "2026-10-27"},
+{"title": "Diversity and inclusion | Microsoft Careers", "url": "https://careers.microsoft.com/v2/global/en/diversityandinclusion", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Communities Datacenter Pathways | Microsoft Careers", "url": "https://careers.microsoft.com/v2/global/en/communitiesdcpathways.html", "type": "Careers page", "captured": "2026-10-27"},
+{"title": "Early in profession | Microsoft Careers (with three job ads)", "url": "https://careers.microsoft.com/v2/global/en/students", "type": "Careers page and job ads", "captured": "2026-10-27"},
+{"title": "Neurodiversity | Microsoft Careers (with one job ad)", "url": "https://careers.microsoft.com/v2/global/en/neurodiversity.html", "type": "Careers page and job ad", "captured": "2026-10-27"},
+{"title": "A path with many lanes - The Code of Us", "url": "https://news.microsoft.com/codeofus/features/a-path-with-many-lanes", "type": "Employee story", "captured": "2026-10-27"},
+{"title": "Embracing the unplanned path - The Code of Us", "url": "https://news.microsoft.com/codeofus/features/embracing-the-unplanned-path", "type": "Employee story", "captured": "2026-10-27"},
+{"title": "Microsoft The Code of Us", "url": "https://news.microsoft.com/codeofus/", "type": "Employee stories", "captured": "2026-10-27"},
+{"title": "Microsoft Employee Reviews | Comparably", "url": "https://www.comparably.com/companies/microsoft/reviews", "type": "Employee reviews", "captured": "2026-10-27"}
+],
+"source_map": [
+{"source": "Careers home page", "url": "https://careers.microsoft.com", "kind": "careers site", "decision": "included", "reason": "Official, candidate-facing, current"},
+{"source": "Culture page", "url": "https://careers.microsoft.com/v2/global/en/life-at-microsoft/culture.html", "kind": "employer proposition", "decision": "included", "reason": "States the culture attributes and the mission"},
+{"source": "Benefits page", "url": "https://careers.microsoft.com/v2/global/en/life-at-microsoft/benefits.html", "kind": "benefits", "decision": "included", "reason": "Benefits, hybrid work and pay"},
+{"source": "How we hire", "url": "https://careers.microsoft.com/v2/global/en/hiring-tips", "kind": "hiring process", "decision": "included", "reason": "Describes the whole hiring process"},
+{"source": "Early in profession hiring tips", "url": "https://careers.microsoft.com/v2/global/en/hiring-tips/student-interviewing", "kind": "hiring process", "decision": "included", "reason": "Separate process for early-career candidates"},
+{"source": "Diversity and inclusion page", "url": "https://careers.microsoft.com/v2/global/en/diversityandinclusion", "kind": "careers site", "decision": "included", "reason": "A distinct kind of page"},
+{"source": "Communities datacenter pathway", "url": "https://careers.microsoft.com/v2/global/en/communitiesdcpathways.html", "kind": "careers site, entry-level hiring line", "decision": "included", "reason": "Entry-level operations hiring line"},
+{"source": "Early in profession page with three job ads", "url": "https://careers.microsoft.com/v2/global/en/students", "kind": "careers site and job ads", "decision": "included", "reason": "Early-career programmes, and the only job ads readable on the employer's site"},
+{"source": "Neurodiversity hiring page with one job ad", "url": "https://careers.microsoft.com/v2/global/en/neurodiversity.html", "kind": "careers site and job ad", "decision": "included", "reason": "Hiring programme, process and a datacenter internship ad"},
+{"source": "Guessed benefits addresses", "url": "https://careers.microsoft.com/v2/global/en/benefits.html", "kind": "benefits", "decision": "unavailable", "reason": "Redirected to the site's “Page not found”; the real page is captured above"},
+{"source": "Careers site maps", "url": "https://careers.microsoft.com/sitemap.xml", "kind": "site map", "decision": "unavailable", "reason": "Could not be read; no page map found on this host"},
+{"source": "Programme and process sub-pages (HR and finance rotation, SCORE, MCAPS EiP, Aspire, student veterans, accessibility, virtual and technical interviews)", "url": "https://careers.microsoft.com/v2/global/en/hrrotation", "kind": "careers site", "decision": "excluded", "reason": "Not fetched within the request limit for one site; summarised on the early-careers, D&I and process pages already captured"},
+{"source": "Pay information pages (corporate pay by country, Canada pay)", "url": "https://careers.microsoft.com/v2/global/en/corporate-pay/ireland-corporate-pay.html", "kind": "pay information", "decision": "excluded", "reason": "Not fetched within the request limit for one site"},
+{"source": "Corporate diversity site", "url": "https://www.microsoft.com/en-us/diversity/default", "kind": "corporate", "decision": "excluded", "reason": "Used only to check which social accounts are official"},
+{"source": "Corporate responsibility, investor, press and product pages", "url": "https://www.microsoft.com/en-us/corporate-responsibility", "kind": "corporate", "decision": "excluded", "reason": "Not candidate-facing"},
+{"source": "2,455 job ads listed in the careers sitemap", "url": "https://apply.careers.microsoft.com/careers", "kind": "job ads", "decision": "unavailable", "reason": "Job-detail pages are drawn by scripts and returned no text; the old jobs address redirects to search. The total describes the hiring footprint only"},
+{"source": "Copies of Microsoft ads on job aggregators", "url": "", "kind": "job ads", "decision": "excluded", "reason": "Re-posted by third parties, not official"},
+{"source": "The Code of Us story hub", "url": "https://news.microsoft.com/codeofus/", "kind": "employee stories", "decision": "included", "reason": "Official hub linked from the culture and D&I pages"},
+{"source": "Story: A path with many lanes", "url": "https://news.microsoft.com/codeofus/features/a-path-with-many-lanes", "kind": "employee story", "decision": "included", "reason": "Dated 2 November 2023, older than 24 months; included because no newer text story was found"},
+{"source": "Story: Embracing the unplanned path", "url": "https://news.microsoft.com/codeofus/features/embracing-the-unplanned-path", "kind": "employee story", "decision": "included", "reason": "Dated 14 September 2023, older than 24 months; included for the same reason"},
+{"source": "About 100 other Code of Us pages", "url": "https://news.microsoft.com/codeofus/", "kind": "employee stories", "decision": "excluded", "reason": "Mostly videos already summarised on the hub; request limit"},
+{"source": "Microsoft Life blog", "url": "https://news.microsoft.com/life/", "kind": "employee stories", "decision": "excluded", "reason": "Not fetched; appears to be an older blog"},
+{"source": "Third-party and personal posts about Microsoft careers", "url": "", "kind": "posts", "decision": "excluded", "reason": "Not official; personal accounts are never used"},
+{"source": "Australian employee story page", "url": "https://www.microsoft.com/en-au/business/about-microsoft-australia/careers/employee-story/manasi-priya", "kind": "employee story", "decision": "excluded", "reason": "Outside the global careers presence audited"},
+{"source": "LinkedIn company page", "url": "https://www.linkedin.com/company/microsoft", "kind": "social account", "decision": "manual", "reason": "Official (linked from Microsoft pages); closed platform"},
+{"source": "Instagram @microsoftlife", "url": "https://www.instagram.com/microsoftlife", "kind": "social account", "decision": "manual", "reason": "Official (linked from two Microsoft pages); closed platform"},
+{"source": "Facebook MicrosoftLife", "url": "https://www.facebook.com/MicrosoftLife", "kind": "social account", "decision": "manual", "reason": "Official; closed platform"},
+{"source": "Facebook microsoftcareers", "url": "http://facebook.com/microsoftcareers", "kind": "social account", "decision": "manual", "reason": "Linked from an older Microsoft Life page; may be inactive; closed platform"},
+{"source": "X @microsoftlife", "url": "https://x.com/microsoftlife", "kind": "social account", "decision": "manual", "reason": "Linked from The Code of Us; closed platform"},
+{"source": "X @MicrosoftJobs", "url": "https://twitter.com/MicrosoftJobs", "kind": "social account", "decision": "manual", "reason": "Linked from an older Microsoft Life page; may be inactive; closed platform"},
+{"source": "TikTok @microsoft", "url": "https://www.tiktok.com/@microsoft", "kind": "social account", "decision": "manual", "reason": "Corporate account linked from a Microsoft page; to be read for people and hiring content only; closed platform"},
+{"source": "YouTube @MicrosoftLife", "url": "https://www.youtube.com/@MicrosoftLife", "kind": "social account", "decision": "excluded", "reason": "Feed returned no videos and no description, and no Microsoft page links to it, so it could not be checked as official"},
+{"source": "YouTube @MicrosoftCareers", "url": "https://www.youtube.com/@MicrosoftCareers", "kind": "social account", "decision": "excluded", "reason": "No channel with this handle exists"},
+{"source": "Telegram and VK", "url": "", "kind": "social account", "decision": "excluded", "reason": "No Microsoft accounts found"},
+{"source": "Comparably reviews", "url": "https://www.comparably.com/companies/microsoft/reviews", "kind": "reviews", "decision": "included", "reason": "Readable; 75 short, undated answers to 15 standard questions"},
+{"source": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/Microsoft-Reviews-E1651.htm", "kind": "reviews", "decision": "manual", "reason": "Blocked automated access (bot check)"},
+{"source": "Indeed reviews", "url": "https://www.indeed.com/cmp/Microsoft/reviews", "kind": "reviews", "decision": "manual", "reason": "Blocked automated access with both tools tried"},
+{"source": "kununu", "url": "https://www.kununu.com/us/microsoft", "kind": "reviews", "decision": "unavailable", "reason": "Human verification page"},
+{"source": "InHerSight", "url": "https://www.inhersight.com/companies/best/reviews/microsoft", "kind": "reviews", "decision": "unavailable", "reason": "Page not found"}
+],
+"social": [],
+"perception": {
+"sample": [
+{"platform": "Comparably", "reviews": 75, "period": "Undated: the page shows no dates for individual answers", "rating": "Shown on Comparably on 2026-10-27: of 2,160 Microsoft employee reviews, 82% positive; 4,631 employee participants; 55,054 total ratings"}
+],
+"thin": false,
+"themes": [
+{"theme": "Pay and pay rises", "mentions": 12, "of": 75, "tone": "negative", "promise": "Performance-based pay with bonuses and stock; “Once you join, your rewards reflect the impact you make.” (benefits page)", "match": "tension", "note": "Eight of the 12 are critical: shrinking bonus and stock budgets, rises below inflation, pay that does not follow performance. Three are positive about pay overall."},
+{"theme": "Benefits", "mentions": 8, "of": 75, "tone": "positive", "promise": "World-class benefits for health, time away and family (benefits page)", "match": "consistent", "note": "Health insurance, parental leave, the pension plan and office perks are named positively. Several answers call benefits the best part of the package."},
+{"theme": "Senior leadership and management", "mentions": 14, "of": 75, "tone": "negative", "promise": "You will be surrounded by people who want to see you succeed, guided by mentors and managers (culture and early-careers pages)", "match": "tension", "note": "Four answers praise leaders for being accessible or for giving ownership. Nine criticise senior leadership for not caring about staff, morale or retention. Some answers separate a supportive direct manager from the levels above."},
+{"theme": "Colleagues and team", "mentions": 15, "of": 75, "tone": "mixed", "promise": "Collaboration, shared success and smart colleagues (culture, benefits and D&I pages)", "match": "mixed", "note": "Ten answers praise colleagues and team spirit. Five ask for better treatment of new joiners, less focus on individual credit, or enough people to do the work."},
+{"theme": "Recognition and fairness", "mentions": 5, "of": 75, "tone": "negative", "promise": "Rewards reflect impact; the success of one does not diminish others (benefits and culture pages)", "match": "tension", "note": "Five answers say recognition, promotion or pay follow popularity or favourites. These overlap with the pay theme."},
+{"theme": "The work itself", "mentions": 5, "of": 75, "tone": "positive", "promise": "Meaningful work, empowered teams (culture page)", "match": "consistent", "note": "Answers name technical and creative work, customer work, current technology and the freedom to do what needs doing."},
+{"theme": "Growth and promotion", "mentions": 3, "of": 75, "tone": "mixed", "promise": "Growth is expected, with systems and support for anyone (culture page)", "match": "mixed", "note": "One answer names growth opportunities as a reason to be happy. Two describe flat growth or few chances to move up after long tenure."},
+{"theme": "Hiring process", "mentions": 9, "of": 75, "tone": "mixed", "promise": "Structured interviews, clear timelines and updates (hiring page)", "match": "mixed", "note": "Five answers describe the process as easy, structured, quick or open to varied backgrounds. Four criticise it: poor communication during the process, postings the author believes are not real, hiring through referrals, and how diversity goals are applied in interview slates."},
+{"theme": "Workload, staffing and cost cutting", "mentions": 4, "of": 75, "tone": "negative", "promise": "", "match": "not_addressed", "note": "Answers mention budget cuts, low morale, too few people for the work and speed over quality. The careers pages do not address workload."}
+],
+"caveat": "One platform, with undated answers, so it is unknown how recent they are. Comparably asks paired questions (what is good, what needs to improve), so about half the answers respond to a prompt for criticism. Some answers touch more than one theme and are counted in each."
+},
+"manual_import": [
+{"platform": "LinkedIn company page", "url": "https://www.linkedin.com/company/microsoft", "capture": ["Page header with description and follower count", "The latest 9 to 12 posts", "3 to 5 posts about people, work or hiring, opened with their captions", "The pinned post", "The sections of the “Life” tab"]},
+{"platform": "Instagram @microsoftlife", "url": "https://www.instagram.com/microsoftlife", "capture": ["Profile header with bio and follower count", "The grid of the latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, with captions", "Pinned posts"]},
+{"platform": "Facebook MicrosoftLife", "url": "https://www.facebook.com/MicrosoftLife", "capture": ["Page header with description and follower count", "The latest 9 to 12 posts", "3 to 5 posts about people, work or hiring, with captions"]},
+{"platform": "Facebook microsoftcareers (may be inactive)", "url": "http://facebook.com/microsoftcareers", "capture": ["Page header", "The latest 9 to 12 posts, with dates", "Hiring posts with captions"]},
+{"platform": "X @microsoftlife", "url": "https://x.com/microsoftlife", "capture": ["Profile header", "The latest 9 to 12 posts", "The pinned post"]},
+{"platform": "X @MicrosoftJobs (may be inactive)", "url": "https://twitter.com/MicrosoftJobs", "capture": ["Profile header", "The latest 9 to 12 posts, with dates", "The pinned post"]},
+{"platform": "TikTok @microsoft", "url": "https://www.tiktok.com/@microsoft", "capture": ["Profile header", "The latest 9 to 12 videos with captions, noting which are about people or hiring"]},
+{"platform": "Glassdoor reviews (save in social/reviews/)", "url": "https://www.glassdoor.com/Reviews/Microsoft-Reviews-E1651.htm", "capture": ["Overall rating and number of reviews", "The ratings breakdown", "The 15 to 30 most recent reviews with their dates, without author names"]},
+{"platform": "Indeed reviews (save in social/reviews/)", "url": "https://www.indeed.com/cmp/Microsoft/reviews", "capture": ["Rating and number of reviews", "The latest 15 to 30 reviews with dates, without author names"]}
+],
+"scope": {
+"reviewed": [
+"Twelve public pages captured on 2026-10-27: the careers home page; the culture, benefits, diversity and inclusion, early-in-profession, neurodiversity and datacenter pathway pages; two hiring-process pages; The Code of Us story hub and two employee stories",
+"Four job ads embedded in those pages: digital sales (Dublin), early-career recruiter (Dublin and two other locations), customer success (United States, remote), datacenter technician internship (Toronto)",
+"75 short employee answers on Comparably, shown separately and not scored"
+],
+"not_reviewed": [
+"Social accounts on LinkedIn, Instagram, Facebook, X and TikTok: closed to automatic collection, no posts read",
+"Glassdoor, Indeed and kununu reviews: automated access blocked",
+"Stand-alone job-ad pages, including engineering, research and design roles: drawn by scripts, no text returned",
+"Programme sub-pages (rotation programmes, MCAPS EiP, Aspire, Leap, military, accessibility) and the pay-information pages",
+"Separate careers presences of group brands such as GitHub and the gaming studios, and the non-English careers sites",
+"The interview itself, and what employees say outside these channels"
+]
+},
+"summary": {
+"points": [
+"The strongest material is operational. All four ads state a base pay range with level and country, and the in-office days. The hiring page gives the number and length of interviews and says plainly that applicants who are not selected usually get no individual feedback.",
+"The pages that state the offer lead with the mission and “growth mindset”. Neither passes the substitution test, and the culture page backs customer focus with Fortune 500 and cloud-region figures that say nothing about the job.",
+"Promise and proof sit on different pages. Growth is promised to “anyone”, but every growth mechanism shown is for people starting their careers. Six of eight promises are partly supported; none is fully supported.",
+"Employee voice comes from a diversity storytelling hub. The two text stories found date from 2023, and none comes from the datacenter or rotation hiring lines the site promotes.",
+"On Comparably, benefits draw praise, while pay, recognition and senior leadership are in tension with the promise that rewards reflect impact. The sample is one platform with undated answers, and reviews do not enter the score."
+],
+"actions": [
+"Rewrite the home and culture pages to lead with facts already published: in-office days in every posting, EiP onboarding, donation matching.",
+"Show how growth works after the first role, or limit the growth promise to the programmes that support it.",
+"Collect recent, dated stories from the EiP, rotation and datacenter hiring lines and link them from those pages."
+]
+},
+"dimensions": [
+{
+"id": "clarity", "score": 6, "max": 12, "assessable": true,
+"why": "The home page opens with two lines, “Win and thrive together” and “Empowered by Purpose. United by Mission”, and the paragraph beneath describes the company's mission, not what a person gets. The offer has to be pieced together from the culture, benefits and early-careers pages, and each introduces its own set of themes. Job ads use internal abbreviations without explaining them.",
+"criteria": [
+{"name": "Offer identifiable at a glance", "score": 2, "max": 4, "assessable": true, "note": "The first screen states the mission. A one-sentence offer about working here needs the culture and benefits pages."},
+{"name": "Candidate benefit stated", "score": 2, "max": 4, "assessable": true, "note": "Ads and the hiring page speak to “you” in concrete terms (pay range, onboarding buddy). The culture and D&I pages are mostly company self-description."},
+{"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "Mission on the home page, four attributes on the culture page, three different headings on the D&I page, balance and purpose on the benefits page. No one idea organises the rest."},
+{"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "Abstract phrasing on proposition pages (“co-create impact”, “transforms possibility into progress”) and unexplained abbreviations in ads (FLW, MSX, ATU, CSU, HaaS, CO+I)."}
+]
+},
+{
+"id": "differentiation", "score": 8, "max": 16, "assessable": true,
+"why": "None of the core promises passes the substitution test. The mission and growth mindset read as true for a comparable employer once the name is removed. Inclusion and customer focus are partly tied to Microsoft, because named hiring programmes and company figures sit next to them. The specific material (rotation structures, the neurodiversity hiring process, the six-level work-site field) is on secondary pages and is not used as the reason to join.",
+"criteria": [
+{"name": "Holds up when the name is swapped", "score": 2, "max": 5, "assessable": true, "note": "No core promise is true only of Microsoft. Inclusion and customer focus are partly tied to it. Employer-specific detail appears only on secondary pages."},
+{"name": "Free of stock phrases", "score": 1, "max": 3, "assessable": true, "note": "Stock phrases carry the proposition pages: world-class benefits, meaningful work, make a difference, endless opportunities, launchpad."},
+{"name": "Employer-specific advantages", "score": 3, "max": 4, "assessable": true, "note": "Segment pages use specific realities: the four-week Discovery internship in Redmond or Atlanta, four six-month finance rotations, the neurodiversity hiring event, donation matching up to $15,000. The main pages do not build on them."},
+{"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "Some promises rest on costly practices: an extended interview process with built-in accommodations, a certified apprenticeship, heavy investment in early-career hires' first six months. The mission and growth promises do not."},
+{"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "“Growth mindset” appears on every captured careers page and in all four ads, but the material gives it little content beyond learning and taking smart risks."}
+]
+},
+{
+"id": "proof", "score": 10, "max": 16, "assessable": true,
+"why": "Eight promises were tested. Six are partly supported and none fully. Pay transparency and the hiring process have direct, specific evidence, but each promise reaches further than that evidence. Growth, inclusion, flexibility and giving rest on programmes and practices with no outcome figures. The mission and customer focus rest only on company and customer figures. Most evidence sits on a different page from the promise it supports.",
+"criteria": [
+{"name": "How many promises are backed", "score": 3, "max": 6, "assessable": true, "note": "Six of eight promises are partly supported, including two of the four core ones (growth, inclusion). The mission and customer focus are only weakly supported."},
+{"name": "Specificity of the proof", "score": 3, "max": 4, "assessable": true, "note": "A mix: pay ranges and interview counts alongside programme descriptions without numbers."},
+{"name": "Proof matches the promise", "score": 2, "max": 3, "assessable": true, "note": "Support works at a narrower scope than the promises: growth mechanisms cover early-career hires, and four ads stand in for every posting."},
+{"name": "Proof next to the promise", "score": 2, "max": 3, "assessable": true, "note": "Giving and hiring evidence sits next to the promise. Growth, pay and flexibility evidence sits in job ads and programme pages."}
+]
+},
+{
+"id": "audience_fit", "score": 8, "max": 12, "assessable": true,
+"why": "Segment pages speak to named groups: rising first-year students, HBCU seniors and alumni, neurodivergent candidates, service members and veterans. The ads state what those roles involve. The main pages address everyone at once, and the captured material has no page for experienced professionals. The proposition makes no choice that would deter anyone; the demands appear only in individual ads.",
+"criteria": [
+{"name": "Clear who it speaks to", "score": 2, "max": 3, "assessable": true, "note": "Clear on segment pages and in ads. The home, culture and benefits pages address no group in particular."},
+{"name": "Covers what matters to them", "score": 3, "max": 4, "assessable": true, "note": "Ads cover pay, location, in-office days, start dates, requirements and training; early-career pages give programme length and mentoring. Growth for experienced hires is not addressed."},
+{"name": "Adapted for different groups", "score": 2, "max": 3, "assessable": true, "note": "Early-career, neurodivergent, military and datacenter audiences get adapted messages on a shared mission core. Experienced professionals get only the general pages in this material."},
+{"name": "Makes real choices", "score": 1, "max": 2, "assessable": true, "note": "The benefits page says support is within reach whatever your location or role. Trade-offs such as fully on-site work, five years of Canadian residency for clearance and weekend hours appear only in single ads."}
+]
+},
+{
+"id": "employee_truth", "score": 9, "max": 10, "assessable": true,
+"why": "Two long first-person stories name the people, their roles and concrete events, doubts and setbacks included. The ads describe tasks and conditions in detail, down to pallet jacks, a ticket-based environment and weekend hours for datacenter interns. The culture page itself relies on attributes and adjectives, and both text stories found are dated 2023.",
+"criteria": [
+{"name": "Employee voice", "score": 3, "max": 3, "assessable": true, "note": "Tash and Elva Fernandez describe in their own words how they joined and what they work on."},
+{"name": "What the work is like", "score": 3, "max": 3, "assessable": true, "note": "Ads give tasks, team names, tools and conditions; the student page describes the virtual interview day."},
+{"name": "Difficulties named", "score": 2, "max": 2, "assessable": true, "note": "No individual feedback for applicants who are not selected, with the talent network offered instead; a language barrier eased by mentorship; datacenter work described as routine."},
+{"name": "Culture shown through practice", "score": 1, "max": 2, "assessable": true, "note": "Practices exist (onboarding buddy, regular team check-ins, donation matching), but the culture page describes culture mostly through attributes and adjectives."}
+]
+},
+{
+"id": "consistency", "score": 9, "max": 12, "assessable": true,
+"why": "The mission and growth mindset appear on every careers page and in the closing paragraph of every ad, so the employer sounds the same throughout. Some proof is off the story: cloud regions and Fortune 500 figures describe the company, not the job. The hiring page contradicts itself on interview format, and two notices leave unclear what is current.",
+"criteria": [
+{"name": "Same core promise everywhere", "score": 4, "max": 5, "assessable": true, "note": "The same core runs through all touchpoints. The home page splits it across two headlines, and the D&I page adds three headings of its own."},
+{"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Programme and pay evidence supports the story; company and customer figures do not."},
+{"name": "Tone and voice", "score": 2, "max": 2, "assessable": true, "note": "Recognisably the same voice across careers pages, ads and stories."},
+{"name": "No contradictions", "score": 1, "max": 2, "assessable": true, "note": "The hiring page calls the process entirely virtual and also says interviews may be in person. Leap is described in full on the D&I page and as coming soon on the early-careers page."}
+]
+},
+{
+"id": "candidate_relevance", "score": 10, "max": 12, "assessable": true,
+"why": "The four ads answer most practical questions: base pay range by country and level, in-office days, start date, requirements and training. The hiring page addresses doubts directly, from what the AI match indicator means to why applicants who are not selected get no individual feedback. The reason to choose Microsoft stays general, and working hours are left to each team.",
+"criteria": [
+{"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Reasons given (mission, growth, benefits) are general."},
+{"name": "What the role involves", "score": 3, "max": 3, "assessable": true, "note": "Role content, team, location and conditions are concrete in all four ads."},
+{"name": "Facts needed to decide", "score": 2, "max": 3, "assessable": true, "note": "Pay and work site are in all four ads. Working hours are left to each role and team, and benefit details are published only for US employees."},
+{"name": "Doubts addressed", "score": 3, "max": 3, "assessable": true, "note": "No prior experience needed for the customer success role and the datacenter pathway; the match indicator guarantees no outcome; an uploaded resume is deleted within 24 hours; accommodations on request."}
+]
+},
+{
+"id": "conversion", "score": 9, "max": 10, "assessable": true,
+"why": "Each stage has an explicit next step: profile, application, email confirmation, status tracking, interviews, offer, onboarding. Segment pages offer matching steps such as an interest form, hiring events and monthly webinars. On the home page the job search button sits under the mission text with no facts nearby.",
+"criteria": [
+{"name": "Next step clear", "score": 3, "max": 3, "assessable": true, "note": "Apply, create a profile, track status in the Action Center; interest form for the datacenter pathway."},
+{"name": "Key facts near the button", "score": 1, "max": 2, "assessable": true, "note": "Ads end with pay and posting details near the link to apply; the home page search button stands alone."},
+{"name": "Effort explained", "score": 2, "max": 2, "assessable": true, "note": "Resume upload without an account, Job Cart for several applications, sign-in options and accommodation requests are explained."},
+{"name": "Step fits the audience", "score": 2, "max": 2, "assessable": true, "note": "Interest form for HBCU candidates, virtual hiring events and monthly webinars for neurodivergent candidates, talent network for those not selected."},
+{"name": "What happens after applying", "score": 1, "max": 1, "assessable": true, "note": "Stages from review to onboarding are described."}
+]
+}
+],
+"strengths": [
+{"title": "Pay ranges in every ad reviewed", "text": "All four captured ads state the typical base pay range with the job level and country: €44,000 to €57,200 for the Dublin sales role (IC2); separate ranges for Ireland, Romania and Czechia for the recruiter role (IC4); USD $70,500 to $139,700 across the U.S. for customer success, with a separate $95,000 to $153,200 range for the San Francisco Bay area and New York City; CAD $43,800 to $50,000 for the Toronto internship. This is direct evidence for the benefits page's promise of transparency from the first conversation about pay."},
+{"title": "In-office days stated before anyone applies", "text": "The benefits page explains a work-site field that runs from 0 days a week in the office to fully on-site, and all four ads carry it: 3 days a week for both Dublin roles, 0 days (remote) for customer success, fully on-site for the datacenter internship. The Dublin sales ad adds that the role allows up to 50% work from home and that relocation may be required."},
+{"title": "A hiring process described with numbers", "text": "The hiring page says most interviews include 2 to 4 conversations of up to an hour each, that a resume uploaded for job recommendations is purged within 24 hours, that the match indicator does not guarantee any outcome, and that applicants not selected for a screen or interview usually get no individual feedback. Early-career applicants learn they will have an initial interview and, if selected, a final one."},
+{"title": "Early-career programmes with visible structure", "text": "The early-in-profession page gives each programme a length and shape: the Finance Rotation Program is two years of four six-month rotations, SCORE is three one-year rotations, the HR rotation runs three years, and the Discovery Program is a four-week internship for rising first-year students in Redmond or Atlanta. Two ads add what EiP participants get: immersive training, structured job shadowing and continuous support from dedicated mentors, with heavy investment in the first six months."},
+{"title": "Neurodiversity hiring shown as a practice", "text": "The page describes an extended interview process, one-on-one accommodation support, additional interview time and longer breaks, a virtual hiring event where candidates meet employees hired through the programme, and monthly webinars. The ad on the page, an on-site datacenter internship, spells out pay, start month, physical demands and security requirements."}
+],
+"problems": [
+{
+"severity": "high",
+"title": "The offer leads with the company's mission, and neither the mission nor “growth mindset” says what working here gives you.",
+"evidence": [
+"Home page: “When you join Microsoft, you’re not just stepping into a job— you’re stepping into a mission-driven company where purpose is at the heart of everything we do.”",
+"Home page: “Our mission—to empower every person and every organization on the planet to achieve more—isn’t just words.” followed by “It’s our foundation. It’s what sets us apart.”",
+"Culture page: “At Microsoft, we believe that growth isn’t just possible—it’s expected.”"
+],
+"why": "The home page says the mission sets Microsoft apart but shows nothing about how it shapes a job. The culture page names four attributes, and each reads as true for a comparable employer once the name is removed. The material that could carry the offer (pay ranges, the work-site field, programme structures) appears only deeper in the site.",
+"flags": ["RF03", "RF01"]
+},
+{
+"severity": "high",
+"title": "Growth is promised to everyone, but the evidence covers only people starting their careers.",
+"evidence": [
+"Culture page: “We know that anyone can evolve their thinking, expand their skills, and grow their career because we’ve built the systems and support to make that happen.”",
+"The systems described in the material are the early-in-profession and rotation programmes, Aspire for new hires from qualifying programmes, and the onboarding plan and buddy for new starters."
+],
+"why": "The material shows no mechanism, path or figure for someone joining mid-career or growing after the first role. The promise reaches further than its evidence, and growth is the most repeated promise after the mission.",
+"flags": ["RF14", "RF18"]
+},
+{
+"severity": "medium",
+"title": "Customer focus and the mission are backed by company figures that say nothing about the job.",
+"evidence": [
+"Culture page, under the customer-obsessed attribute: “That’s why 95% of Fortune 500 companies trust Microsoft, and why our cloud spans 60+ regions worldwide, more than any other provider.”",
+"The datacenter internship ad cites more than 100 datacenters and 1 million servers supporting services for more than 1 billion customers."
+],
+"why": "The figures describe customers and infrastructure. The culture page does not say what being customer obsessed means in an employee's week, although the customer success ad describes exactly that for one team. The comparison “more than any other provider” has no source on the page.",
+"flags": ["RF22", "RF02"]
+},
+{
+"severity": "medium",
+"title": "Benefits are promised everywhere and described only for the US.",
+"evidence": [
+"Benefits page: “No matter where you are or what role you’re in, the support to grow, the space to learn, and the care to thrive are always within reach.”",
+"Same page: “Currently, details are available for U.S.-based employees, but we will soon provide information for other countries.”",
+"Repeated on several pages: “Explore Microsoft’s world-class benefits designed to help you and your family live well.”"
+],
+"why": "The benefits page lists categories (health, saving, time away, family leave, education, discounts) without amounts or conditions, and the detail sits in a US-only section. Three of the four captured ads are outside the US. “World-class” is not backed by any comparison in the material.",
+"flags": ["RF18", "RF02"]
+},
+{
+"severity": "medium",
+"title": "Employee voice is about identity, and the text stories found are from 2023.",
+"evidence": [
+"The Code of Us hub features 34 items, most of them videos, organised by community (Asian, Black and African American, disability, families, Hispanic and Latinx, Indigenous, LGBTQIA+, military, women).",
+"The two text stories captured are dated September 14, 2023 and November 2, 2023. No captured story comes from the datacenter pathway or the rotation programmes."
+],
+"why": "The stories support the inclusion promise. They say little about the growth, flexibility or pay promises, and their age leaves open whether they describe today.",
+"flags": []
+},
+{
+"severity": "low",
+"title": "The hiring page contradicts itself on interview format, and two notices date themselves.",
+"evidence": [
+"“We’ll set you up for success throughout our entirely virtual interview process.” and, on the same page, “Interviews may take place over the phone, on Microsoft Teams, or in person.”",
+"“Heads up! We’re launching a new recruiting system on November, 17 and while we make the switch, it may take a while for all of our job postings to show up on the Microsoft Careers Site.”",
+"The early-careers page says of Leap: “Additional program details coming soon.” The D&I page describes Leap as a U.S. Department of Labor certified apprenticeship."
+],
+"why": "From the page alone, an applicant cannot tell whether to prepare for an in-person interview. The system notice gives no year, so it is unclear whether it still applies.",
+"flags": ["RF12"]
+},
+{
+"severity": "low",
+"title": "Ads use internal abbreviations without explaining them.",
+"evidence": [
+"Sales ad: “Grow frontline worker (FLW) sockets and Copilot adoption, driving upsell and customer prioritization in collaboration with Digital Sales and Engineering teams.”",
+"Sales ad: “Maintain accurate account plans and MSX updates, ensuring alignment with strategic priorities and consumption milestones.”",
+"Early-careers page heading: “HaaS datacenter pathways”"
+],
+"why": "These terms are not explained anywhere in the captured material, so their meaning may be unclear to a reader without internal context.",
+"flags": ["RF19"]
+}
+],
+"fixes": [
+{
+"title": "Lead the home and culture pages with what working here gives, using proof already published",
+"needs_new_data": false,
+"steps": [
+"On the home page, keep the mission as one line of context and follow it with three facts already on the site: the work-site field in every posting, EiP onboarding, donation matching (see Before → after).",
+"On the culture page, give each attribute one practice from the material. Replace the Fortune 500 and cloud-region figures with what customer focus means in a role, using the customer success ad as the model.",
+"On the hiring page, make the interview-format sentences agree, put a year on the recruiting-system notice, and align the two Leap descriptions."
+],
+"why_first": "It needs no new information. It moves the most specific material to the place where the promise is made, and it fixes the contradictions at little cost.",
+"needs": [
+"Confirmation that every posting carries a pay range, before saying so on the home page",
+"Which countries donation matching covers"
+],
+"effort": "small",
+"effort_note": "Rewriting two pages and three sentences with facts already published",
+"who": ["careers-site content owner", "talent acquisition (process notices)", "benefits team (matching scope)"],
+"check": [
+"Whether the facts on the home page stay true as postings change",
+"How often recruiters are asked about in-office days or pay at the first call"
+]
+},
+{
+"title": "Give the growth promise a mechanism for experienced hires, or narrow it",
+"needs_new_data": true,
+"steps": [
+"Decide whether “anyone can grow” is meant for all hires.",
+"If it is, publish how growth works after the first role: internal moves, promotion routes and learning open to all employees, with figures and the period they cover.",
+"If it is not, limit the sentence to the programmes it describes."
+],
+"why_first": "Growth is the most repeated promise after the mission, and its evidence covers only early-career hires.",
+"needs": [
+"Internal mobility or promotion figures, with the period and population",
+"Learning programmes open to all employees",
+"One example career path for each major function"
+],
+"effort": "large",
+"effort_note": "Data and content gathered across HR, learning and the business",
+"who": ["HR analytics (mobility data)", "learning and development", "recruiting leads for experienced hiring"],
+"check": [
+"Whether the careers site has a page for experienced professionals",
+"Whether growth questions come up less often in experienced-hire screening calls"
+]
+},
+{
+"title": "Refresh employee stories for the hiring lines you promote",
+"needs_new_data": true,
+"steps": [
+"Collect recent first-person stories from an EiP participant, a rotation programme, a datacenter technician and an experienced hire.",
+"Date each story and link it from the matching programme page and ads.",
+"Keep what works in the 2023 stories: real names, concrete events, a difficulty and how it was handled."
+],
+"why_first": "The programme pages make specific promises that no captured story backs, and the stories found are old enough that their currency is unclear.",
+"needs": ["Employees willing to tell their story, with approval", "Programme managers to identify participants"],
+"effort": "large",
+"effort_note": "New content: interviews, writing, approvals",
+"who": ["employer brand team", "programme managers (EiP, finance rotation, SCORE)", "datacenter operations managers", "employees"],
+"check": [
+"Whether each programme page links at least one dated story",
+"Whether the story dates fall within the last 24 months"
+]
+}
+],
+"rewrites": [
+{
+"title": "Home page, opening paragraph",
+"original": "When you join Microsoft, you’re not just stepping into a job— you’re stepping into a mission-driven company where purpose is at the heart of everything we do.\n\nOur mission—to empower every person and every organization on the planet to achieve more—isn’t just words.\n\nIt’s our foundation. It’s what sets us apart.",
+"problem": "The paragraph describes the company and says the mission sets it apart, without one fact about the job.",
+"logic": "Keep the mission as context and follow it with facts already published elsewhere on the site, each kept within its stated scope.",
+"rewrite": "Our mission is to empower every person and every organization on the planet to achieve more. Here is what joining us looks like in practice:\n• Every job posting tells you where and how the work happens, from 0 days a week in the office to fully on-site.\n• If you join through the Early-in-Profession (EiP) program, you get immersive training, structured job shadowing and continuous support from dedicated mentors.\n• We match employee donations dollar for dollar, up to $15,000 per person a year, and donate $25 for every hour you volunteer with a qualified nonprofit.",
+"notes": [
+{"kind": "confirm", "text": "Whether every job posting includes a base pay range. All four reviewed do. If confirmed, add it as a fourth line."},
+{"kind": "confirm", "text": "In which countries donation matching applies."},
+{"kind": "evidence", "text": "One fact about growth after the first role, for experienced hires."}
+]
+},
+{
+"title": "Culture page, growth mindset paragraph",
+"original": "At Microsoft, we believe that growth isn’t just possible—it’s expected. Our culture is rooted in a growth mindset, which means we see potential as something to be nurtured, not pre-determined. We know that anyone can evolve their thinking, expand their skills, and grow their career because we’ve built the systems and support to make that happen.",
+"problem": "Growth is promised to anyone, and the systems behind it are not named.",
+"logic": "Name the systems the site already describes and keep their scope: people starting out and new starters. Leave the wider promise open until evidence exists.",
+"rewrite": "At Microsoft, growth is expected, and for people starting out the structure is published. The Finance Rotation Program is two years of four six-month rotations across core finance functions. SCORE takes you through three one-year rotations in cloud supply chain operations. The HR rotation program runs for three years.\n\nWhen you start, your manager shares a personalized onboarding plan, and your manager or a member of the Talent team pairs you with an onboarding buddy for your first weeks.",
+"notes": [
+{"kind": "evidence", "text": "How growth works after the first role: a mechanism and a figure with its period."},
+{"kind": "confirm", "text": "In which countries the rotation programmes are open."}
+]
+}
+],
+"questions": [
+{"kind": "confirm", "for": "communication", "text": "Does every job posting include a base pay range? All four reviewed do."},
+{"kind": "confirm", "for": "communication", "text": "Are interviews for experienced hires virtual, in person, or both? The hiring page says both."},
+{"kind": "confirm", "for": "communication", "text": "Which year does the notice about the new recruiting system on November 17 refer to, and does it still apply?"},
+{"kind": "confirm", "for": "communication", "text": "What is the current status of Leap? The D&I page describes it as a certified apprenticeship; the early-careers page says details are coming soon."},
+{"kind": "confirm", "for": "communication", "text": "Which description of Aspire is current? The 2023 story calls it an internship programme for recent graduates; the early-careers page calls it a learning journey of a year or more for new full-time employees."},
+{"kind": "confirm", "for": "communication", "text": "In which countries do donation matching and the rotation programmes apply?"},
+{"kind": "evidence", "for": "communication", "text": "How growth works for experienced hires: internal moves, promotion routes and learning, with figures and the period they cover."},
+{"kind": "evidence", "for": "communication", "text": "What “world-class benefits” include outside the US."},
+{"kind": "evidence", "for": "communication", "text": "What being customer obsessed means in employees' daily work, beyond customer and cloud-region figures."},
+{"kind": "evidence", "for": "communication", "text": "A summary of pay-equity results on the benefits page itself, not only through the link to the annual report."},
+{"kind": "evidence", "for": "communication", "text": "Recent, dated employee stories from the EiP, rotation and datacenter hiring lines and from experienced hires."},
+{"kind": "evidence", "for": "audit", "text": "Text of current job ads for engineering, research and design roles; the stand-alone ad pages could not be read."},
+{"kind": "evidence", "for": "audit", "text": "Screenshots of the LinkedIn, Instagram, Facebook, X and TikTok accounts, and of Glassdoor and Indeed reviews (see “What to add for the full picture”)."}
+],
+"genericity": [
+{"claim": "“Our mission—to empower every person and every organization on the planet to achieve more—isn’t just words.” (home page, with the mission-driven company paragraph)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "The mission wording is Microsoft's own, but the claim built on it, a mission-driven company with purpose at the heart of everything, carries no fact about the job. A comparable employer could reuse it with its own mission. It moves up only if the page shows what the mission changes in a role."},
+{"claim": "“At Microsoft, we believe that growth isn’t just possible—it’s expected.” (culture page)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "none", "defensibility": "supportable", "why": "Growth and continuous learning are stock themes, and the paragraph names none of the systems it says exist. The early-careers page has the mechanisms (rotation lengths, EiP onboarding) that could make it specific."},
+{"claim": "“That’s why 95% of Fortune 500 companies trust Microsoft, and why our cloud spans 60+ regions worldwide, more than any other provider.” (culture page, customer-obsessed attribute)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The figures tie the claim to Microsoft, but they describe customers and infrastructure and say nothing about the employee's work. Specific, but not relevant to the decision to join."},
+{"claim": "“We don’t just value differences—we seek them out and invite them in.” (culture page, with the hiring programmes on the D&I page)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "high", "defensibility": "supportable", "why": "The sentence alone fits anyone. The D&I page attaches named programmes with content: neurodiversity hiring with built-in accommodations, the Leap apprenticeship, MSSA for service members, the HBCU datacenter pathway. A comparable employer would have to run such programmes to say the same."},
+{"claim": "Flexibility depends on the work, role and location, and every posting states the required in-office days (benefits page)", "verdict": "partial", "substitution": "bends", "ubiquity": "rare", "specificity": "high", "defensibility": "supportable", "why": "A published six-level scale from remote to fully on-site, visible in all four ads, is a concrete practice. Another employer could adopt it, so it is supportable rather than owned."}
+],
+"ledger": [
+{"claim": "Joining Microsoft means joining a mission-driven company, and the mission is what sets it apart (home page; mission repeated on the culture, D&I and datacenter pages and in every ad)", "class": "core", "evidence": "Customer and infrastructure figures: 95% of Fortune 500 companies and a cloud in 60+ regions (culture page); more than 100 datacenters and 1 million servers serving more than 1 billion customers (datacenter internship ad)", "strength": "weak", "status": "weak", "comment": "The figures show the company's reach, not what the mission means for an employee. The rest of the support restates the claim."},
+{"claim": "Growth is expected, and the systems and support exist for anyone to grow their career (culture, benefits, D&I and early-careers pages)", "class": "core", "evidence": "Rotation programmes with set lengths (finance, SCORE, HR), the three-year MCAPS EiP programme and Aspire (early-careers page); EiP onboarding with training, job shadowing and mentors (two ads); onboarding plan and buddy for new starters (hiring page)", "strength": "moderate", "status": "partial", "comment": "Programmes and practices, without outcome figures. Apart from onboarding, all of them are for early-career hires, while the claim covers anyone. Nothing shows growth after the first role."},
+{"claim": "Teams are customer obsessed and empowered to push boundaries and solve real problems (culture page)", "class": "core", "evidence": "The Fortune 500 and cloud-region figures next to the claim; the customer success ad describes customer work for one team", "strength": "weak", "status": "weak", "comment": "Company figures do not show the employee experience. The customer success ad covers one team, and the material does not say it represents the attribute."},
+{"claim": "A diverse and inclusive workplace where every voice matters, with many pathways in (culture, D&I, neurodiversity and datacenter pathway pages, The Code of Us)", "class": "core", "evidence": "Neurodiversity Hiring Program with extended interviews, accommodations, hiring events and monthly webinars; Leap apprenticeship; MSSA; HBCU datacenter pathway; employee resource group roles described in both stories; the Code of Us hub", "strength": "moderate", "status": "partial", "comment": "The hiring programmes are concrete practices. How included people feel once hired is shown only through individual stories, with no figures."},
+{"claim": "Giving is part of the culture, and the company amplifies employees' giving (culture and benefits pages)", "class": "supporting", "evidence": "Donations matched dollar for dollar up to $15,000 per person a year, $25 for every volunteer hour with a qualified nonprofit, and an annual Giving Campaign each October (culture page, next to the claim)", "strength": "moderate", "status": "partial", "comment": "A specific mechanism sits next to the claim. Employee participation is not shown, and the page does not say which countries the matching covers."},
+{"claim": "Flexibility fits the work, role and location, and every job posting states where and how the work happens (benefits page)", "class": "supporting", "evidence": "The six-level work-site field described on the page; all four captured ads show it (3 days, 3 days, 0 days remote, fully on-site); the Dublin sales ad adds up to 50% work from home", "strength": "moderate", "status": "partial", "comment": "Four ads out of the 2,455 in the sitemap are a narrower sample than every posting. Working hours are left to each team."},
+{"claim": "Pay is transparent from the first conversation, and people are paid fairly for substantially similar work (benefits page)", "class": "supporting", "evidence": "All four ads state a typical base pay range with level and country, including a separate range for the San Francisco Bay area and New York City", "strength": "strong", "status": "partial", "comment": "Direct and specific for transparency. The pay-equity commitment links to an annual report that was not captured; the pages reviewed show no pay-equity figure."},
+{"claim": "Hiring is open and transparent: you are guided through the process, how to prepare and when to expect your next update (hiring page)", "class": "supporting", "evidence": "Stage-by-stage description: 2 to 4 conversations of up to an hour each, email confirmation, status in the Action Center, the recruiter shares the timeline after interviews; separate steps for early-career and neurodiversity candidates", "strength": "strong", "status": "partial", "comment": "The steps are specific. The page gives no actual timeline, and it contradicts itself on whether interviews are entirely virtual."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

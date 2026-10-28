@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "Keller Williams",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 65,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 100,
+  "confidence": "high",
+  "reliability_note": "all 34 criteria assessed from four types of public material (proposition pages, careers pages, recruitment articles and YouTube, candidate process); no job ads or KWRI staff stories could be captured"
+},
+"verdict": "The offer to agents is specific and partly backed: profit share, the annual commission cap, and keeping your own brand and database. But the clearest proof sits in a magazine article, not on the Join KW pages. Two money promises go further than your own fine print, and the offer to KWRI headquarters staff is generic.",
+"notices": [
+  "This audit is built from public pages captured automatically on 2026-10-27. Some sources may have been missed, and live pages may have changed since. Job ads could not be read: the ADP job board needs a browser, and kw.com and Indeed returned bot checks. The animated counters on the Training, Coaching and Culture pages were captured as strings of digits, so their figures could not be assessed.",
+  "Two audiences are covered: KWRI headquarters staff (kwri.kw.com) and real-estate agents recruited to independently owned market centers (thrive.kw.com, kscore.kw.com, Outfront articles). Each finding says which audience it concerns."
+],
+"materials": [
+  {"name": "KWRI Careers (incl. How We Hire)", "type": "Careers page"},
+  {"name": "KWRI Teams", "type": "Careers page"},
+  {"name": "KWRI Benefits", "type": "Careers page"},
+  {"name": "About Us (kwri.kw.com)", "type": "EVP / proposition"},
+  {"name": "Thrive home: Join KW", "type": "Careers page (agents)"},
+  {"name": "Thrive: Our Story", "type": "EVP / proposition (agents)"},
+  {"name": "Thrive: Culture", "type": "Careers page (agents)"},
+  {"name": "Thrive: Profit Share", "type": "Careers page (agents)"},
+  {"name": "Thrive: Training", "type": "Careers page (agents)"},
+  {"name": "Thrive: Inclusion and Belonging", "type": "Careers page (agents)"},
+  {"name": "Thrive: Growth", "type": "Careers page (agents)"},
+  {"name": "Thrive: Coaching", "type": "Careers page (agents)"},
+  {"name": "KSCORE home", "type": "Recruitment campaign"},
+  {"name": "Outfront: How To Get a Real Estate License at No Cost (May 2025)", "type": "Recruitment campaign"},
+  {"name": "Outfront: Why Top Agents and Teams Join KW Franchises (Oct 2025)", "type": "Recruitment campaign"},
+  {"name": "Market-center join form (Austin template)", "type": "Candidate process"},
+  {"name": "YouTube @kellerwilliams, 15 latest videos", "type": "Social account"},
+  {"name": "Payscale reviews, 7 reviews", "type": "Employee reviews (not scored)"}
+],
+"sources": [
+  {"title": "KWRI Careers | Build a Career Worth Having at Keller Williams", "url": "https://kwri.kw.com/kwri-careers", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "KWRI Teams | Find Your Niche at Keller Williams", "url": "https://kwri.kw.com/kwri-teams", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "KWRI Employee Benefits", "url": "https://kwri.kw.com/benefits", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "About Keller Williams | Our Story, Culture & Values", "url": "https://kwri.kw.com/about-us", "type": "Proposition", "captured": "2026-10-27"},
+  {"title": "Build & Scale Your Real Estate Career | Keller Williams", "url": "https://thrive.kw.com/", "type": "Careers page (agents)", "captured": "2026-10-27"},
+  {"title": "Our Story", "url": "https://thrive.kw.com/our-story", "type": "Proposition (agents)", "captured": "2026-10-27"},
+  {"title": "Culture", "url": "https://thrive.kw.com/culture", "type": "Careers page (agents)", "captured": "2026-10-27"},
+  {"title": "Profit Share", "url": "https://thrive.kw.com/culture/profit-share", "type": "Careers page (agents)", "captured": "2026-10-27"},
+  {"title": "Training", "url": "https://thrive.kw.com/training", "type": "Careers page (agents)", "captured": "2026-10-27"},
+  {"title": "Inclusion and Belonging", "url": "https://thrive.kw.com/culture/inclusion-and-belonging", "type": "Careers page (agents)", "captured": "2026-10-27"},
+  {"title": "Growth", "url": "https://thrive.kw.com/growth", "type": "Careers page (agents)", "captured": "2026-10-27"},
+  {"title": "Coaching", "url": "https://thrive.kw.com/coaching", "type": "Careers page (agents)", "captured": "2026-10-27"},
+  {"title": "Keller Successful Career Opportunities in Real Estate | KSCORE", "url": "https://kscore.kw.com/", "type": "Recruitment campaign", "captured": "2026-10-27"},
+  {"title": "How To Get a Real Estate License at No Cost With Keller Williams & KSCORE", "url": "https://outfront.kw.com/training/get-real-estate-license/", "type": "Recruitment campaign", "captured": "2026-10-27"},
+  {"title": "Why Top Agents and Teams Join KW Franchises", "url": "https://outfront.kw.com/views/why-top-agents-and-teams-join-kw-franchises", "type": "Recruitment campaign", "captured": "2026-10-27"},
+  {"title": "Elevate Your Real Estate Career with Keller Williams in Austin, TX (join form)", "url": "https://locations.kw.com/location/8", "type": "Candidate process", "captured": "2026-10-27"},
+  {"title": "Keller Williams Realty on YouTube", "url": "https://www.youtube.com/@kellerwilliams", "type": "Social account", "captured": "2026-10-27"},
+  {"title": "Working at Keller Williams Realty, Inc. | PayScale", "url": "https://www.payscale.com/research/US/Employer=Keller_Williams_Realty%2C_Inc./Reviews", "type": "Employee reviews", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "KWRI careers, teams and benefits pages", "url": "https://kwri.kw.com/kwri-careers", "kind": "Careers site (staff)", "decision": "included", "reason": "Official headquarters careers pages; three distinct page kinds"},
+  {"source": "About Us (kwri.kw.com)", "url": "https://kwri.kw.com/about-us", "kind": "Proposition", "decision": "included", "reason": "Mission, beliefs and a link to corporate openings"},
+  {"source": "Thrive agent site: home, Our Story, Culture, Profit Share, Training, Inclusion, Growth, Coaching", "url": "https://thrive.kw.com/", "kind": "Careers site (agents)", "decision": "included", "reason": "Official Join KW site; one page of each distinct kind"},
+  {"source": "Further Thrive pages (technology, communities, RED Day, KW Español, Command for Teams)", "url": "https://thrive.kw.com/culture/red-day", "kind": "Careers site (agents)", "decision": "excluded", "reason": "Overlap with pages already captured, or per-site fetch limit"},
+  {"source": "KSCORE home", "url": "https://kscore.kw.com/", "kind": "Recruitment campaign", "decision": "included", "reason": "Official no-cost licensing programme for aspiring agents"},
+  {"source": "Outfront: license at no cost (May 2025) and why top agents join (Oct 2025)", "url": "https://outfront.kw.com/views/why-top-agents-and-teams-join-kw-franchises", "kind": "Recruitment campaign", "decision": "included", "reason": "Official, current, recruitment-focused articles"},
+  {"source": "Outfront stories dated 2020 and 2022 (KSCORE graduates, Stories of Grit)", "url": "https://outfront.kw.com/agents/considering-a-career-in-real-estate-three-kscore-graduates-share-how-they-did-it", "kind": "Employee / agent story", "decision": "excluded", "reason": "Older than 24 months"},
+  {"source": "About 110 other Outfront magazine pages", "url": "https://outfront.kw.com/", "kind": "Magazine", "decision": "excluded", "reason": "Mostly news for current agents, not candidate-facing, many outdated"},
+  {"source": "Market-center join form (Austin template)", "url": "https://locations.kw.com/location/8", "kind": "Candidate process", "decision": "included", "reason": "The form behind Find a Market Center Near You"},
+  {"source": "Single franchise office careers page (Phoenix area)", "url": "https://kwprofessionalpartners.kw.com/careers-at-keller-williams/", "kind": "Careers page (one office)", "decision": "excluded", "reason": "One independently owned office; not corporate or representative"},
+  {"source": "Aggregator re-posts of agent ads (about 13 sites)", "url": "", "kind": "Job boards", "decision": "excluded", "reason": "Not official; some are single-office ads"},
+  {"source": "Built In Austin, Legal.io listings", "url": "https://www.builtinaustin.com/company/keller-williams-realty-international/jobs", "kind": "Job boards", "decision": "excluded", "reason": "No current jobs, or expired and outdated listings"},
+  {"source": "Other KW business sites (KW Cares, Next Gen, Luxury, Land, Commercial, Worldwide and others)", "url": "", "kind": "Corporate sites", "decision": "excluded", "reason": "Not candidate-facing for KWRI staff or agent careers"},
+  {"source": "Agent TikTok accounts", "url": "", "kind": "Social", "decision": "excluded", "reason": "Personal accounts of individual agents; no verifiable official account found"},
+  {"source": "careers.kw.com", "url": "https://careers.kw.com", "kind": "Careers site", "decision": "unavailable", "reason": "The server's certificate names a different host; the check was not bypassed"},
+  {"source": "kw.com/careers", "url": "https://www.kw.com/careers", "kind": "Careers site", "decision": "unavailable", "reason": "Bot check (HTTP 403)"},
+  {"source": "KWRI job board on ADP (View Open Positions)", "url": "https://myjobs.adp.com/kellerwilliamscareers/cx?c=2187407&d=KWMyJobs&sor=adprm", "kind": "Job ads", "decision": "unavailable", "reason": "Page is drawn by scripts in a browser; no job ads could be read"},
+  {"source": "Indeed employer page and reviews", "url": "https://www.indeed.com/cmp/Keller-Williams-Realty", "kind": "Reviews / jobs", "decision": "unavailable", "reason": "Security check (HTTP 403)"},
+  {"source": "Comparably", "url": "https://www.comparably.com/companies/keller-williams", "kind": "Reviews", "decision": "unavailable", "reason": "Script-built page returned an error"},
+  {"source": "RepVue", "url": "https://www.repvue.com/companies/KellerWillliams", "kind": "Reviews", "decision": "unavailable", "reason": "Security checkpoint (HTTP 429)"},
+  {"source": "InHerSight, kununu", "url": "", "kind": "Reviews", "decision": "unavailable", "reason": "No employer page found"},
+  {"source": "YouTube @kellerwilliams", "url": "https://www.youtube.com/@kellerwilliams", "kind": "Social account", "decision": "included", "reason": "Linked from kwri.kw.com, thrive.kw.com and outfront.kw.com"},
+  {"source": "Payscale reviews", "url": "https://www.payscale.com/research/US/Employer=Keller_Williams_Realty%2C_Inc./Reviews", "kind": "Reviews", "decision": "included", "reason": "Readable public review page; 7 reviews on page 1"},
+  {"source": "LinkedIn company page", "url": "https://www.linkedin.com/company/keller-williams-realty-inc", "kind": "Social account", "decision": "manual", "reason": "Closed to automatic collection"},
+  {"source": "Instagram", "url": "https://www.instagram.com/kellerwilliamsrealty", "kind": "Social account", "decision": "manual", "reason": "Closed to automatic collection"},
+  {"source": "Facebook", "url": "https://www.facebook.com/KellerWilliamsRealty", "kind": "Social account", "decision": "manual", "reason": "Closed to automatic collection"},
+  {"source": "X (@KWRI)", "url": "https://twitter.com/KWRI/", "kind": "Social account", "decision": "manual", "reason": "Closed to automatic collection"},
+  {"source": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/Keller-Williams-Reviews-E114145.htm", "kind": "Reviews", "decision": "manual", "reason": "Closed platform"}
+],
+"social": [
+  {
+    "platform": "YouTube",
+    "account": "@kellerwilliams",
+    "url": "https://www.youtube.com/@kellerwilliams",
+    "purpose": "General channel for licensed agents and leaders: skills, market topics, podcasts, agent features. Not a careers channel.",
+    "sample": "15 latest videos, 2026-10-08 to 2026-10-26 (titles and descriptions; videos not watched)",
+    "rhythm": "15 videos in 19 days",
+    "people_share": "3 of 15 tell a person's career story (two on one MAPS coach, one on a leader's career pivot)",
+    "themes": [
+      "Agent skills: AI for inspection reports, HVAC rules, Instagram prospecting, business capacity",
+      "Podcasts: Empire Building (three episodes), The Color of Money",
+      "Agent and leader stories: the Front & Center feature on the Director of Coaches at MAPS",
+      "A launch short for Open Real Estate"
+    ],
+    "notes": "Most descriptions repeat the mission, vision, values and beliefs block word for word, so the channel carries the same core line as the careers sites. One of 15 descriptions links to a page for becoming an agent; none links to KWRI careers or Join KW. Profit share, the commission cap and KSCORE do not appear in the 15 titles or descriptions. The channel description calls itself the best real estate based YouTube channel, with nothing to back the comparison."
+  }
+],
+"perception": {
+  "sample": [
+    {"platform": "Payscale", "reviews": 7, "period": "undated on the page", "rating": "3.5 shown on Payscale on 2026-10-27; the page does not say how many ratings this is based on. Sub-ratings shown: Fair Pay 2.2, Pay Transparency 2.5, Appreciation 3.3, Company Outlook 4.1"}
+  ],
+  "thin": true,
+  "themes": [
+    {"theme": "Flexibility and working from home", "tone": "positive", "promise": "KWRI Benefits: flexible work schedules; work remotely or from the Austin headquarters", "match": "consistent", "note": "Reviewers name flex time and working from home as pros."},
+    {"theme": "Work/life balance", "tone": "positive", "promise": "KWRI Benefits: well-being as part of the culture; the Indeed Work/Life Balance ranking", "match": "consistent", "note": "One reviewer describes the balance as real."},
+    {"theme": "Pay and pay transparency", "tone": "negative", "promise": "No pay information on the KWRI pages reviewed", "match": "not_addressed", "note": "Reviewers mention pay that is not competitive in software roles and a lack of transparency about compensation. The platform's Fair Pay and Pay Transparency sub-ratings are the lowest it shows."},
+    {"theme": "Feeling valued by senior management", "tone": "negative", "promise": "KWRI Benefits headline: Work Where You're Valued", "match": "tension", "note": "One reviewer does not feel appreciated by upper management; another says their input is treated in high regard."},
+    {"theme": "Growth", "tone": "mixed", "promise": "KWRI Careers: build a career worth having; grow with us", "match": "mixed", "note": "One reviewer calls it a place to learn and grow; another lists no growth as the downside."},
+    {"theme": "Team and atmosphere", "tone": "positive", "promise": "Culture pages: community, teamwork", "match": "consistent", "note": "Reviewers mention a family-like atmosphere and working with agents."},
+    {"theme": "Administration and organisation", "tone": "negative", "promise": "", "match": "not_addressed", "note": "Reviewers mention paperwork errors and things being all over the place at times."}
+  ],
+  "caveat": "Only 7 undated reviews could be read; Glassdoor and Indeed were closed or blocked. The sample appears to mix headquarters roles with roles in independently owned offices (one review mentions putting up open house signs), so it cannot be read as KWRI staff opinion alone."
+},
+"manual_import": [
+  {"platform": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/Keller-Williams-Reviews-E114145.htm", "capture": ["Rating page with rating, review count, recommend and CEO approval figures and the date", "10 to 20 recent reviews from the last 24 months, without author names", "If possible, filtered to headquarters roles separately from office and agent roles"]},
+  {"platform": "Indeed", "url": "https://www.indeed.com/cmp/Keller-Williams-Realty", "capture": ["Rating page with review count", "Recent reviews", "The Work/Life Balance rating that the KWRI benefits page refers to", "The company jobs list"]},
+  {"platform": "KWRI job board (ADP)", "url": "https://myjobs.adp.com/kellerwilliamscareers/cx?c=2187407&d=KWMyJobs&sor=adprm", "capture": ["The job list with its total count", "8 to 12 job ads across role families and levels, full text"]},
+  {"platform": "LinkedIn", "url": "https://www.linkedin.com/company/keller-williams-realty-inc", "capture": ["Header with about text and follower count", "The Life tab sections", "Latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, opened with captions", "Pinned post"]},
+  {"platform": "Instagram", "url": "https://www.instagram.com/kellerwilliamsrealty", "capture": ["Profile header with bio and follower count", "Grid of the latest 9 to 12 posts", "3 to 5 posts about people, work or hiring, opened with captions", "Pinned posts"]},
+  {"platform": "Facebook", "url": "https://www.facebook.com/KellerWilliamsRealty", "capture": ["Page header with about text and followers", "Latest 9 to 12 posts", "3 to 5 posts about people, work or hiring", "Pinned posts"]},
+  {"platform": "X", "url": "https://twitter.com/KWRI/", "capture": ["Profile header", "Latest 9 to 12 posts", "Pinned post"]}
+],
+"scope": {
+  "reviewed": [
+    "16 public candidate-facing pages captured on 2026-10-27: three KWRI headquarters careers pages, About Us, eight pages of the Join KW agent site, the KSCORE site, two recruitment articles on Outfront and the market-center join form",
+    "The 15 latest videos on the official YouTube channel (titles and descriptions)",
+    "7 reviews on Payscale, as a separate perception layer that does not enter the score"
+  ],
+  "not_reviewed": [
+    "Job ads: the ADP job board, kw.com/careers and Indeed could not be read",
+    "Stories from KWRI headquarters staff: none found in the public sources reviewed",
+    "LinkedIn, Instagram, Facebook, X and Glassdoor: closed to automatic collection",
+    "The figures in animated counters on the Training, Coaching and Culture pages",
+    "Individual market-center pages and their own offers, the interview experience, and what happens after a market center makes contact"
+  ]
+},
+"summary": {
+  "points": [
+    "The agent offer has real substance. Profit share, the annual commission cap and keeping your brand and database depend on how the KW franchise model works. Five of the eight main promises have meaningful support, though none has strong support.",
+    "The most candid and decision-useful text is the October 2025 Outfront article on why top agents join. It explains the cap and names real downsides. The Join KW pages repeat the promises without that detail.",
+    "Two money promises go further than the material's own details. Profit share is sold as zero risk with unlimited earning potential. KSCORE promises zero cost, while the same material mentions partial scholarships and fees that students pay.",
+    "The KWRI headquarters offer rests on a line about making an impact. Its development evidence is real-estate training that prepares people for an agent career, and no staff member speaks anywhere in the public sources reviewed.",
+    "In a thin sample of 7 Payscale reviews, reviewers praise flexibility and working from home, which the benefits page promises. They criticise pay and pay transparency, which the KWRI pages never mention."
+  ],
+  "actions": [
+    "Rewrite the Profit Share page: remove the absolutes, fix the duplicated section, explain vesting, and bring the cap and portability facts onto Join KW.",
+    "Put the KSCORE cost conditions right next to the zero-cost headline.",
+    "Build the KWRI staff offer from evidence: staff stories, internal career paths, and pay ranges in job ads."
+  ]
+},
+"dimensions": [
+  {"id": "clarity", "score": 7, "max": 12, "assessable": true,
+   "why": "The Join KW home page states an offer you can restate in its first screen: KW helps agents build a business on their own goals, and the path and pace are theirs. The KWRI careers page opens with a generic line about making an impact. Mission, vision, purpose, perspective, values and an acronym belief system all compete for the lead, and WI4C2TES and KPA are not explained.",
+   "criteria": [
+     {"name": "Offer identifiable", "score": 2, "max": 4, "assessable": true, "note": "Agent offer is clear on the Thrive home page; the KWRI offer is only fragments (impact, growth, benefits). Two offers, one weak."},
+     {"name": "Candidate benefit explicit", "score": 3, "max": 4, "assessable": true, "note": "Thrive pages and KWRI Benefits speak to you with concrete items (eight weeks of paid parental leave for eligible team members, onsite gym); About Us, Our Story and Teams are mostly company description."},
+     {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "Thrive home has a lead idea with three career-stage sections, but the culture and story pages stack six statements of equal weight."},
+     {"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "WI4C2TES and KPA are never explained; Company Dollar, cap, IMAO, MAPS and BOLD appear with partial or no explanation."}
+   ]},
+  {"id": "differentiation", "score": 10, "max": 16, "assessable": true,
+   "why": "Profit share depends on mechanics that belong to the KW franchise model: company dollar, seven sponsor levels and market-center profit. Agent ownership of brand and database, and the named training and coaching programmes, are partly specific. The KWRI offer and the culture claim would fit any comparable employer unchanged.",
+   "criteria": [
+     {"name": "Only true of you", "score": 3, "max": 5, "assessable": true, "note": "Of six core promises, profit share is only true of you; agent ownership and the training system mostly so; the KWRI career promise, KWRI well-being and the culture claim fit anyone."},
+     {"name": "Free of stock phrases", "score": 2, "max": 3, "assessable": true, "note": "Making an impact, limitless, unlimited earning potential, boundless potential, world-class and best-in-class appear, but on the agent side specific mechanics outweigh them."},
+     {"name": "Employer-specific advantages", "score": 3, "max": 4, "assessable": true, "note": "Several specifics carry the agent offer (cap, profit share, portability, KSCORE, Associate Leadership Council); the KWRI offer uses only Austin headquarters perks and the hiring process."},
+     {"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "Profit share rests on the franchise structure; the article's own comparison table lists revenue-share programmes at two other brokerages, so the general idea is not exclusive."},
+     {"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "Careers worth having, businesses worth owning, lives worth living is repeated everywhere and memorable, but it is a mission line, not a statement of what working here gives you."}
+   ]},
+  {"id": "proof", "score": 9, "max": 16, "assessable": true,
+   "why": "Five of eight main promises have meaningful support, all of it moderate: profit share mechanics, named training and coaching programmes, brand and database portability, the KSCORE scholarship process and the inclusion structures. The KWRI career and well-being promises and the culture claim have only weak support. The strongest agent proof sits in an Outfront article, away from the Join KW pages where the promises are made.",
+   "criteria": [
+     {"name": "Share of promises backed", "score": 3, "max": 6, "assessable": true, "note": "Five of eight promises partly supported, none fully; three of the six core promises have only weak support."},
+     {"name": "Specific proof", "score": 2, "max": 4, "assessable": true, "note": "About half the promises have support, mostly mechanisms and named programmes without outcome data."},
+     {"name": "Proof fits the promise", "score": 2, "max": 3, "assessable": true, "note": "Support fits some promises; for KWRI growth the evidence is real-estate training, which bears on an agent career rather than a headquarters career."},
+     {"name": "Proof next to the promise", "score": 2, "max": 3, "assessable": true, "note": "Profit share and coaching proof sit next to the claim; cap, portability and KSCORE cost details sit in separate articles."}
+   ]},
+  {"id": "audience_fit", "score": 9, "max": 12, "assessable": true,
+   "why": "Agents and KWRI staff get separate sites built on the shared mission line, and the agent site speaks to three career stages. Agents get some decision factors (cap, profit share, brand) but not the cap amount, local splits or coaching costs. KWRI staff get benefits but no pay. Trade-offs appear in only one article.",
+   "criteria": [
+     {"name": "Audience defined", "score": 3, "max": 3, "assessable": true, "note": "Separate sites for staff and agents; Thrive home addresses new, experienced and high-producing agents by name."},
+     {"name": "Decision factors addressed", "score": 2, "max": 4, "assessable": true, "note": "Economics are explained in principle but without amounts; KWRI pay and role content are absent from the pages captured."},
+     {"name": "Adapted by audience", "score": 3, "max": 3, "assessable": true, "note": "Shared mission core, with profit share and training for agents and benefits, teams and hiring steps for staff."},
+     {"name": "Clear trade-offs", "score": 1, "max": 2, "assessable": true, "note": "Only the Outfront article says some agents stay away because they will not be number one; elsewhere the offer appeals to everyone."}
+   ]},
+  {"id": "employee_truth", "score": 5, "max": 10, "assessable": true,
+   "why": "No KWRI staff member speaks in the public sources reviewed. Agent-side voices are short and mostly KWRI leaders. The Outfront article names real downsides, such as the flood of resources and adjusting to a 200-person office. Nowhere is the income risk of commission-based work discussed, and culture is presented mainly as belief lists.",
+   "criteria": [
+     {"name": "Employee voice", "score": 1, "max": 3, "assessable": true, "note": "Quotes come mostly from KWRI executives and a market-center director; one KSCORE student and one graduate speak briefly; the MAPS client names on the coaching page carry no captured text."},
+     {"name": "Work reality", "score": 2, "max": 3, "assessable": true, "note": "Cap mechanics, licensing steps and team descriptions give some reality; an agent's working week and a KWRI role's daily work are not shown."},
+     {"name": "Honest difficulties", "score": 1, "max": 2, "assessable": true, "note": "Downsides named in one article; the Profit Share page calls the programme zero risk and no page discusses commission-only income."},
+     {"name": "Culture shown in practice", "score": 1, "max": 2, "assessable": true, "note": "Some practices (Associate Leadership Council, RED Day on the second Thursday of May since 2009, KW Cares grants), but culture sections lead with belief and value lists."}
+   ]},
+  {"id": "consistency", "score": 9, "max": 12, "assessable": true,
+   "why": "The mission line and the agent-first, training and profit share themes repeat across the agent site, Outfront, KSCORE and YouTube. Some proof is off-story, such as franchise and innovation awards next to the join form. There are small factual tensions between pages: the year Equity was added, the wording of the Perspective statement, and the zero-cost KSCORE wording next to partial scholarships.",
+   "criteria": [
+     {"name": "Same core promise", "score": 4, "max": 5, "assessable": true, "note": "All touchpoints carry the mission line; YouTube carries it in boilerplate but its content does not lead to joining."},
+     {"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Profit share and training proof align; awards lists (Fortune innovation 2023, Entrepreneur franchise ranking, Forbes diversity 2023) do not bear on the agent offer."},
+     {"name": "Same voice", "score": 2, "max": 2, "assessable": true, "note": "Recognisably one employer across all sites."},
+     {"name": "No contradictions", "score": 1, "max": 2, "assessable": true, "note": "Minor tensions: Equity added in 2020 (Our Story) versus 2021 (Inclusion page); two different Perspective statements; zero cost versus partial scholarships."}
+   ]},
+  {"id": "candidate_relevance", "score": 8, "max": 12, "assessable": true,
+   "why": "Agents get specific reasons to join, and the Outfront and KSCORE articles answer many practical questions. Still missing: the cap amount or range, how local splits are set in practice, coaching costs, and what an agent's work looks like week to week. KWRI candidates get concrete benefits and a hiring process, but no pay and no role descriptions in the sources captured.",
+   "criteria": [
+     {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Specific for agents; for KWRI staff the reason is generic."},
+     {"name": "Role reality", "score": 2, "max": 3, "assessable": true, "note": "Team descriptions and licensing steps are partly concrete; daily work is not described."},
+     {"name": "Decision facts", "score": 2, "max": 3, "assessable": true, "note": "Parental leave, PTO, 401(k), location and remote option are stated, though PTO and the match have no figures; no pay for staff; no cap amounts or fees for agents."},
+     {"name": "Questions anticipated", "score": 2, "max": 3, "assessable": true, "note": "The Outfront article covers splits, caps, brand, database and moving a large team; KSCORE covers eligibility and timing; coaching costs and income uncertainty are not addressed."}
+   ]},
+  {"id": "conversion", "score": 8, "max": 10, "assessable": true,
+   "why": "Each audience has a clear next step: a market-center contact form that says a member of the market center will contact you shortly, KSCORE enrolment, and View Open Positions for KWRI. The KWRI hiring process is described in five steps. The join form asks for consent to automated marketing calls and texts, and the material beside the calls to action is mostly awards rather than decision facts.",
+   "criteria": [
+     {"name": "Next step clear", "score": 3, "max": 3, "assessable": true, "note": "Start a Career Conversation, Find a Market Center Near You, Enroll Now and View Open Positions are present on every relevant page."},
+     {"name": "Reasons near the button", "score": 1, "max": 2, "assessable": true, "note": "The join form sits beside an awards list; Thrive home buttons sit beside general stage descriptions."},
+     {"name": "Effort reduced", "score": 1, "max": 2, "assessable": true, "note": "The form is short, but its consent text covers automated marketing calls even to numbers on Do Not Call lists."},
+     {"name": "Button fits the stage", "score": 2, "max": 2, "assessable": true, "note": "Career conversation for agents still deciding, enrolment for aspiring agents, openings for staff."},
+     {"name": "Process described", "score": 1, "max": 1, "assessable": true, "note": "How We Hire lists application, introductory chat, deep dive, team meeting and final steps."}
+   ]}
+],
+"strengths": [
+  {"title": "Profit share is explained as a mechanism you can check", "text": "The Profit Share page explains where the money comes from. Associates who have not yet met their cap pay company dollar to the market center. The market center covers its monthly operating expenses, and part of the remaining profit goes to associates who brought productive agents in. A sponsor gets 50% of the profit attributed to the associates they bring on, falling across seven levels but never below 5%. The page reports over $2B distributed to KW associates. Few promises in the material are this specific."},
+  {"title": "The Outfront article answers the questions an experienced agent would ask", "text": "The October 2025 article explains the cap: the most an agent pays their market center from commission in a year, counted from the agent's anniversary date, after which the agent keeps 100 percent of commission for the rest of that year. It says market-center owners set splits locally. It says agents keep their own brand and can take their business with them if they leave. It also names downsides: the range of resources can feel like drinking from a firehose, moving to a market center of 200 people or more can be an adjustment, and some agents stay away because they will not be number one."},
+  {"title": "KSCORE shows the path to a licence step by step", "text": "The May 2025 KSCORE article sets out how to enrol through a participating market center and what a full scholarship covers. It says students pay licence application and exam costs, which vary by state, and that coursework must be finished within six months of enrolment. It explains that market centers may onboard differently. These are the conditions a person paying for their own licence needs to plan."},
+  {"title": "KWRI benefits and hiring steps are concrete", "text": "The benefits page states up to eight weeks of paid parental leave for eligible team members after birth, adoption or foster placement. It lists medical, dental, vision and pet insurance, flexible start and end times, and an Austin headquarters gym with a sauna and cold plunge. The careers page lists five hiring steps, from application to reference checks and an offer from an HR representative."},
+  {"title": "The agent site speaks to three career stages", "text": "The Thrive home page has separate sections for people starting out, experienced agents, and agents producing at a high level. Each section lists its own support: structured training for the first, coaching and integrated technology for the second, leverage and expansion models for the third."}
+],
+"problems": [
+  {"severity": "high", "title": "The KWRI headquarters offer is generic, and its growth promise has no headquarters career evidence behind it",
+   "evidence": [
+     "“Working at KWRI is about more than just “having a job” — it’s about making an impact.” (KWRI Careers)",
+     "KWRI Benefits lists KSCORE scholarships, which prepare you to launch a real estate career, and free Keller Williams University courses, which are real-estate focused, under Personal and Professional Development.",
+     "No KWRI staff member speaks on the three KWRI careers pages or About Us."
+   ],
+   "why": "The headline line contains nothing specific to KWRI. The growth support is training for a different career, as an agent. It says nothing about moving up inside headquarters teams. Pay, career paths and staff accounts are all missing, so a headquarters candidate gets benefits and a hiring process but no reason to choose KWRI over a comparable employer.",
+   "flags": ["RF01", "RF14", "RF10"]},
+  {"severity": "high", "title": "The KSCORE zero-cost promise goes further than its own conditions",
+   "evidence": [
+     "“With zero costs to you and self-paced instruction, the prelicensing course, provided by Kaplan, can be completed at your own speed and adapted to fit your schedule.” (KSCORE home)",
+     "“Local Keller Williams® market centers offer full and partial scholarships, eliminating the financial burden that can prevent prospective agents from pursuing this exciting career path.” (Outfront, May 2025)",
+     "“Students who go on to pursue licensing are responsible for associated license application and exam costs, which vary by state.” (Outfront, May 2025)",
+     "The fine print on KSCORE home says that in Iowa KSCORE covers 60 pre-licensing course-hours and the student pays for any additional required hours."
+   ],
+   "why": "The headline promises zero cost. The material's own details mention partial scholarships, state exam and application fees paid by the student, an Iowa limit, and enrolment through participating market centers. The conditions are real and useful, but they sit in an article and in fine print, away from the promise.",
+   "flags": ["RF18"]},
+  {"severity": "high", "title": "Profit share, the most distinctive promise, is sold with absolutes and explained with a copy error",
+   "evidence": [
+     "“Profit Share is a program for U.S. and Canadian associates with zero risk and unlimited earning potential that rewards you simply for helping the KW franchise system grow.” (Profit Share page)",
+     "The section headed Profit Share under Grow Your Wealth with KWW repeats the Growth Share description almost word for word.",
+     "“Rather than shaving cash off the top of every deal, owners share profits to create a successful and sustainable business that takes care of its people even after they cease production.” The same page says: “When deals close, KW® associates who haven’t yet met their cap pay company dollar to their Market Center.”",
+     "The Outfront article says profit share is for vested agents; no page explains what vesting means."
+   ],
+   "why": "Zero risk and unlimited earning potential are absolutes that nothing on the page supports. The over $2B figure is a total distributed to associates, with no time frame on the page and no indication of what a typical associate receives. The page also claims the percentages beat other wealth-building systems in the industry, with no source. The duplicated section, the unexplained vesting condition and the line about not shaving cash off each deal, set next to company dollar paid on each deal, make the mechanism harder to follow.",
+   "flags": ["RF02", "RF18"]},
+  {"severity": "medium", "title": "The money side of the agent role is left to the conversation with a market center",
+   "evidence": [
+     "The Outfront article says market-center owners decide the commission split and that the cap is predetermined, but gives no amount or range.",
+     "The Coaching page describes six coaching programmes and says personal productivity coaching is offered to every associate who wishes; it does not say which programmes cost agents money.",
+     "No page reviewed describes commission-based income, the time to a first closed deal, or the costs an agent carries."
+   ],
+   "why": "Economics come first in the article's own advice on choosing a company, yet the candidate-facing pages give principles without figures. Next to the zero-risk wording on the Profit Share page, the absence of any financial downside leaves the offer uniformly positive.",
+   "flags": ["RF24"]},
+  {"severity": "medium", "title": "Culture is presented as a stack of statements and acronyms, and two pages disagree on one of them",
+   "evidence": [
+     "Our Story Perspective: “A technology company that provides the real estate platform that our agents’ buyers and sellers prefer.”",
+     "Culture page Perspective: “A training, coaching, consulting, and technology company creating the culture and community where entrepreneurs thrive.”",
+     "About Us, Culture and Our Story each list mission, vision, purpose, values, perspective and the WI4C2TES beliefs; the KWRI careers page names the KPA assessment without saying what the letters stand for or what it involves."
+   ],
+   "why": "Two pages of the same site give different Perspective statements. Six framework statements carry equal weight, so the material has no single culture idea, and the practices that show culture (the Associate Leadership Council, RED Day, KW Cares) sit below the lists. WI4C2TES and KPA are not explained anywhere in the pages reviewed.",
+   "flags": ["RF21", "RF19"]},
+  {"severity": "medium", "title": "Agent stories on the Join KW pages are dated or have no text",
+   "evidence": [
+     "The Agents Who Thrive cards on Our Story are dated October 2021, December 2021 and April 2023.",
+     "Two of the three Profit Share success stories are dated 2020 and 2021.",
+     "The Coaching page lists six MAPS client names; no text from them was captured."
+   ],
+   "why": "The pages where agents decide carry little current first-person evidence. The most recent first-person accounts in the material come from KWRI executives in the October 2025 article, not from working agents.",
+   "flags": ["RF10"]},
+  {"severity": "low", "title": "Dates and awards do not line up across pages",
+   "evidence": [
+     "“2020: Equity is added to the WI4C2TES belief system.” (Our Story) The Inclusion page says the International Associate Leadership Council added Equity in 2021.",
+     "The KSCORE graduates story is dated April 12, 2023 on Our Story and April 12, 2022 on Outfront.",
+     "Beside the join form: Fortune's America's Most Innovative Companies 2023, Forbes America's Best Employers for Diversity 2023, Franchise Business Review and T3 Sixty rankings."
+   ],
+   "why": "Small date conflicts make the timeline less trustworthy. The awards next to the form say nothing about what an agent gets, and none says what it measured.",
+   "flags": ["RF22"]}
+],
+"fixes": [
+  {"title": "Make the profit share and cap facts the backbone of Join KW, without the absolutes",
+   "needs_new_data": true,
+   "steps": [
+     "On the Profit Share page, replace zero risk and unlimited earning potential with the mechanism: company dollar, the seven levels, 50% at the first level, never below 5%.",
+     "Fix the section headed Profit Share that repeats the Growth Share text, and say that Growth Share applies to international agents if that is the case (the Outfront table says so).",
+     "Explain what vesting means for profit share, and give the time frame and scope of the over $2B figure.",
+     "Move the cap explanation, the brand and database portability, and the firehose and large-office downsides from the Outfront article onto the Thrive home and Culture pages."
+   ],
+   "why_first": "Profit share is the one core promise that is only true of you, and the Join KW pages are where agents decide. Most of the content already exists in your own article.",
+   "needs": ["What vesting means", "Time frame and scope of the over $2B figure", "Whether cap examples or a typical range can be published", "A distribution of annual profit share per participating associate, if you want to show outcomes"],
+   "effort": "medium",
+   "effort_note": "Moving existing facts is a copy job; vesting and payout distribution need input from the profit share team",
+   "who": ["Agent-growth marketing", "Profit share programme owners", "Legal (earnings statements)"],
+   "check": ["Whether market-center leaders report fewer early questions about how profit share and the cap work", "Which Join KW sections visitors read before the join form, if your analytics show it"]},
+  {"title": "Put the KSCORE cost conditions right next to the zero-cost promise",
+   "needs_new_data": false,
+   "steps": [
+     "On KSCORE home, replace the zero-cost sentences with the scholarship terms from the Outfront article: full and partial scholarships through participating market centers, what a full scholarship covers, and licence application and exam fees paid by the student, varying by state.",
+     "Bring the Iowa limit up from the fine print into the cost section.",
+     "Align the KWRI Benefits and Training pages with the same wording."
+   ],
+   "why_first": "It is a cost promise to people paying for their own entry into the profession, and every fact needed is already published.",
+   "needs": ["What a partial scholarship covers"],
+   "effort": "small",
+   "effort_note": "Rewording with facts already in the material",
+   "who": ["KSCORE programme administrator", "Legal"],
+   "check": ["Questions to market centers about what KSCORE costs", "Enrolment volume after the change, read alongside the share of enrollees who go on to sit the exam"]},
+  {"title": "Give KWRI headquarters candidates a reason to choose KWRI, with proof",
+   "needs_new_data": true,
+   "steps": [
+     "Replace the making-an-impact opening with what KWRI teams do and the concrete conditions already published: remote or Austin, flexible start and end times, free KWU courses and KW Communities.",
+     "Add three or four short accounts from headquarters staff in different teams, in their own words, including one about something that is hard.",
+     "Show internal career paths with real examples or figures, and publish pay ranges in job ads.",
+     "Explain the KPA in one sentence where it is first mentioned, and say what the Indeed Work/Life Balance ranking measured and when."
+   ],
+   "why_first": "The staff offer is the weakest part of the material, and closing it needs new content that takes time to gather.",
+   "needs": ["Staff stories", "Internal move or promotion data", "Pay ranges by role", "Which roles can work remotely", "What KPA stands for and involves", "Details of the Indeed ranking"],
+   "effort": "large",
+   "effort_note": "Needs stories and data gathered across headquarters teams",
+   "who": ["KW Talent Acquisition", "Team leaders in two or three departments", "HR (pay ranges, remote policy)", "KW Video (staff stories)"],
+   "check": ["Whether candidates at the introductory chat ask about pay or remote work less often", "Applications per opening for roles whose ads carry a pay range"]}
+],
+"rewrites": [
+  {"title": "Profit Share page, opening sentence",
+   "original": "Profit Share is a program for U.S. and Canadian associates with zero risk and unlimited earning potential that rewards you simply for helping the KW franchise system grow.",
+   "problem": "Two absolutes that the page does not support, and the mechanism is hidden lower down.",
+   "logic": "Lead with how the money flows and the published figures, and keep the scope to U.S. and Canadian associates. Leave vesting and the payout distribution as questions until you can supply them.",
+   "rewrite": "Profit Share is a program for U.S. and Canadian associates. After your market center covers its monthly operating expenses, part of the remaining profit is shared with associates who brought productive agents to the office. When someone joins and names you as the sponsor who introduced them, you get 50% of the profit attributed to their profitable activities. The percentages decrease across seven levels but never fall below 5%. Over $2B in profit share has been distributed to KW associates.",
+   "notes": [
+     {"kind": "confirm", "text": "What vested means for profit share eligibility (the Outfront article uses the word)."},
+     {"kind": "confirm", "text": "The time frame and scope of the over $2B figure; a linked headline dated July 22, 2024 says North American associates."},
+     {"kind": "evidence", "text": "A distribution of annual profit share received by participating associates, so the page can show outcomes as well as the mechanism."}
+   ]},
+  {"title": "KSCORE home, pre-licensure cost",
+   "original": "With zero costs to you and self-paced instruction, the prelicensing course, provided by Kaplan, can be completed at your own speed and adapted to fit your schedule.",
+   "problem": "Zero cost is stated without the conditions published elsewhere in your own material.",
+   "logic": "Keep the self-paced point. Replace zero cost with the scholarship terms and the costs the student carries, all taken from the Outfront article and the page's own fine print.",
+   "rewrite": "Participating Keller Williams market centers offer full and partial KSCORE scholarships. The full scholarship covers all required pre-licensing coursework and in-class exams, plus online study materials, for Kaplan's self-paced digital course. If you go on to pursue your license, you pay the license application and exam costs, which vary by state. In Iowa, KSCORE covers 60 pre-licensing course-hours, and you pay for any additional required hours.",
+   "notes": [
+     {"kind": "confirm", "text": "Which costs a partial scholarship covers, and how a student learns which one they will get before enrolling."}
+   ]},
+  {"title": "KWRI Careers, opening paragraph",
+   "original": "Working at KWRI is about more than just “having a job” — it’s about making an impact. At KWRI, every team member is empowered to drive results that provide value, and we believe in supporting you to build a career worth having. As you grow with us, we’ll be right alongside you, cheering you on and celebrating your wins. From continuing education to supporting your personal health and wealth, we're here to help you thrive.",
+   "problem": "Every sentence would fit any employer. The specific facts sit on other pages.",
+   "logic": "Say what KWRI is and which teams it has, then the published working conditions and learning access. Leave career paths and staff stories as missing information rather than inventing them.",
+   "rewrite": "KWRI is the Keller Williams headquarters team in Austin, Texas. Its teams include Keller Williams University, KW MAPS Coaching, Technology and Innovation, Marketing & Communications, Events, KW Video, Research, Publishing, Finance and Legal. Whether you work remotely or at the Austin headquarters, flexible work schedules give you options to start and end your day in a way that balances your professional and personal life. KWRI employees can take Keller Williams University courses free of charge and join any KW Community at no cost.",
+   "notes": [
+     {"kind": "confirm", "text": "Which KWRI roles can be done remotely."},
+     {"kind": "evidence", "text": "Short accounts from headquarters staff and examples of internal moves, to back the promise of building a career at KWRI."},
+     {"kind": "evidence", "text": "Pay ranges for KWRI roles."}
+   ]}
+],
+"questions": [
+  {"kind": "confirm", "for": "communication", "text": "What vested means for profit share eligibility."},
+  {"kind": "confirm", "for": "communication", "text": "The time frame and scope of the over $2B profit share figure."},
+  {"kind": "evidence", "for": "communication", "text": "A distribution of annual profit share per participating associate."},
+  {"kind": "evidence", "for": "communication", "text": "Example cap amounts, or the range market centers set."},
+  {"kind": "confirm", "for": "communication", "text": "Which KW MAPS coaching programmes are included and which cost agents money."},
+  {"kind": "confirm", "for": "communication", "text": "Which costs a partial KSCORE scholarship covers."},
+  {"kind": "confirm", "for": "communication", "text": "Whether Growth Share applies only to international agents, as the Outfront table says."},
+  {"kind": "confirm", "for": "communication", "text": "Which KWRI roles can be done remotely."},
+  {"kind": "evidence", "for": "communication", "text": "Accounts from KWRI headquarters staff, in their own words."},
+  {"kind": "evidence", "for": "communication", "text": "Internal moves or promotions within KWRI teams."},
+  {"kind": "evidence", "for": "communication", "text": "Pay ranges for KWRI roles."},
+  {"kind": "evidence", "for": "communication", "text": "What the Indeed Work/Life Balance ranking measured and when."},
+  {"kind": "evidence", "for": "communication", "text": "What KPA stands for and what the assessment involves."},
+  {"kind": "confirm", "for": "communication", "text": "Which Perspective statement is current: the one on Our Story or the one on Culture."},
+  {"kind": "confirm", "for": "communication", "text": "Whether Equity was added to the beliefs in 2020 or 2021."},
+  {"kind": "confirm", "for": "communication", "text": "Whether the DEI committee made standing at all market centers in 2021 is still in place."},
+  {"kind": "evidence", "for": "audit", "text": "8 to 12 current KWRI job ads from the ADP board, across role families."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of Glassdoor and Indeed ratings and recent reviews, ideally separating headquarters and office roles."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the LinkedIn Life tab and recent people-focused posts on LinkedIn and Instagram."}
+],
+"genericity": [
+  {"claim": "KWRI: build a career worth having; “Working at KWRI is about more than just “having a job” — it’s about making an impact.”", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Built from stock phrases (making an impact, grow with us). It names no KWRI team, practice or figure, so a comparable employer could publish it unchanged."},
+  {"claim": "Agent-first: your business and brand belong to you, and the path and pace of your career are yours to decide.", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "high", "defensibility": "supportable", "why": "Specific mechanisms back it: agents keep their own brand, can take their business with them if they leave, and export contacts from Command. Agent councils have a voice in direction. Another brokerage could adopt the same portability rules, so it is mostly but not only true of you."},
+  {"claim": "“At KW, you’re empowered by clear systems and models and a supportive culture that make growth inevitable, not accidental.”", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "Named programmes (Ignite, BOLD, KW MAPS, Keller Williams University, The Millionaire Real Estate Agent) tie it to KW. Without them the sentence fits anyone, and inevitable claims more than any evidence shown."},
+  {"claim": "Profit share: a true partner in profits, with the market center's profit shared with associates who helped it grow.", "verdict": "partial", "substitution": "breaks", "ubiquity": "common", "specificity": "high", "defensibility": "supportable", "why": "Depends on KW mechanics: company dollar, market-center profit, seven sponsor levels, 50% at the first level, never below 5%. The wording around it uses stock phrases (unlimited earning potential), and the article's own comparison table lists revenue-share programmes at two other brokerages, so ownership of the general idea is not shown."},
+  {"claim": "Culture: the WI4C2TES beliefs create a culture where together, everyone achieves more.", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "some", "defensibility": "unowned", "why": "The acronym and the God, Family, then Business ranking are your own wording, but the beliefs (integrity, trust, teamwork, communication) fit any employer once the acronym is removed."},
+  {"claim": "KWRI: Work Where You're Valued; your well-being is part of our culture.", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The headline and exceptional benefits are stock phrases. Austin headquarters details (gym with sauna and cold plunge, pickleball, Trail of Lights family night) add some specificity, but they are perks, not a reason tied to KWRI work."}
+],
+"ledger": [
+  {"claim": "KWRI: build a career worth having; we support your growth (KWRI Careers, About Us)", "class": "core", "evidence": "KWRI Benefits: Keller Williams University real-estate courses free to KWRI employees; KW Communities free to all staff; KSCORE scholarships that prepare you to launch a real estate career.", "strength": "weak", "status": "weak", "comment": "The evidence supports learning access, mostly for an agent career. It does not show career paths or progression inside headquarters teams. Needed: internal moves, staff accounts."},
+  {"claim": "Agent-first: your business and brand belong to you; agents are treated as partners (Thrive home, Our Story, KSCORE, Outfront)", "class": "core", "evidence": "Outfront, Oct 2025: agents can build and keep their own brand; a KWRI regions president says agents can take their business with them if they leave; the comparison table says Command allows self-serve CSV export, with a different flow for teams. Culture page: agent councils give agents a voice in direction and profitability.", "strength": "moderate", "status": "partial", "comment": "Practices without outcome data, sitting mostly in a separate article. Team exports follow a different flow and transaction files depend on local systems, so portability has conditions."},
+  {"claim": "Systems, training and coaching make growth inevitable, not accidental (Thrive home, Training, Coaching, Outfront)", "class": "core", "evidence": "Named programmes with content: Ignite, Career Visioning, Business Planning Clinic, six MAPS coaching programmes, Family Reunion and Mega Agent Camp events; Keller Williams University formed in 1996; Training Magazine Hall of Fame 2018.", "strength": "moderate", "status": "partial", "comment": "Named programmes, but no participation or outcome figures could be read (counters captured as digits). Inevitable is not supported. The award is named without what it measured."},
+  {"claim": "Profit share: a true partner in profits, building wealth (Culture, Profit Share, Outfront)", "class": "core", "evidence": "Profit Share page: company dollar paid until cap; profit after monthly operating expenses partly shared with associates who brought productive agents; seven levels, 50% at the first, never below 5%; over $2B distributed to KW associates.", "strength": "moderate", "status": "partial", "comment": "The mechanism is direct and specific, but the total gives no picture of what a typical associate receives, and vesting is unexplained. Zero risk and unlimited earning potential are not supported."},
+  {"claim": "Culture: WI4C2TES beliefs create a culture where together, everyone achieves more (About Us, Culture, Our Story, YouTube)", "class": "core", "evidence": "RED Day, the annual day of service on the second Thursday of May since 2009; KW Cares grants to associates in emergencies.", "strength": "weak", "status": "weak", "comment": "The practices show community service and hardship support, not how people work together day to day. The belief list itself is not evidence."},
+  {"claim": "KWRI: Work Where You're Valued; well-being and flexibility (KWRI Benefits)", "class": "core", "evidence": "Flexible work schedules with options to start and end your day; work remotely or from the Austin headquarters; a top Indeed ranking for Work/Life Balance.", "strength": "weak", "status": "weak", "comment": "The flexibility policy is described only in general terms; it is unclear which roles can work remotely. The Indeed ranking has no year or criteria. Benefits listed are basic conditions, not proof of feeling valued."},
+  {"claim": "KSCORE: a path to a real estate license at zero cost (KSCORE home, Outfront May 2025, KWRI Benefits, Training)", "class": "supporting", "evidence": "Outfront, May 2025: enrolment through a participating market center; the full scholarship covers all required coursework, in-class exams and online study materials; students pay licence application and exam costs, which vary by state; six-month completion window.", "strength": "strong", "status": "partial", "comment": "Strong evidence for a scoped promise, but the zero-cost wording goes further: partial scholarships exist, students pay state fees, and Iowa funding is capped at 60 hours."},
+  {"claim": "Inclusion: an empowering community where everyone belongs (About Us, Inclusion and Belonging, Culture)", "class": "supporting", "evidence": "Inclusion page: in 2021 the international agent council added Equity to the beliefs and made the DEI committee a standing committee at all market centers; a Social Equity Task Force with associates from every U.S. and Canadian region; a Director of Community Growth appointed May 15, 2025; Forbes diversity listings 2020, 2021, 2023.", "strength": "moderate", "status": "partial", "comment": "Structures and a current appointment, but no outcomes. It is unclear whether the 2021 committee decision still holds. The listings do not say what they measured. Our Story dates the Equity addition to 2020."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

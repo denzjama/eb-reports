@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "Bain & Company",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 66,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 100,
+  "confidence": "high",
+  "reliability_note": "all 34 criteria assessed from six types of public material (proposition page, careers pages, job ads, employee stories, hiring-process pages, YouTube); collected automatically on 27 October 2026"
+},
+"verdict": "The deep pages carry real substance: a level-by-level consulting ladder, a detailed London hiring FAQ, job ads with tasks and US pay. The front pages lead with lines any firm could publish, and the hardest demands of the job appear only in the internship posting's fine print.",
+"notices": [
+  "The material was collected automatically from Bain's public careers pages, job board, YouTube channel and one review site on 27 October 2026. Some pages may have been missed, and live pages may have changed since. Facts about Bain were assessed as evidence shown to candidates; they were not independently checked.",
+  "Glassdoor and Indeed refused automated access, and LinkedIn, Instagram, Facebook and X are closed platforms. Screenshots of these would complete the social and review sections (see the end of the report)."
+],
+"materials": [
+  {"name": "Careers home page (bain.com/careers)", "type": "Careers page"},
+  {"name": "Find a Role", "type": "Careers page"},
+  {"name": "Life at Bain", "type": "EVP / proposition page"},
+  {"name": "Benefits at Bain", "type": "Careers page"},
+  {"name": "Supporting Your Growth", "type": "Careers page"},
+  {"name": "Affinity Groups", "type": "Careers page"},
+  {"name": "Hybrid and office work", "type": "Careers page"},
+  {"name": "Work area: Management Consulting", "type": "Careers page"},
+  {"name": "Work area: Technology & Engineering", "type": "Careers page"},
+  {"name": "Students", "type": "Careers page"},
+  {"name": "Bain London University Hiring (Associate Consultant)", "type": "Careers page"},
+  {"name": "Our Hiring Process", "type": "Hiring-process page"},
+  {"name": "Interviewing", "type": "Hiring-process page"},
+  {"name": "What to Expect", "type": "Hiring-process page"},
+  {"name": "Our People", "type": "Employee stories"},
+  {"name": "Q&A: From software engineer to data architect at Bain (New York)", "type": "Employee story"},
+  {"name": "Q&A: What co-creation looks like on a Bain case team (London)", "type": "Employee story"},
+  {"name": "Associate Consultant Internship", "type": "Job ad / programme page"},
+  {"name": "Job search list (271 results)", "type": "Job board"},
+  {"name": "AI & Digital Products Consultant, Lisbon", "type": "Job ad"},
+  {"name": "Accountant, General Accounting, Mexico City", "type": "Job ad"},
+  {"name": "AI Engineering Lead, Evals and Systems Integration (Boston, Chicago, London, São Paulo, Warsaw)", "type": "Job ad"},
+  {"name": "Administrative Assistant, Mexico City", "type": "Job ad"},
+  {"name": "Associate, Procurement Analytics BCN, Mexico City", "type": "Job ad"},
+  {"name": "Coordinator, Human Resources, Chicago", "type": "Job ad"},
+  {"name": "Coordinator, Creative Services, Shanghai", "type": "Job ad"},
+  {"name": "Associate Counsel, Privacy, Warsaw", "type": "Job ad"},
+  {"name": "YouTube @bainandcompany, 15 latest videos", "type": "Social media"},
+  {"name": "Comparably employee reviews (not scored)", "type": "Review site"}
+],
+"sources": [
+  {"title": "Careers at Bain", "url": "https://www.bain.com/careers/", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Find a Role", "url": "https://www.bain.com/careers/find-a-role", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Bain London University Hiring", "url": "https://www.bain.com/careers/recruiting/london-recruiting", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Job search list", "url": "https://careers.bain.com/jobs/SearchJobs", "type": "Job board", "captured": "2026-10-27"},
+  {"title": "AI & Digital Products Consultant (Strategy & Transformation Practice), Lisbon", "url": "https://careers.bain.com/jobs/FolderDetail/Practice-Consultant-Strategy-Transformation/108792", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Accountant, General Accounting, Mexico City", "url": "https://careers.bain.com/jobs/FolderDetail/Accountant-General-Accounting/110080", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "AI Engineering Lead, Evals and Systems Integration", "url": "https://careers.bain.com/jobs/FolderDetail/Staff-Engineer-II-AI-Engineering/111330", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Administrative Assistant, Mexico City", "url": "https://careers.bain.com/jobs/FolderDetail/Manager-Assistant-Mexico-City/108891", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Associate, Procurement Analytics BCN, Mexico City", "url": "https://careers.bain.com/jobs/FolderDetail/Associate-Bain-Capability-Network/111782", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Coordinator, Human Resources, Chicago", "url": "https://careers.bain.com/jobs/FolderDetail/Coordinator-Human-Resources/110829", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Coordinator, Creative Services, Shanghai", "url": "https://careers.bain.com/jobs/FolderDetail/Coordinator-Creative-Services/109929", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Associate Counsel, Privacy, Warsaw", "url": "https://careers.bain.com/jobs/FolderDetail/Associate-Counsel-Privacy-Central-Legal-Department-GBS-Warsaw/110785", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Benefits at Bain", "url": "https://www.bain.com/careers/life-at-bain/benefits", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Life at Bain", "url": "https://www.bain.com/careers/life-at-bain", "type": "EVP / proposition page", "captured": "2026-10-27"},
+  {"title": "Supporting Your Growth", "url": "https://www.bain.com/careers/life-at-bain/supporting-your-growth", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Affinity Groups", "url": "https://www.bain.com/careers/life-at-bain/affinity-groups", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Our Hiring Process", "url": "https://www.bain.com/careers/hiring-process", "type": "Hiring-process page", "captured": "2026-10-27"},
+  {"title": "Interviewing", "url": "https://www.bain.com/careers/hiring-process/interviewing", "type": "Hiring-process page", "captured": "2026-10-27"},
+  {"title": "Our People", "url": "https://www.bain.com/careers/our-people", "type": "Employee stories", "captured": "2026-10-27"},
+  {"title": "From software engineer to data architect at Bain", "url": "https://www.bain.com/careers/life-at-bain/careers-blog/from-software-engineer-to-data-architect-at-bain", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "What co-creation looks like on a Bain case team", "url": "https://www.bain.com/careers/life-at-bain/careers-blog/what-co-creation-looks-like-on-a-bain-case-team", "type": "Employee story", "captured": "2026-10-27"},
+  {"title": "Hybrid and office work", "url": "https://www.bain.com/careers/life-at-bain/where-we-work/hybrid-office-work", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Management Consulting", "url": "https://www.bain.com/careers/work-with-us/our-work-areas/management-consulting", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Associate Consultant Internship", "url": "https://www.bain.com/careers/work-with-us/internships-programs/associate-consultant-internship", "type": "Job ad / programme page", "captured": "2026-10-27"},
+  {"title": "Technology & Engineering", "url": "https://www.bain.com/careers/work-with-us/our-work-areas/technology-engineering", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "What to Expect", "url": "https://www.bain.com/careers/hiring-process/what-to-expect", "type": "Hiring-process page", "captured": "2026-10-27"},
+  {"title": "YouTube: Bain & Company (@bainandcompany)", "url": "https://www.youtube.com/@bainandcompany", "type": "Social media", "captured": "2026-10-27"},
+  {"title": "Comparably: Bain & Company employee reviews", "url": "https://www.comparably.com/companies/bain-company/reviews", "type": "Review site", "captured": "2026-10-27"},
+  {"title": "Students", "url": "https://www.bain.com/careers/work-with-us/students", "type": "Careers page", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "Careers home, Find a Role, Life at Bain, Benefits, Supporting Your Growth, Affinity Groups, Hybrid and office work, Students", "url": "https://www.bain.com/careers/", "kind": "Careers site", "decision": "included", "reason": "Main proposition and culture pages; one page of each kind"},
+  {"source": "Bain London University Hiring", "url": "https://www.bain.com/careers/recruiting/london-recruiting", "kind": "Careers site (UK graduate hiring)", "decision": "included", "reason": "Primary UK entry route: process, assessment, FAQ, AI rule, social impact"},
+  {"source": "Work areas: Management Consulting and Technology & Engineering", "url": "https://www.bain.com/careers/work-with-us/our-work-areas/management-consulting", "kind": "Careers site (role families)", "decision": "included", "reason": "Two representative role families, including the core consulting track"},
+  {"source": "Six other work-area pages (design, marketing, business operations, analytics, product, talent)", "url": "https://www.bain.com/careers/work-with-us/our-work-areas/management-consulting", "kind": "Careers site (role families)", "decision": "excluded", "reason": "Same template as the two captured; available on request"},
+  {"source": "Hiring Process, Interviewing, What to Expect", "url": "https://www.bain.com/careers/hiring-process", "kind": "Hiring process", "decision": "included", "reason": "The candidate process as published"},
+  {"source": "Our People hub and two Q&A stories (New York, London)", "url": "https://www.bain.com/careers/our-people", "kind": "Employee stories", "decision": "included", "reason": "Most recent stories, two different roles and regions"},
+  {"source": "Other blog posts and the blog index", "url": "https://www.bain.com/careers/our-people", "kind": "Employee stories", "decision": "excluded", "reason": "Story target reached; titles and teasers are on the Our People page"},
+  {"source": "Associate Consultant Internship", "url": "https://www.bain.com/careers/work-with-us/internships-programs/associate-consultant-internship", "kind": "Programme page / job ad", "decision": "included", "reason": "Entry-level programme ad with US pay and essential functions"},
+  {"source": "About 35 other student and programme pages", "url": "https://www.bain.com/careers/work-with-us/students", "kind": "Programmes", "decision": "excluded", "reason": "Mostly regional or the same programme template"},
+  {"source": "17 integrated-team pages", "url": "https://www.bain.com/careers/", "kind": "Teams", "decision": "excluded", "reason": "Same template per team; sample budget went to role families, process and stories"},
+  {"source": "Eight affinity-group sub-pages", "url": "https://www.bain.com/careers/life-at-bain/affinity-groups", "kind": "DEI", "decision": "excluded", "reason": "Same template; the hub page was captured"},
+  {"source": "Find Your Place and General Consulting Track pages", "url": "https://www.bain.com/careers/", "kind": "Careers site", "decision": "excluded", "reason": "Fetched; no content beyond the site shell or what other pages already say"},
+  {"source": "Impact stories", "url": "https://www.bain.com/careers/", "kind": "Client case stories", "decision": "excluded", "reason": "Client work, not candidate-facing people content"},
+  {"source": "Regional and translated versions of the careers site", "url": "https://www.bain.com/careers/", "kind": "Careers site", "decision": "excluded", "reason": "Out of scope: global English presence audited"},
+  {"source": "Job board: 271 results on 27 October 2026", "url": "https://careers.bain.com/jobs/SearchJobs", "kind": "Job ads", "decision": "included", "reason": "Eight ads across role families, levels and locations, plus the list page"},
+  {"source": "About 55 other job ads seen in the crawl", "url": "https://careers.bain.com/jobs/SearchJobs", "kind": "Job ads", "decision": "excluded", "reason": "Same template and boilerplate; many repeat a title for another city"},
+  {"source": "YouTube @bainandcompany", "url": "https://www.youtube.com/@bainandcompany", "kind": "Social media", "decision": "included", "reason": "Linked from the careers site; 15 latest uploads read"},
+  {"source": "LinkedIn company page", "url": "https://www.linkedin.com/company/bain-and-company", "kind": "Social media", "decision": "manual", "reason": "Closed platform"},
+  {"source": "Instagram", "url": "https://www.instagram.com/bainandcompany", "kind": "Social media", "decision": "manual", "reason": "Closed platform; the Our People page points to it for a day in the life"},
+  {"source": "Facebook", "url": "https://www.facebook.com/bainandcompany", "kind": "Social media", "decision": "manual", "reason": "Closed platform"},
+  {"source": "X @bainandcompany", "url": "https://x.com/bainandcompany", "kind": "Social media", "decision": "manual", "reason": "Closed platform"},
+  {"source": "X @BainAlerts", "url": "https://twitter.com/BainAlerts", "kind": "Social media", "decision": "excluded", "reason": "Linked only from the job-board footer; not verified as a candidate-facing account"},
+  {"source": "Comparably", "url": "https://www.comparably.com/companies/bain-company/reviews", "kind": "Review site", "decision": "included", "reason": "Readable; 38 short answers shown"},
+  {"source": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/Bain-and-Company-Reviews-E3752.htm", "kind": "Review site", "decision": "unavailable", "reason": "Bot check (HTTP 403) on two attempts"},
+  {"source": "Indeed", "url": "https://www.indeed.com/cmp/Bain-&-Company/reviews", "kind": "Review site", "decision": "unavailable", "reason": "Security check (HTTP 403) on two attempts"},
+  {"source": "InHerSight", "url": "https://www.inhersight.com/company/bain-company", "kind": "Review site", "decision": "excluded", "reason": "Profile shows Unrated and no reviews"},
+  {"source": "kununu (German and Swiss entities)", "kind": "Review site", "decision": "excluded", "reason": "Outside the audited market"}
+],
+"social": [
+  {
+    "platform": "YouTube",
+    "account": "@bainandcompany",
+    "url": "https://www.youtube.com/@bainandcompany",
+    "purpose": "General corporate channel; linked from the careers site",
+    "sample": "15 latest videos, 15 September to 27 October 2026 (titles and descriptions; videos not watched)",
+    "rhythm": "about 10 per month in the sample (15 in six weeks)",
+    "people_share": "2 of 15: an AI engineer's Build at Bain video and the Lisbon office opening",
+    "themes": [
+      "CEO interview podcasts: 4 of 15",
+      "Climate Week and sustainability clips: 5 of 15",
+      "AI for business: 3 of 15",
+      "Talent and skills forum clip with an outside guest: 1 of 15",
+      "Working at Bain: 2 of 15"
+    ],
+    "notes": "The channel description carries careers language that matches the careers site: a steep learning curve, training, mentoring and flexible work options. None of the 15 video descriptions links to jobs or the careers site. The Build at Bain video describes a concrete task: a team building an AI agent to help process payroll and teaching it to handle edge cases."
+  }
+],
+"perception": {
+  "sample": [
+    {"platform": "Comparably", "reviews": 38, "period": "not shown on the platform (answers are undated)", "rating": "4.7/5 and a culture grade of A+, shown on Comparably on 27 October 2026, based on 1,518 ratings from 173 employee participants; the page counts 97 reviews and labels 96% of them positive"},
+    {"platform": "Glassdoor, Indeed", "reviews": 0, "period": "", "rating": "not read: both sites refused automated access"}
+  ],
+  "thin": false,
+  "themes": [
+    {"theme": "Colleagues, collaboration and coaching", "mentions": 10, "of": 38, "tone": "positive", "promise": "A culture of coaching, mentorship and apprenticeship; we work as one team", "match": "consistent", "note": "Answers praise helpful colleagues and collaboration; one describes coaching across the ranks."},
+    {"theme": "Leadership and managers", "mentions": 7, "of": 38, "tone": "positive", "promise": "We look after our people", "match": "consistent", "note": "Six answers are positive about care and openness; one asks for more trust in leadership."},
+    {"theme": "Pay and benefits", "mentions": 7, "of": 38, "tone": "mixed", "promise": "Pay and benefits that allow you to live your best life outside of work", "match": "consistent", "note": "Five answers praise pay, health insurance or the performance bonus. The two answers under feeling undervalued point to workload and team culture rather than pay."},
+    {"theme": "Workload", "mentions": 2, "of": 38, "tone": "negative", "promise": "Enjoy a sustainable career (consulting page)", "match": "tension", "note": "One answer says the volume of work and expectations is a lot; another asks for more hiring to balance work."},
+    {"theme": "Flexibility and life outside work", "mentions": 2, "of": 38, "tone": "positive", "promise": "Hybrid model and flexibility benefits", "match": "consistent", "note": "One answer mentions working from home three days a week. Role and office are unknown, so it cannot be compared with the in-office rules in the job ads."},
+    {"theme": "Hiring process", "mentions": 5, "of": 38, "tone": "positive", "promise": "A process designed to get to know each other, with feedback after each interview", "match": "consistent", "note": "Answers mention meeting the team, forthright communication and advice from interviewers. None mentions post-interview feedback directly."}
+  ],
+  "caveat": "The layer rests on one platform. Comparably shows short, undated answers, so the period and recency cannot be judged. Glassdoor and Indeed could not be read."
+},
+"manual_import": [
+  {"platform": "LinkedIn", "url": "https://www.linkedin.com/company/bain-and-company", "capture": ["profile header with follower count", "grid of the latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, opened with captions", "pinned posts", "every section of the Life tab"]},
+  {"platform": "Instagram", "url": "https://www.instagram.com/bainandcompany", "capture": ["profile header with bio and follower count", "grid of the latest 9 to 12 posts", "3 to 5 day-in-the-life or people posts with captions", "pinned posts and highlights"]},
+  {"platform": "Facebook", "url": "https://www.facebook.com/bainandcompany", "capture": ["page header", "the latest 9 to 12 posts", "any careers or people posts with captions"]},
+  {"platform": "X", "url": "https://x.com/bainandcompany", "capture": ["profile header", "the latest 9 to 12 posts", "pinned post"]},
+  {"platform": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/Bain-and-Company-Reviews-E3752.htm", "capture": ["rating overview with review count and date", "the 20 to 30 most recent reviews, pros and cons visible, saved in social/reviews/"]},
+  {"platform": "Indeed reviews", "url": "https://www.indeed.com/cmp/Bain-&-Company/reviews", "capture": ["rating overview with review count", "the 20 to 30 most recent reviews, saved in social/reviews/"]}
+],
+"scope": {
+  "reviewed": [
+    "26 public pages captured on 27 October 2026: 11 careers pages, the Life at Bain proposition page, 3 hiring-process pages, the Our People hub and 2 employee Q&As, the Associate Consultant Internship page and 8 job ads from careers.bain.com (Lisbon, Mexico City, Chicago, Shanghai, Warsaw, and one multi-city role including London)",
+    "The 15 latest YouTube videos (titles and descriptions)",
+    "38 Comparably review answers, as a separate perception layer that does not enter the score"
+  ],
+  "not_reviewed": [
+    "LinkedIn, Instagram, Facebook and X (closed platforms)",
+    "Glassdoor and Indeed reviews (access refused)",
+    "Six other work-area pages, 17 team pages, about 35 programme pages and regional careers sites",
+    "The interview experience itself and candidate emails",
+    "Video content (only titles and descriptions were read)"
+  ]
+},
+"summary": {
+  "points": [
+    "The front pages lead with lines that fit any comparable firm: the rotating Be more headline, problems that matter, and it's the people. The material that only Bain could publish sits two or three clicks deeper: the eight-level consulting ladder, the home office model and the London office's extra 10% pro-bono projects.",
+    "Five of eight promises are partly supported and none is fully supported. Apprenticeship and mentoring is the best backed, through the consulting ladder. The most repeated proof point, the Glassdoor ranking in 7 of 8 job ads, gives no year, list scope or criteria in the ads.",
+    "The plainest statement of what consulting demands is in the internship posting's essential functions: an unpredictable schedule, regular travel and being in person most days. The consulting page instead lists Enjoy a sustainable career and presents travel as a matter of preference. On Comparably, 2 of 38 answers raise workload.",
+    "Practical information is strong for London graduates and US roles, with dates, assessment content, an AI-use rule and pay ranges. Six of eight job ads, all outside the US, give no pay information, and on the capture date the London page still said applications were open, twelve days after the stated deadline.",
+    "On YouTube, 2 of the 15 latest videos are about working at Bain. The channel functions as a client-insight channel, and none of the videos links to jobs."
+  ],
+  "actions": [
+    "Rebuild the careers home and Life at Bain around the apprenticeship model and its proof, and cut or back the superlatives.",
+    "Put the demands of consulting next to the sustainability promise, and publish the office-attendance rule for each role.",
+    "Make the hiring promises checkable and current: explain how post-interview feedback works and refresh the London page."
+  ]
+},
+"dimensions": [
+  {
+    "id": "clarity", "score": 7, "max": 12, "assessable": true,
+    "why": "The home page offers several ideas at once: four Be more lines, then strategy, AI, sustainability, the best people, problems that matter and fast-compounding skills. Life at Bain adds four more pillars. A candidate can piece together an offer about growth and people, but no single lead idea organises the pages. Job ads add unexplained internal terms.",
+    "criteria": [
+      {"name": "Offer identifiable in one sentence", "score": 2, "max": 4, "assessable": true, "note": "An offer about learning and people exists but is split across the Be more lines, the hero paragraph and four Life at Bain pillars."},
+      {"name": "Candidate benefit stated", "score": 3, "max": 4, "assessable": true, "note": "Many you-will statements (the consulting level ladder, the new-hire commitments), mixed with company self-description such as Bain is more than a consulting firm."},
+      {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "Be more appears on the home page and in one video title; the Life at Bain pillars do not refer to it."},
+      {"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "Hub pages are plain. Ads and the hybrid page use unexplained terms: PPK, BCN, Iris/Sage, Vector, Umbrage, situational elasticity, unconscious competence."}
+    ]
+  },
+  {
+    "id": "differentiation", "score": 8, "max": 16, "assessable": true,
+    "why": "None of the four core claims breaks under substitution; apprenticeship comes closest because the consulting ladder and the home office model name concrete practices. Employer-specific material exists, but it sits in secondary pages rather than in the offer itself.",
+    "criteria": [
+      {"name": "Fits only this employer", "score": 2, "max": 5, "assessable": true, "note": "No core claim breaks under substitution: growth, people and meaningful work fit any comparable firm; apprenticeship bends. Employer-tied detail appears in secondary pages."},
+      {"name": "Free of stock phrases", "score": 1, "max": 3, "assessable": true, "note": "The proposition pages rest mainly on lexicon phrases: the best in the field, it's the people, an impact that matters, at the forefront of positive change, Achieve the extraordinary."},
+      {"name": "Employer-specific advantages", "score": 3, "max": 4, "assessable": true, "note": "Home office model, eight-level ladder, one week of internship training before case work, the London extra 10% projects; only the home office model is tied to the offer (repeated work with the same peers)."},
+      {"name": "Hard to copy", "score": 1, "max": 2, "assessable": true, "note": "The home office model of bigger, fewer hubs is a structural choice; the rest could be claimed by others with some effort."},
+      {"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "Be more is short and repeatable but carries no content about the work."}
+    ]
+  },
+  {
+    "id": "proof", "score": 9, "max": 16, "assessable": true,
+    "why": "Five of eight promises have partial support and none has strong support. Two of the four core promises (apprenticeship and fast growth) are partly backed by the consulting ladder and training facts; the best-place-to-work and meaningful-work promises rest on an award line without criteria and on client results. The proof usually sits on a different page from the promise.",
+    "criteria": [
+      {"name": "Promises backed by evidence", "score": 3, "max": 6, "assessable": true, "note": "Core: growth partly, people weakly, apprenticeship partly, meaningful work weakly. Supporting: flexibility, social impact and belonging partly; interview feedback not supported."},
+      {"name": "Specific evidence", "score": 2, "max": 4, "assessable": true, "note": "Support is mostly moderate: practices and programme descriptions without participation figures or outcomes."},
+      {"name": "Evidence fits the promise", "score": 2, "max": 3, "assessable": true, "note": "Several promises are backed only at narrower scope: social impact by the London office, family leave by the US, growth by the consulting track."},
+      {"name": "Evidence next to the promise", "score": 2, "max": 3, "assessable": true, "note": "Family leave and the affinity-group list sit next to their promises; the ladder and the London social-impact detail sit on other pages from the promises they support."}
+    ]
+  },
+  {
+    "id": "audience_fit", "score": 9, "max": 12, "assessable": true,
+    "why": "Role-family pages, the London graduate page and the job ads each address a clear audience. The technology page is visibly adapted. The proposition pages speak mainly of case teams and clients, which leaves functional and shared-services roles without their own version of the offer.",
+    "criteria": [
+      {"name": "Clear audience", "score": 3, "max": 3, "assessable": true, "note": "Separate pages for consulting, technology, students and London graduates; the repeated there is a place for you here line sits beside targeted content."},
+      {"name": "Decision factors for that audience", "score": 3, "max": 4, "assessable": true, "note": "Progression, training, tools, process and start dates are covered; pay appears only for US roles and workload only in the internship posting."},
+      {"name": "Adapted for different audiences", "score": 2, "max": 3, "assessable": true, "note": "Technology and consulting get adapted messages; finance, admin, legal and BCN ads open with the same boilerplate and no role-specific offer."},
+      {"name": "Honest trade-offs", "score": 1, "max": 2, "assessable": true, "note": "Trade-offs exist in the internship posting and BCN ad but are softened on proposition pages (They’re fun; Enjoy a sustainable career)."}
+    ]
+  },
+  {
+    "id": "employee_truth", "score": 8, "max": 10, "assessable": true,
+    "why": "Two named Q&As describe real events, and the London story names difficulty and how it was handled. Job ads show concrete tasks, tools, hours and office rules. Culture pages still lean on adjectives.",
+    "criteria": [
+      {"name": "Employee voice", "score": 2, "max": 3, "assessable": true, "note": "Named people with roles and offices; the London case-team Q&A is concrete, while the hub quotes are short and general (we hire amazing people)."},
+      {"name": "Work reality", "score": 3, "max": 3, "assessable": true, "note": "Ads list tasks and systems (month-end close, Workday, evaluation pipelines); the administrative ad gives hours between 6:30am and 6:30pm MT, about 40 a week."},
+      {"name": "Difficulties named", "score": 2, "max": 2, "assessable": true, "note": "The London Q&A says priorities could shift over a day and the bigger picture can be hard to see as a junior; it says how he handled it."},
+      {"name": "Culture shown through practice", "score": 1, "max": 2, "assessable": true, "note": "Some practices (home office model, extra 10% projects, same interview questions per role); Life at Bain and Affinity Groups are mostly adjectives."}
+    ]
+  },
+  {
+    "id": "consistency", "score": 8, "max": 12, "assessable": true,
+    "why": "Teaming, mentoring and the best-place-to-work line recur across pages and ads. Two tensions weaken it: the hybrid page leaves office attendance to judgement while some ads set fixed minimums, and travel is a preference on hub pages but a requirement in the internship posting. YouTube carries little of the careers story.",
+    "criteria": [
+      {"name": "Same core promise everywhere", "score": 3, "max": 5, "assessable": true, "note": "Careers pages align on people and growth; functional job ads carry only the boilerplate, and YouTube drifts to client content."},
+      {"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Mentoring proof reinforces the story; client results on the technology page support Bain's work, not the employee promise."},
+      {"name": "Same voice", "score": 2, "max": 2, "assessable": true, "note": "Recognisably one employer across the careers site and job board."},
+      {"name": "No contradictions", "score": 1, "max": 2, "assessable": true, "note": "Ambiguous tensions on office attendance and travel; no outright contradiction."}
+    ]
+  },
+  {
+    "id": "candidate_relevance", "score": 9, "max": 12, "assessable": true,
+    "why": "A candidate can picture most roles in detail. The London FAQ answers practical doubts directly. Pay is missing for every non-US role in the sample, and the reason to choose Bain over another firm stays general.",
+    "criteria": [
+      {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Reasons are given (colleagues who will never let you fail, opportunities in line with ambition) but stay general."},
+      {"name": "Role reality", "score": 3, "max": 3, "assessable": true, "note": "Ads name team, reporting line, tasks and tools; the consulting page describes each level."},
+      {"name": "Decision facts", "score": 2, "max": 3, "assessable": true, "note": "US ads give pay ranges and benefits; 6 of 8 ads give no pay; 3 of 8 state an office-attendance rule."},
+      {"name": "Doubts anticipated", "score": 2, "max": 3, "assessable": true, "note": "London FAQ covers cover letters, international grades and AI use; the hard parts of the job are not addressed on proposition pages."}
+    ]
+  },
+  {
+    "id": "conversion", "score": 8, "max": 10, "assessable": true,
+    "why": "Every ad has an Apply button, candidates who are not ready get a talent community, events and webinars, and the process is described with preparation hubs. The London page showed an application window that had already closed, and decision facts sit near the button only in US ads.",
+    "criteria": [
+      {"name": "Clear next step", "score": 2, "max": 3, "assessable": true, "note": "Clear on ads; the London page still said applications were open after its own 15 October deadline."},
+      {"name": "Decision facts near the button", "score": 1, "max": 2, "assessable": true, "note": "Pay and benefits sit before Apply only in US ads."},
+      {"name": "Less effort to apply", "score": 2, "max": 2, "assessable": true, "note": "No cover letter for London ACs, accepted CV formats, preparation hubs, three days for take-home tasks."},
+      {"name": "Next step fits the reader", "score": 2, "max": 2, "assessable": true, "note": "Apply for ready candidates; talent community, campus events, webinars and a personalised content guide for others."},
+      {"name": "Process explained", "score": 1, "max": 1, "assessable": true, "note": "Steps, interview types and London timings are described."}
+    ]
+  }
+],
+"strengths": [
+  {"title": "The consulting ladder shows how people grow", "text": "The Management Consulting page describes eight levels from intern to partner and what changes at each: senior associate consultants are asked to mentor associate consultants, managers select their own case team, and associate partners apprentice directly under a partner. This turns the mentoring promise into a visible mechanism."},
+  {"title": "The London graduate page answers practical questions", "text": "It gives the closing date, the assessment content (numerical and logical reasoning plus a personality questionnaire), two case-interview rounds with their timing, start months, no cover letter for London, how international grades are read, and a named rule on AI: only for grammar and spelling in the CV, not in the assessment or interviews."},
+  {"title": "Job ads show the work and, in the US, the pay", "text": "The Chicago HR coordinator ad names the cohort supported (first-year associate consultants), the systems (Workday), the Illinois salary range of $58,000 to $69,750 and in-office presence at least 3 days per week. The AI engineering lead ad describes three partner teams and what the role decides before anything ships."},
+  {"title": "The technology offer has its own proof", "text": "The Technology & Engineering page names client builds with figures, for example an AI assistant deployed to more than 6,000 employees across more than 2,300 stores. The AI engineering lead ad describes a standing product team inside the firm. This is the most concretely adapted segment in the sample."},
+  {"title": "One employee story names the hard part", "text": "In the London case-team Q&A, a senior associate consultant says priorities could shift over a day and that the bigger picture can be hard to see as a junior team member, and describes how he dealt with it."}
+],
+"problems": [
+  {
+    "severity": "high",
+    "title": "The front pages lead with claims any firm could make, and the specific material sits deeper",
+    "evidence": [
+      "Careers home: \"Work alongside the best in the field, on problems that matter, and build skills that compound faster than almost anywhere else.\"",
+      "Our People: \"The secret is simple: it's the people.\"",
+      "Life at Bain: \"Your work will help companies across industries and society as a whole.\" followed by \"That isn’t hyperbole.\"",
+      "The home page headline rotates four lines built on \"Be more\": inspired, confident, motivated, you."
+    ],
+    "why": "Each of these lines stays true if another firm's name is put in. The comparative claims (the best in the field, faster than almost anywhere else) have no comparison behind them. Meanwhile the facts that only Bain can state (the eight-level ladder, the home office model of bigger, fewer hubs, one week of training before an intern joins a case team) appear on the Management Consulting, Hybrid and Internship pages, not where the offer is made.",
+    "flags": ["RF01", "RF02", "RF16"]
+  },
+  {
+    "severity": "high",
+    "title": "What consulting demands is stated only in the internship posting's fine print",
+    "evidence": [
+      "Associate Consultant Internship, essential functions: \"Given the nature of client service work, consultants are regularly required to work an unpredictable schedule to meet the performance expectations and deadlines essential to this role.\"",
+      "Same posting: \"This role requires regular travel.\" and \"Expect to be in-person with your team most days.\"",
+      "Management Consulting page lists \"Enjoy a sustainable career\" among what people love, and says: \"You’ll get to travel as suits your role and interests, visiting client sites and sometimes, taking clients with you on a tour of other clients’ offices.\"",
+      "Interviewing page: \"They’re fun.\""
+    ],
+    "why": "The material already contains an honest description of the job's demands, but it sits in a compliance block of one programme page. The proposition pages present travel as a matter of interest and promise sustainability without saying what makes the career sustainable. The material does not say whether the internship's schedule and travel terms also describe associate consultant and consultant roles. On Comparably, 2 of 38 answers raise workload.",
+    "flags": ["RF24", "RF06"]
+  },
+  {
+    "severity": "medium",
+    "title": "The office-attendance promise is a principle with no rule, while some ads set fixed minimums",
+    "evidence": [
+      "Hybrid and office work: \"Our guiding principles ensure you'll always know what's best for you, the client, and Bain, and as a result, whether to work remotely or in-person.\"",
+      "Coordinator, Human Resources (Chicago): \"Working model: This role follows a hybrid model, requiring in-office presence at least 3 days per week.\"",
+      "Three of the eight job ads state an attendance rule (3 days, 3 days, and the ability to work on-site four days per week); the other five do not."
+    ],
+    "why": "The hub page gives no number, office or role, so the principle cannot be checked. Where ads do give a rule it is precise, which shows the information exists. For five of the eight sampled roles a candidate cannot tell how many days are expected in the office.",
+    "flags": ["RF06"]
+  },
+  {
+    "severity": "medium",
+    "title": "The interview-feedback promise has no mechanism behind it",
+    "evidence": [
+      "Our Hiring Process: \"After each interview, you’ll learn exactly how it went.\"",
+      "Same page: \"Each step exists for a purpose, any feedback you receive will be based on an objective scoring system, and you can trust that you'll only be assessed on things that really matter.\""
+    ],
+    "why": "This is a specific, checkable promise. None of the hiring-process pages, the London page or the internship page says who gives feedback, when, or in what form, and the scoring system is not described.",
+    "flags": ["RF06"]
+  },
+  {
+    "severity": "medium",
+    "title": "Pay is shown only for US roles, and the London graduate page was out of date",
+    "evidence": [
+      "Six of eight sampled job ads (Lisbon, Mexico City three times, Shanghai, Warsaw) give no pay or pay logic; the multi-city AI ad says pay outside Massachusetts and Illinois is commensurate with competitive geographic market rates.",
+      "Bain London University Hiring, captured 27 October 2026: \"Applications for the Associate Consultant role in the London office are now open and will close on October 15th 23:59 BST.\""
+    ],
+    "why": "Pay is the decision fact most often missing in the sample. The London page also gives the assessment deadline as 20 October, so on the capture date the page showed a window that, by its own dates, had closed. It does not say what a London graduate should do now; the only forward date is the 2027 internship, expected to open in November 2026.",
+    "flags": ["RF20"]
+  },
+  {
+    "severity": "low",
+    "title": "Every non-US ad opens with a ranking whose scope is not stated, and with internal terms",
+    "evidence": [
+      "Seven of eight ads open: \"We are proud to be consistently recognized as one of the world’s best places to work.\" The Chicago ad then gives a different version of the ranking record from the other six.",
+      "Lisbon ad: tools are housed within the \"Full Potential Co-Pilot\" suite, embedded into \"Iris/Sage\", with stakeholders including \"Vector, Umbrage, BCN/BCN Labs\"."
+    ],
+    "why": "The London page places the Glassdoor ranking on the U.S. list; the job ads do not say which list or year, including for roles in Mexico City, Shanghai and Warsaw. The ranking is the most repeated proof point in the sample and the one candidates are given least detail about. Internal names in the Lisbon ad are not explained anywhere in the material.",
+    "flags": ["RF19", "RF02"]
+  }
+],
+"fixes": [
+  {
+    "title": "Rebuild the careers home and Life at Bain around apprenticeship, with its proof on the same page",
+    "needs_new_data": false,
+    "steps": [
+      "Replace the hero paragraph with the apprenticeship idea and the facts already published: repeated work with the same peers from a home office, mentoring written into each level, one week of training before interns join a case team.",
+      "Link each Life at Bain pillar to its proof page (the ladder, Benefits, Affinity Groups) and put one fact from that page next to the pillar.",
+      "Remove or back the comparatives: the best in the field, faster than almost anywhere else, there's no better place than Bain, best-in-class."
+    ],
+    "why_first": "It changes the first screen every candidate sees, and almost all of the material it needs is already on the site.",
+    "needs": ["Confirmation that the home office model and mentoring apply beyond management consulting", "If available, one figure on mentoring or coaching coverage"],
+    "effort": "medium",
+    "effort_note": "rewriting two pages with existing facts, plus one confirmation from talent leadership",
+    "who": ["employer brand team", "global talent or L&D lead (scope of mentoring)", "web team"],
+    "check": ["whether the home page hero and Life at Bain both name the apprenticeship model", "time on the Management Consulting ladder section and clicks from the home page to it"]
+  },
+  {
+    "title": "Put the job's demands next to the sustainability promise, and publish the attendance rule per role",
+    "needs_new_data": true,
+    "steps": [
+      "On the Management Consulting page, add a short What the work asks section using the internship posting's own terms, scoped to the internship until confirmed for other levels.",
+      "Next to it, say what makes the career sustainable, using published benefits (part-time options, leave, US family leave of 21 weeks) and any office-level practices you can confirm.",
+      "Add the in-office expectation to every job ad, as the Chicago, Mexico City administrative and BCN ads already do, and give the Hybrid page a rule or a table by role type."
+    ],
+    "why_first": "The promise of a sustainable career and the stated demands currently sit on different pages; pairing them makes both credible and is the gap the reviews also touch.",
+    "needs": ["Whether the unpredictable-schedule and travel terms apply to associate consultants and consultants", "Office-attendance rule for roles whose ads do not state one", "Practices that protect time off or manage workload, if any"],
+    "effort": "medium",
+    "effort_note": "two or three facts from consulting staffing and office leadership",
+    "who": ["consulting staffing or practice operations", "office HR leads", "recruiting (job-ad template owner)"],
+    "check": ["share of live ads that state an attendance rule", "whether candidates raise schedule and travel questions earlier in recruiter calls"]
+  },
+  {
+    "title": "Make hiring promises checkable and keep the London page current",
+    "needs_new_data": true,
+    "steps": [
+      "Under the feedback promise on Our Hiring Process, say who gives feedback, when and in what form, or narrow the promise to what happens in practice.",
+      "Refresh the London page after each deadline: say the window has closed, when the next one opens, and point to the internship and talent community.",
+      "Add pay or pay logic to non-US ads where it can be published, starting with the hubs that post most roles."
+    ],
+    "why_first": "These are fixes to promises candidates can test directly in the process; the London fix is small and immediate.",
+    "needs": ["How post-interview feedback works today", "Next London Associate Consultant window", "Which non-US offices can publish pay ranges"],
+    "effort": "small",
+    "effort_note": "the London update is immediate; the feedback description needs one input from recruiting",
+    "who": ["university recruiting London", "global recruiting operations", "compensation"],
+    "check": ["the London page's status line on the day after each deadline", "Comparably and Glassdoor answers that mention interview feedback"]
+  }
+],
+"rewrites": [
+  {
+    "title": "Careers home: hero paragraph",
+    "original": "What are you striving towards? Whether you're shaping business strategy, building AI-powered solutions, driving sustainability, or something else entirely — there's a place for you here. Work alongside the best in the field, on problems that matter, and build skills that compound faster than almost anywhere else.",
+    "problem": "Every sentence fits a comparable firm, and the comparatives (the best in the field, faster than almost anywhere else) have no comparison in the material.",
+    "logic": "Lead with the apprenticeship mechanism the site already publishes elsewhere, keep each fact at its stated scope, and point to the ladder as proof.",
+    "rewrite": "Learn from the people you work with.\nYou'll work from one of our home offices, where you get face time with mentors and form connections with peers over multiple projects.\nIn management consulting, mentoring is part of each step: senior associate consultants mentor associate consultants, and associate partners apprentice directly under a partner.\nInterns start with up to a week of training led by consultants, then join a real case team.\nSee how titles progress in your track.",
+    "notes": [
+      {"kind": "confirm", "text": "Whether the home office model applies to all work areas, including Global Business Services and BCN roles. Until confirmed, keep the mentoring line scoped to management consulting."},
+      {"kind": "evidence", "text": "A figure that shows mentoring in practice, such as the share of new joiners with a named mentor or coach."}
+    ]
+  },
+  {
+    "title": "Hybrid and office work: the situational elasticity paragraph",
+    "original": "Our guiding principles ensure you'll always know what's best for you, the client, and Bain, and as a result, whether to work remotely or in-person.",
+    "problem": "The paragraph gives no rule, number or role, so a candidate cannot tell how much office time to expect, although several job ads state it precisely.",
+    "logic": "Keep the principle, then show the rules already published in ads, with each one's exact wording and scope, and send readers to the ad for their role.",
+    "rewrite": "How much time you spend in the office depends on your role and your office.\nSome examples from current ads: the Chicago HR coordinator role follows a hybrid model with in-office presence at least 3 days per week. The Mexico City manager assistant role expects in-office attendance a minimum of three days per week. Associate Consultant Interns are expected to be in person with their team most days, in the office and at client locations.",
+    "notes": [
+      {"kind": "evidence", "text": "The attendance rule for roles whose ads do not state one, for example the Lisbon, Shanghai and Warsaw roles in the sample."},
+      {"kind": "confirm", "text": "Whether the internship's in-person expectation also applies to associate consultants and consultants."}
+    ]
+  }
+],
+"questions": [
+  {"kind": "confirm", "for": "communication", "text": "Do the home office model and the culture of apprenticeship apply to functional, Global Business Services and BCN roles, or mainly to consulting?"},
+  {"kind": "confirm", "for": "communication", "text": "Do the internship posting's terms (unpredictable schedule, regular travel, in person most days) also describe associate consultant and consultant roles?"},
+  {"kind": "evidence", "for": "communication", "text": "How post-interview feedback works: who gives it, when, and in what form; and what the objective scoring system assesses."},
+  {"kind": "evidence", "for": "communication", "text": "Office-attendance rules for roles whose ads do not state one."},
+  {"kind": "evidence", "for": "communication", "text": "Pay ranges or pay logic for non-US roles that can be published."},
+  {"kind": "evidence", "for": "communication", "text": "A figure that shows mentoring or coaching in practice, and progression timelines for the consulting ladder."},
+  {"kind": "confirm", "for": "communication", "text": "Which Glassdoor list and year the job-ad ranking refers to; the London page names the U.S. list."},
+  {"kind": "evidence", "for": "communication", "text": "Which Fortune recognitions the Benefits and Affinity Groups pages refer to; the pages show only a licence line."},
+  {"kind": "evidence", "for": "communication", "text": "Social-impact opportunities in offices other than London."},
+  {"kind": "confirm", "for": "communication", "text": "Whether the 2020 commitment to mentor 50+ LGBTQ+ refugees over three years has continued since; the London page does not say."},
+  {"kind": "confirm", "for": "communication", "text": "When the next London Associate Consultant application window opens."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of Glassdoor and Indeed reviews, so the perception layer is not limited to one platform."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the LinkedIn company page and Life tab, and of Instagram, the channels the careers site points to for people content."}
+],
+"genericity": [
+  {"claim": "\"Work alongside the best in the field, on problems that matter, and build skills that compound faster than almost anywhere else.\" (with the Be more headline)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "none", "defensibility": "supportable", "why": "Nothing in the sentence is tied to Bain, so a comparable firm could reuse it unchanged. Lexicon phrases (best in the field, problems that matter) and an unsupported comparison. The consulting ladder could support the growth part if it were brought here."},
+  {"claim": "\"The secret is simple: it's the people.\"", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Built from a lexicon construction (great people) with no specifics. The only employer-specific element nearby is the Glassdoor ranking line, which is not linked to the claim that people are the reason."},
+  {"claim": "A culture of apprenticeship and mentorship: you learn from people you work with repeatedly, from a home office (Life at Bain, Supporting Your Growth, Benefits, Hybrid, Management Consulting)", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "Mentorship is lexicon language, but the home office model of bigger, fewer hubs and the level-by-level mentoring duties are named practices a substitute would have to change. No participation figure or outcome is given."},
+  {"claim": "\"Your work will help companies across industries and society as a whole.\"", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "An impact claim with no example on the page; That isn’t hyperbole asserts rather than shows. Client examples on the Technology page are about the firm's work, not what the employee does."}
+],
+"ledger": [
+  {"claim": "You will build skills fast here, faster than almost anywhere else (careers home; Bain accelerates technology careers; a consulting job will prepare you for anything)", "class": "core", "evidence": "Management Consulting page: eight levels with the responsibilities and training at each; Supporting Your Growth: three career tracks; internship: up to a week of training before case work.", "strength": "moderate", "status": "partial", "comment": "Indirect evidence: a described path without promotion timelines or outcomes, which caps it at moderate. Scope is the consulting track. The comparison with other employers is not supported."},
+  {"claim": "It's the people: Bain is one of the best places to work, and people love it here (careers home, Life at Bain, Our People, 7 of 8 job ads)", "class": "core", "evidence": "The Glassdoor ranking line in seven job ads and on the London page (U.S. list, 2026, on the London page); unnamed Fortune recognitions on Benefits and Affinity Groups.", "strength": "weak", "status": "weak", "comment": "An award without stated criteria, scope only on one page, so it is weak. The ranking does not show that people are the reason, as the claim says. The ads' list and year are unclear."},
+  {"claim": "A culture of coaching, mentorship and apprenticeship; you will not do it alone (Life at Bain, Supporting Your Growth, Benefits, Hybrid, Management Consulting, Our Hiring Process)", "class": "core", "evidence": "Level descriptions: senior associate consultants mentor associate consultants; associate partners apprentice directly under a partner. Training content is developed by people who have been in the role. The New York Q&A describes joining after a call from a long-time mentor; one London quote describes being guided early on.", "strength": "moderate", "status": "partial", "comment": "Practices without outcome data, which is indirect, so moderate. The stories are single accounts. Scope beyond consulting is unclear."},
+  {"claim": "Meaningful work that helps companies and society (Life at Bain; problems that matter, careers home)", "class": "core", "evidence": "Technology page client builds with figures (for example a generative AI reporting assistant that cut turnaround times by 35%).", "strength": "weak", "status": "weak", "comment": "Client results, not what the employee experiences or does, so it is weak at most. Nothing shows how this applies to every role, as the page states."},
+  {"claim": "Flexibility and a sustainable career (Benefits, Hybrid, Management Consulting)", "class": "supporting", "evidence": "Benefits: part-time, reskilling and leave options; in the US, family leave of 21 weeks for all parents. Three job ads state in-office minimums.", "strength": "moderate", "status": "partial", "comment": "The family-leave figure is US-only, a narrower scope, so moderate. The internship posting's unpredictable schedule and regular travel sit in tension with the promise; the material does not say whether they apply to other consulting levels."},
+  {"claim": "Opportunities to do social impact work (Life at Bain)", "class": "supporting", "evidence": "London page: a social impact ring fence with a full team working with long-term partners across 50+ organisations; consultants deliver extra 10% projects to charities and NGOs; office-sponsored volunteering.", "strength": "moderate", "status": "partial", "comment": "Specific, but for the London office only, which caps it at moderate. Unclear for other offices. The refugee-mentoring commitment dates from 2020 for three years; whether it continues is not stated."},
+  {"claim": "A culture of belonging through affinity groups (Life at Bain, Affinity Groups)", "class": "supporting", "evidence": "Eight named affinity groups at global, regional and office level; a partner's quote; unnamed rankings for women, LGBTQ and underrepresented groups.", "strength": "moderate", "status": "partial", "comment": "Named structures without participation or outcome data, which is indirect, so moderate."},
+  {"claim": "After each interview you learn exactly how it went; feedback is based on an objective scoring system (Our Hiring Process)", "class": "supporting", "evidence": "Not found.", "strength": "none", "status": "none", "comment": "No page says how, when or by whom feedback is given. The same-questions-per-role statement on Interviewing describes interview design, not feedback."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

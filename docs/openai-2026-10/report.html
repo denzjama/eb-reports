@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "OpenAI",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 66,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 87,
+  "confidence": "medium",
+  "reliability_note": "28 of 34 criteria assessed from two types of material (job ads and one social channel). The careers site, the interview guide and the large review sites could not be read, and the job ad text came from the description field only"
+},
+"verdict": "The job ads show concrete work that only OpenAI could describe. The reason to join is the company mission, repeated word for word in every ad, and most promises around it rest on self-description.",
+"notices": [
+  "The material was collected automatically from the public web on 27 October 2026. Some sources may have been missed, and live pages may have changed since then.",
+  "openai.com refused every automated request, so no careers, culture, benefits or interview-guide page could be read. The audit rests on five job ads from OpenAI’s job board, the public YouTube channel and three Comparably pages. Criteria that depend on the careers site, employee stories or the application step were left out of the score, not scored zero.",
+  "Each job ad was captured from its description field. Pay ranges, location tags and the application form were not part of the captured text, so the audit cannot say whether the live pages show them."
+],
+"materials": [
+  {"name": "Job ad: Software Engineer, Research - Human Data", "type": "Job ad"},
+  {"name": "Job ad: Software Engineer, Applied Emerging Talent (2027)", "type": "Job ad"},
+  {"name": "Job ad: Research Engineer/Research Scientist, RL/Reasoning", "type": "Job ad"},
+  {"name": "Job ad: Technical Program Manager, Support Delivery", "type": "Job ad"},
+  {"name": "Job ad: Account Director, Cyber", "type": "Job ad"},
+  {"name": "YouTube channel @OpenAI, latest 15 videos", "type": "Social account"},
+  {"name": "Comparably: overview, reviews and interviews pages", "type": "Review site (perception only, not scored)"}
+],
+"sources": [
+  {"title": "Software Engineer, Research - Human Data @ OpenAI", "url": "https://jobs.ashbyhq.com/openai/4d6a5951-9838-434c-830a-22cb938ea228", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Software Engineer, Applied Emerging Talent (2027) @ OpenAI", "url": "https://jobs.ashbyhq.com/openai/55150071-fce8-48f5-aea4-14ed78b83511", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Research Engineer/Research Scientist, RL/Reasoning @ OpenAI", "url": "https://jobs.ashbyhq.com/openai/7e198d81-34e0-48b6-b64e-a501a75f9d53", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Technical Program Manager, Support Delivery @ OpenAI", "url": "https://jobs.ashbyhq.com/openai/b8a1293b-bf5b-488d-8257-869584db6496", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Account Director, Cyber @ OpenAI", "url": "https://jobs.ashbyhq.com/openai/e8cb6c67-0b73-4be8-a35c-775c99c1c638", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "YouTube channel OpenAI (@OpenAI)", "url": "https://www.youtube.com/channel/UCXZCJLdBC09xxGZ6gcdrc6A", "type": "Social account", "captured": "2026-10-27"},
+  {"title": "OpenAI Culture | Comparably", "url": "https://www.comparably.com/companies/openai", "type": "Review site", "captured": "2026-10-27"},
+  {"title": "OpenAI Employee Reviews | Comparably", "url": "https://www.comparably.com/companies/openai/reviews", "type": "Review site", "captured": "2026-10-27"},
+  {"title": "OpenAI Interviews | Comparably", "url": "https://www.comparably.com/companies/openai/interviews", "type": "Review site", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "Job ad: Software Engineer, Research - Human Data", "url": "https://jobs.ashbyhq.com/openai/4d6a5951-9838-434c-830a-22cb938ea228", "kind": "Job ad", "decision": "included", "reason": "Official job board, San Francisco, engineering"},
+  {"source": "Job ad: Software Engineer, Applied Emerging Talent (2027)", "url": "https://jobs.ashbyhq.com/openai/55150071-fce8-48f5-aea4-14ed78b83511", "kind": "Job ad", "decision": "included", "reason": "Official job board, early-career role"},
+  {"source": "Job ad: Research Engineer/Research Scientist, RL/Reasoning", "url": "https://jobs.ashbyhq.com/openai/7e198d81-34e0-48b6-b64e-a501a75f9d53", "kind": "Job ad", "decision": "included", "reason": "Official job board, research"},
+  {"source": "Job ad: Technical Program Manager, Support Delivery", "url": "https://jobs.ashbyhq.com/openai/b8a1293b-bf5b-488d-8257-869584db6496", "kind": "Job ad", "decision": "included", "reason": "Official job board, operations and support"},
+  {"source": "Job ad: Account Director, Cyber", "url": "https://jobs.ashbyhq.com/openai/e8cb6c67-0b73-4be8-a35c-775c99c1c638", "kind": "Job ad", "decision": "included", "reason": "Official job board, sales, United States"},
+  {"source": "YouTube channel @OpenAI", "url": "https://www.youtube.com/channel/UCXZCJLdBC09xxGZ6gcdrc6A", "kind": "Social account", "decision": "included", "reason": "Channel title and description identify the employer. General corporate channel; a link from the careers site could not be checked because the site was blocked"},
+  {"source": "Comparably company overview", "url": "https://www.comparably.com/companies/openai", "kind": "Review site", "decision": "included", "reason": "Readable public profile, marked as claimed"},
+  {"source": "Comparably employee reviews", "url": "https://www.comparably.com/companies/openai/reviews", "kind": "Review site", "decision": "included", "reason": "Readable; 9 reviews stated, 4 short answers visible"},
+  {"source": "Comparably interviews", "url": "https://www.comparably.com/companies/openai/interviews", "kind": "Review site", "decision": "included", "reason": "Readable; 4 respondents"},
+  {"source": "Job ad: Applied AI Architect (India)", "url": "https://jobs.ashbyhq.com/openai/28cd6fe2-4096-426b-8b08-52a66458e2c6", "kind": "Job ad", "decision": "excluded", "reason": "Based in Delhi, Mumbai or Bangalore, outside the US market audited"},
+  {"source": "Full list of open roles on the job board", "url": "https://jobs.ashbyhq.com/openai", "kind": "Job ad group", "decision": "excluded", "reason": "The total number of open roles could not be read from a captured page; counts found only in search snippets are not used"},
+  {"source": "Careers site, job search and careers sitemap", "url": "https://openai.com/careers/", "kind": "Careers site", "decision": "unavailable", "reason": "The site refused automated access (HTTP 403) to every client tried"},
+  {"source": "Interview guide", "url": "https://openai.com/interview-guide/", "kind": "Hiring process", "decision": "unavailable", "reason": "The site refused automated access (HTTP 403)"},
+  {"source": "Job board index page", "url": "https://jobs.ashbyhq.com/openai", "kind": "Job board", "decision": "unavailable", "reason": "The page is drawn by scripts and returned no text"},
+  {"source": "Five further job ads (two recruiter roles, Account Director Insurance, Security TPM Lead, Research Engineer Frontier Evals)", "url": "", "kind": "Job ads", "decision": "unavailable", "reason": "Ads no longer live (HTTP 404)"},
+  {"source": "Job ad: Account Director, Startups", "url": "", "kind": "Job ad", "decision": "unavailable", "reason": "Network error on the one attempt"},
+  {"source": "Further program-manager, security and trust-and-safety ads found in search", "url": "", "kind": "Job ads", "decision": "excluded", "reason": "Same template as ads already captured, from role families already sampled"},
+  {"source": "Third-party interview and benefits guides", "url": "", "kind": "Aggregators", "decision": "excluded", "reason": "Not published by the employer"},
+  {"source": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/OpenAI-Reviews-E2210885.htm", "kind": "Review site", "decision": "manual", "reason": "Blocked by a human-verification check"},
+  {"source": "Indeed reviews", "url": "https://www.indeed.com/cmp/Openai/reviews", "kind": "Review site", "decision": "manual", "reason": "Blocked by a security check"},
+  {"source": "Blind reviews", "url": "https://www.teamblind.com/company/OpenAI/reviews", "kind": "Review site", "decision": "manual", "reason": "Refused automated access (HTTP 403)"},
+  {"source": "kununu", "url": "https://www.kununu.com/us/openai", "kind": "Review site", "decision": "unavailable", "reason": "Blocked by a human-verification check"},
+  {"source": "InHerSight", "url": "", "kind": "Review site", "decision": "unavailable", "reason": "No OpenAI page found"},
+  {"source": "LinkedIn company page and Life tab", "url": "https://www.linkedin.com/company/openai", "kind": "Social account", "decision": "manual", "reason": "Closed platform; address found on a third-party profile and needs confirming"},
+  {"source": "X account", "url": "https://x.com/OpenAI", "kind": "Social account", "decision": "manual", "reason": "Closed platform; address found on a third-party profile and needs confirming"},
+  {"source": "Instagram, Facebook, TikTok", "url": "", "kind": "Social accounts", "decision": "excluded", "reason": "No verified official address found"},
+  {"source": "A dedicated careers or life-at-OpenAI account", "url": "", "kind": "Social account", "decision": "excluded", "reason": "None found in the public sources reviewed"}
+],
+"social": [
+  {
+    "platform": "YouTube",
+    "account": "@OpenAI",
+    "url": "https://www.youtube.com/channel/UCXZCJLdBC09xxGZ6gcdrc6A",
+    "purpose": "General corporate and product channel",
+    "sample": "Latest 15 videos, 26 Oct 2026 22:03 to 27 Oct 2026 15:40 UTC",
+    "rhythm": "15 uploads in about 18 hours. The sample is too short to give a monthly rate",
+    "people_share": "0 of 15 about people working at OpenAI, the work inside OpenAI or hiring",
+    "themes": [
+      "Customers building with Codex: 6 of 15 videos",
+      "AI in cybersecurity (Cisco, Cloudflare): 4 of 15, two topics each posted as a video and a short",
+      "AI in legal work (Sullivan & Cromwell, Cooley, AT&T): 3 of 15",
+      "Every speaker in the sample works for a customer or partner"
+    ],
+    "notes": "Video descriptions link to customer stories on openai.com and to a form for Codex users. None links to jobs or careers pages. Four of the 15 videos cover cybersecurity customers, the same field as the Account Director, Cyber ad, but neither touchpoint refers to the other."
+  }
+],
+"perception": {
+  "sample": [
+    {"platform": "Comparably", "reviews": "9 stated; 4 short free-text answers visible; 4 interview respondents", "period": "Review dates not shown; profile last modified 14 Jan 2026", "rating": "Culture 3.8/5, grade B, shown on Comparably on 27 Oct 2026, based on 104 ratings from 16 employee participants. The interviews page on the same site gives the culture score as B or 79/100, and the overview shows 75/100."}
+  ],
+  "thin": true,
+  "themes": [
+    {"theme": "Pace and intensity", "tone": "mixed", "promise": "Four of the five ads describe a fast-paced environment; the early-career ad mentions loosely defined work and competing priorities or deadlines", "match": "consistent", "note": "One reviewer describes the culture as intense, ambitious and fast moving."},
+    {"theme": "The work itself", "tone": "positive", "promise": "Work on frontier models and products (ads for research, Human Data and Applied roles)", "match": "consistent", "note": "One answer names the team and working on future technology as what makes the reviewer happy at work."},
+    {"theme": "Leadership", "tone": "positive", "promise": "", "match": "not_addressed", "note": "Two answers describe leaders as mission-aligned, transparent and focused on the long term. The ads say nothing about how leaders work."},
+    {"theme": "Growth", "tone": "positive", "promise": "", "match": "not_addressed", "note": "One answer mentions potential to grow along with the company. The ads make no development promise."},
+    {"theme": "Pay and benefits", "tone": "positive", "promise": "", "match": "not_addressed", "note": "One answer rates the pay package and benefits as good. The captured ad text contains no pay or benefits detail apart from relocation assistance."},
+    {"theme": "Hiring process", "tone": "mixed", "promise": "", "match": "not_addressed", "note": "The platform’s summary says most interview respondents found the interviews very difficult, while rating the experience highly. The interview guide on openai.com could not be read."}
+  ],
+  "caveat": "Only Comparably could be read; Glassdoor, Indeed, Blind and kununu blocked automated access. The layer is too thin for conclusions. The Comparably profile is marked as claimed and describes OpenAI as a “non-profit” research company, while every job ad describes “an AI research and deployment company”. It is unclear who wrote or maintains that description."
+},
+"manual_import": [
+  {"platform": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/OpenAI-Reviews-E2210885.htm", "capture": ["rating header with review count", "recent reviews from the last 24 months", "the interviews and benefits tabs"]},
+  {"platform": "Indeed", "url": "https://www.indeed.com/cmp/Openai/reviews", "capture": ["rating header with review count", "recent reviews from the last 24 months"]},
+  {"platform": "Blind", "url": "https://www.teamblind.com/company/OpenAI/reviews", "capture": ["rating header with review count", "recent reviews from the last 24 months"]},
+  {"platform": "LinkedIn (confirm the address)", "url": "https://www.linkedin.com/company/openai", "capture": ["profile header with description and follower count", "the Life tab sections", "the latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, opened with captions"]},
+  {"platform": "X (confirm the address)", "url": "https://x.com/OpenAI", "capture": ["profile header", "pinned post", "the latest 9 to 12 posts", "any posts about people or hiring"]},
+  {"platform": "OpenAI careers site", "url": "https://openai.com/careers/", "capture": ["the careers main page", "benefits and culture pages", "the interview guide (openai.com/interview-guide)", "one live job page showing the pay range and the application step"]}
+],
+"scope": {
+  "reviewed": [
+    "Five current US job ads from OpenAI’s job board, covering engineering, early-career engineering, research, support operations and enterprise sales",
+    "The latest 15 videos on the YouTube channel @OpenAI",
+    "Three Comparably pages, read as a separate perception layer that does not affect the score"
+  ],
+  "not_reviewed": [
+    "The careers site, benefits and culture pages, and the interview guide on openai.com: blocked to automated access",
+    "Employee stories: none found in the public sources that could be read",
+    "Pay ranges and the application step on the live job pages: not part of the captured text",
+    "LinkedIn, X, Glassdoor, Indeed and Blind: closed platforms, listed for manual import",
+    "Markets outside the United States, and how the hiring process works in practice"
+  ]
+},
+"summary": {
+  "points": [
+    "The job ads describe the work concretely: named tasks, tools, partner teams, office days and relocation. They tie it to products and models that belong to OpenAI, such as o1, o3, ChatGPT and the OpenAI API.",
+    "The pitch for joining is the same “About OpenAI” block in all five ads: a mission statement ending with “Join us in shaping the future of technology.” It says what the company is for. It does not say what an employee gets.",
+    "The proof and the pitch never meet. The named models sit in team introductions, while the closing block every candidate reads contains no specific fact. Two of seven promises have meaningful support, and both rest on the research-side ads.",
+    "The one open official social channel posted 15 videos in about 18 hours, all about customers and products. None shows people at OpenAI or points to jobs.",
+    "Reviews are too thin to weigh. Only Comparably could be read (9 reviews stated, 4 short answers visible). The answers are positive on pace, leadership and pay, and interview respondents call the process very difficult."
+  ],
+  "actions": [
+    "Turn the shared “About OpenAI” block into a short offer to the employee, built on facts already in the ads.",
+    "Replace the repeated ownership, impact and pace lines with one real example per team.",
+    "Rework the early-career ad so it answers what a new graduate needs to decide: place, start, support."
+  ]
+},
+"dimensions": [
+  {
+    "id": "clarity",
+    "score": 6, "max": 12, "assessable": true,
+    "why": "An offer can be pieced together from the task lists and the hybrid and relocation lines, but no ad states it. Each ad opens and closes on the mission, so the first and last thing a reader meets is what OpenAI exists to do. Terms such as “post-AGI support team” and “Tier 3 frontline delivery” go unexplained.",
+    "criteria": [
+      {"name": "Offer to employees is clear", "score": 2, "max": 4, "assessable": true, "note": "An offer has to be pieced together from task lists, the hybrid line and relocation assistance. The opening and closing blocks of each ad state the mission instead."},
+      {"name": "Benefit to the candidate is explicit", "score": 2, "max": 4, "assessable": true, "note": "The task lists speak to the candidate (“you will”). The only stated benefits are hybrid work and relocation assistance; the rest is company description."},
+      {"name": "One central message", "score": 1, "max": 2, "assessable": true, "note": "The mission leads, but the role sections below it never refer back to it, apart from the Human Data ad."},
+      {"name": "Plain language", "score": 1, "max": 2, "assessable": true, "note": "Mostly plain. Several terms are not explained: post-AGI support team, Tier 3 frontline delivery, hunter mentality, o1 and o3."}
+    ]
+  },
+  {
+    "id": "differentiation",
+    "score": 9, "max": 16, "assessable": true,
+    "why": "One of the four main promises, frontier work on named models and products, could only be made by OpenAI. The mission, ownership and safety promises fit a comparable AI lab unchanged. Specific assets appear as background to the role, not as reasons to join.",
+    "criteria": [
+      {"name": "Could not be moved to another employer", "score": 3, "max": 5, "assessable": true, "note": "The frontier-work promise is tied to o1, o3, ChatGPT and the OpenAI API, so it breaks under substitution. The mission, ownership and safety promises survive unchanged."},
+      {"name": "Avoids stock phrases", "score": 2, "max": 3, "assessable": true, "note": "Fast-paced appears in four of five ads, cutting-edge in two, plus high-impact and ownership. Specific task lists outweigh them."},
+      {"name": "Employer-specific advantages", "score": 2, "max": 4, "assessable": true, "note": "Named models, products and a new support team appear as context. None is turned into a reason to choose OpenAI."},
+      {"name": "Hard to copy honestly", "score": 1, "max": 2, "assessable": true, "note": "Only the frontier-work promise rests on assets OpenAI owns; the genericity test rates it partly distinctive, and the other three promises generic."},
+      {"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "The mission line is repeated everywhere and easy to remember. It describes the company’s aim, not the work or the offer."}
+    ]
+  },
+  {
+    "id": "proof",
+    "score": 8, "max": 16, "assessable": true,
+    "why": "Two of the seven promises have meaningful support: frontier work and alignment-related work, both backed only in the research-side ads. The mission, ownership, pace, colleague and inclusion promises rest on self-description. “The world’s best scientists, engineers, and business professionals” has no comparison behind it.",
+    "criteria": [
+      {"name": "How many promises are backed", "score": 2, "max": 6, "assessable": true, "note": "Two of seven promises are partly supported, two of the four main ones. The most prominent promise, the mission as a reason to join, is weakly supported."},
+      {"name": "How specific the proof is", "score": 2, "max": 4, "assessable": true, "note": "The supported promises carry named models and named tasks, but only a minority of promises have such proof."},
+      {"name": "Whether proof fits the promise", "score": 2, "max": 3, "assessable": true, "note": "The proof covers part of two promises and only for some teams: Human Data and RL/Reasoning."},
+      {"name": "Proof sits next to the promise", "score": 2, "max": 3, "assessable": true, "note": "The o1 and o3 detail sits in the team paragraph of the research ad. The safety promise sits in the closing block, away from the alignment tasks that support it."}
+    ]
+  },
+  {
+    "id": "audience_fit",
+    "score": 10, "max": 12, "assessable": true,
+    "why": "Each ad names its audience and seniority, from 0 to 1 years of experience up to 14 or more. The ads cover the technical problems and stack that matter for these roles. The pitch to join is identical for a new graduate and a senior sales director.",
+    "criteria": [
+      {"name": "Clear audience", "score": 3, "max": 3, "assessable": true, "note": "Role family and seniority are explicit: 0 to 1 years (early-career), 8 or more (program manager), 14 or more (sales)."},
+      {"name": "Speaks to what the audience weighs", "score": 3, "max": 4, "assessable": true, "note": "Technical problems, tools and partners are specific. Learning and support for the early-career role are not addressed; pay could not be checked."},
+      {"name": "Adapted to different audiences", "score": 2, "max": 3, "assessable": true, "note": "Role content is adapted; the reason to join is the same closing block for every role."},
+      {"name": "Makes real choices", "score": 2, "max": 2, "assessable": true, "note": "Three office days a week, loosely defined work, a consumption revenue target and experience thresholds are stated plainly."}
+    ]
+  },
+  {
+    "id": "employee_truth",
+    "score": 5, "max": 10, "assessable": true,
+    "why": "Scored on 7 of the 10 points: employee voice could not be assessed because the careers site and any employee stories were unreadable. Work reality is concrete. Difficulty is named in a few lines, with nothing on how it is handled.",
+    "criteria": [
+      {"name": "Employee voice", "score": 0, "max": 3, "assessable": false, "note": "Not assessed: employee stories would sit on the careers site, which could not be read. The YouTube sample features only customers."},
+      {"name": "What the work looks like", "score": 3, "max": 3, "assessable": true, "note": "Concrete tasks, named stack, partner teams, office days and targets in all five ads."},
+      {"name": "Honest about difficulty", "score": 1, "max": 2, "assessable": true, "note": "The early-career ad names loosely defined work and competing priorities or deadlines; the sales ad names a consumption revenue target. None says how teams handle them."},
+      {"name": "Culture shown through practice", "score": 1, "max": 2, "assessable": true, "note": "A few practices appear as candidate traits, such as treating ChatGPT and LLMs as default co-developers. Culture is otherwise described through adjectives such as fast-paced and dynamic."}
+    ]
+  },
+  {
+    "id": "consistency",
+    "score": 10, "max": 12, "assessable": true,
+    "why": "All five ads carry the same mission and the same closing block, and none contradicts another. The YouTube channel drifts: it speaks to customers, so its proof sits outside the employer story.",
+    "criteria": [
+      {"name": "Same core promise everywhere", "score": 4, "max": 5, "assessable": true, "note": "Five ads repeat the mission; the YouTube channel shares the mission line in its description but its videos are about customers."},
+      {"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Proof in the ads supports frontier work; the YouTube proof is about customer results, off the employer story."},
+      {"name": "Same voice", "score": 2, "max": 2, "assessable": true, "note": "The ads read as one employer; the sales ad is more commercial in tone without breaking the pattern."},
+      {"name": "No contradictions", "score": 2, "max": 2, "assessable": true, "note": "No contradictions between the scored touchpoints. Work location differs by role and each ad states its own."}
+    ]
+  },
+  {
+    "id": "candidate_relevance",
+    "score": 9, "max": 12, "assessable": true,
+    "why": "The role itself is easy to picture. Location, work mode, relocation and experience are stated in four of the five ads. The reason to join stays generic, and pay could not be found in the captured text.",
+    "criteria": [
+      {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Reasons given are the mission and frontier work; the mission part fits any comparable AI lab."},
+      {"name": "Picture of the role", "score": 3, "max": 3, "assessable": true, "note": "Tasks, partners and conditions are concrete in each ad."},
+      {"name": "Facts needed to decide", "score": 2, "max": 3, "assessable": true, "note": "Location, three office days and relocation appear in four ads. The early-career ad has no location in its text, and no pay appears in any captured text."},
+      {"name": "Anticipates doubts", "score": 2, "max": 3, "assessable": true, "note": "The early-career ad says direct AI/ML experience is not required; the sales ad considers remote work within the US; each ad links to an accommodations request."}
+    ]
+  },
+  {
+    "id": "conversion",
+    "score": 0, "max": 10, "assessable": false,
+    "why": "Not assessed. The application step sits outside the captured ad text, and the interview guide could not be read.",
+    "criteria": [
+      {"name": "Next step is clear", "score": 0, "max": 3, "assessable": false, "note": "The apply button and form were not part of the captured description text."},
+      {"name": "Decision facts near the call to action", "score": 0, "max": 2, "assessable": false, "note": "Not visible in the captured text."},
+      {"name": "Effort explained", "score": 0, "max": 2, "assessable": false, "note": "The application form was not captured."},
+      {"name": "Call to action fits the reader", "score": 0, "max": 2, "assessable": false, "note": "Not visible in the captured text."},
+      {"name": "What happens after applying", "score": 0, "max": 1, "assessable": false, "note": "The interview guide on openai.com was blocked."}
+    ]
+  }
+],
+"strengths": [
+  {"title": "The work is described concretely", "text": "Every ad lists tasks a person could picture doing. The early-career ad names the stack it asks for (JavaScript, React, Postgres or MySQL) and says Python is used on the backend. The Account Director ad lists the stages of a deal it owns, from opportunity development to close, and a consumption revenue target. Four of the five ads state the location, three office days a week and relocation assistance."},
+  {"title": "Specifics that belong only to OpenAI", "text": "The RL/Reasoning ad credits its team with o1 and o3. The Applied ad has engineers own ChatGPT and OpenAI API features end to end. The Human Data ad runs from internal research tooling to production ChatGPT. These details make the frontier-work promise the one claim that a comparable employer could not reuse."},
+  {"title": "Demands are stated, not hidden", "text": "The early-career ad asks for the “Ability to move fast in an environment where things are sometimes loosely defined and may have competing priorities or deadlines”. The sales ad states a consumption revenue target and demand creation where the customer has not yet defined a project or budget. These lines let a reader rule themselves out, which is why the trade-off criterion scores full marks."},
+  {"title": "Barriers lowered where it matters", "text": "The early-career ad says interest in AI/ML is enough and direct experience is not required, and accepts equivalent practical experience in place of a degree. The sales ad considers remote applications from within the US."}
+],
+"problems": [
+  {
+    "severity": "high",
+    "title": "The reason to join is the company mission, not an offer to the employee",
+    "evidence": [
+      "All five ads close with the same “About OpenAI” block, which begins: “OpenAI is an AI research and deployment company dedicated to ensuring that general-purpose artificial intelligence benefits all of humanity.”",
+      "Each ad ends: “At OpenAI, we believe artificial intelligence has the potential to help people solve immense global challenges, and we want the upside of AI to be widely shared. Join us in shaping the future of technology.”"
+    ],
+    "why": "The block is the only part every candidate reads in every ad, and it describes what OpenAI is for. It names no condition of work, no benefit and no fact about life inside the company. Only the Human Data ad links its team to the mission; in the other four the mission and the role sit side by side without a connection.",
+    "flags": ["RF03", "RF01"]
+  },
+  {
+    "severity": "high",
+    "title": "Most promises rest on self-description; the proof that exists is confined to two research-side ads",
+    "evidence": [
+      "“This long-term undertaking brings the world’s best scientists, engineers, and business professionals together in one lab.” (Account Director, Cyber)",
+      "The Human Data ad promises collaboration with “world-class researchers”, with no detail on who they are or how they work.",
+      "Safety and human needs are placed at the core of how AI is created in the closing block; the only role tasks about alignment appear in the Human Data and RL/Reasoning ads."
+    ],
+    "why": "Of seven promises, two are partly supported and five are weakly supported or not supported at all. The “world’s best” comparison has nothing behind it in the material. The safety promise is made to every candidate, including sales and support, but only two research-side ads show what it means in daily work.",
+    "flags": ["RF02", "RF06", "RF18"]
+  },
+  {
+    "severity": "medium",
+    "title": "Ownership, impact and pace are claimed in the same words across ads, with no example",
+    "evidence": [
+      "“We’re looking for people who are excited by technical ownership, enjoy working across the stack, and are eager to solve ambiguous problems in a high-impact, fast-paced environment.” (Human Data)",
+      "Fast-paced appears in four of the five ads; the program manager ad says the role offers “the chance to make a significant impact”."
+    ],
+    "why": "These lines contain no employer-specific information, so a comparable employer could reuse them unchanged. The ads never show one thing someone on the team owned and what changed as a result, so the claim cannot be checked.",
+    "flags": ["RF01"]
+  },
+  {
+    "severity": "medium",
+    "title": "The early-career ad gives a new graduate the same pitch as a senior hire, and leaves out basic facts",
+    "evidence": [
+      "The ad asks for 0 to 1 years of experience and says direct AI/ML experience is not required.",
+      "Its captured text states no location, no work mode and no start date, though the title names 2027. It says nothing about how new engineers are supported or trained."
+    ],
+    "why": "The role content is adapted to early-career engineers, but the reason to join is the same closing block used for the 14-year sales role. The ad does not answer where the job is, when it starts or what help a new engineer gets. A candidate reading it may reasonably ask all three.",
+    "flags": ["RF09"]
+  },
+  {
+    "severity": "medium",
+    "title": "The one open official channel carries no employer content",
+    "evidence": [
+      "In the latest 15 YouTube videos, 0 are about people working at OpenAI or hiring; all feature customers or partners.",
+      "Video descriptions link to customer stories and a Codex form, none to jobs."
+    ],
+    "why": "The channel shows what OpenAI’s products do for customers. It does not show who builds them or how to join. With the careers site and closed platforms unreadable, the public material that could be checked contains no employee speaking about their work.",
+    "flags": []
+  },
+  {
+    "severity": "low",
+    "title": "Internal terms go unexplained",
+    "evidence": [
+      "“We are building the very first post-AGI support team.” (Technical Program Manager, Support Delivery)",
+      "The same ad refers to “Tier 3 frontline delivery”; the sales ad opens its traits with “Have a hunter mentality.”; the research ad names o1 and o3 without saying what they are."
+    ],
+    "why": "These terms are not explained in the ads, so their meaning may be unclear to a reader without internal context. “Post-AGI support team” in particular states a premise the ad does not explain.",
+    "flags": ["RF19"]
+  }
+],
+"fixes": [
+  {
+    "title": "Turn the shared closing block into an offer to the employee",
+    "needs_new_data": true,
+    "steps": [
+      "Keep the mission sentence, then add two or three lines on what working at OpenAI gives a person, using facts already in the ads: hybrid with three office days, relocation assistance, work on named models and products.",
+      "Add, per role family, one sentence linking the team’s work to the mission, as the Human Data ad already does.",
+      "Leave the equal-opportunity, background-check and accommodation text unchanged."
+    ],
+    "why_first": "This block is the only part every candidate reads in every ad, so one change reaches all open roles at once.",
+    "needs": ["What employees get beyond the role: pay range logic, benefits, development", "For each role family, how its work connects to the mission"],
+    "effort": "medium",
+    "effort_note": "One shared text, plus one sentence per role family from team leads",
+    "who": ["talent brand", "recruiting operations (job board template)", "legal (to confirm the compliance text stays intact)"],
+    "check": ["whether candidates in first calls refer to the reasons stated in the block", "whether recruiters still have to explain basic conditions at screening"]
+  },
+  {
+    "title": "Replace the repeated ownership, impact and pace lines with one real example per team",
+    "needs_new_data": true,
+    "steps": [
+      "In each ad, swap the generic ownership or impact sentence for one example of something a person on the team built, decided or shipped, and what changed.",
+      "For sales and support roles, add one line on what responsible deployment means in their work, since the closing block makes the safety promise to them too.",
+      "Remove or source “the world’s best scientists, engineers, and business professionals” and “world-class researchers”."
+    ],
+    "why_first": "This is where most promises lose their support. One example per team turns a stock line into proof.",
+    "needs": ["One example per team of work owned end to end and its result", "How safety and responsible deployment shape work outside research", "Whatever the “world’s best” comparison is based on, if anything"],
+    "effort": "large",
+    "effort_note": "Needs input from hiring managers across several teams",
+    "who": ["hiring managers", "team leads", "safety or policy leads", "talent brand"],
+    "check": ["whether interviewers hear candidates refer to the examples", "whether candidates ask what ownership means in practice"]
+  },
+  {
+    "title": "Rework the early-career ad for the person it targets",
+    "needs_new_data": true,
+    "steps": [
+      "State the location, the work mode and when the 2027 cohort starts.",
+      "Add what support new engineers get in their first months, if there is a programme.",
+      "Move the line that AI/ML experience is not required up into the role summary."
+    ],
+    "why_first": "The ad already speaks to new graduates in its requirements but leaves out the facts they need to decide, and most of the fix is facts the team already holds.",
+    "needs": ["Location and work mode for the role", "Start date for the 2027 cohort", "What support or training new engineers receive"],
+    "effort": "medium",
+    "effort_note": "A few facts from the early-career programme owner",
+    "who": ["early-career recruiting", "Applied engineering manager"],
+    "check": ["the share of applicants who ask about location or start date at first contact", "the number of applications from graduates without AI/ML experience"]
+  }
+],
+"rewrites": [
+  {
+    "title": "Closing block, Human Data ad",
+    "original": "At OpenAI, we believe artificial intelligence has the potential to help people solve immense global challenges, and we want the upside of AI to be widely shared. Join us in shaping the future of technology.",
+    "problem": "The closing lines restate the company’s belief and end on a stock phrase. They give no fact about the team or the conditions of the job.",
+    "logic": "Use what the same ad already says: the team’s link to the mission, what the work reaches, where and how the job is done. Every sentence comes from the ad.",
+    "rewrite": "Why the Human Data team\nA key part of achieving OpenAI’s mission is training models that deeply understand and reflect human preferences, and the Human Data team is at the heart of that effort. The team creates the systems that enable scalable, high-quality human feedback. These systems are essential to how OpenAI trains and improves its most advanced models.\n\nWhat your work reaches\nYou’ll translate experimental alignment research into production infrastructure, and drive infrastructure improvements across OpenAI’s frontier models, from internal research tooling all the way to production ChatGPT.\n\nWhere and how\nSan Francisco. Hybrid: 3 days in the office per week. Relocation assistance for new employees.",
+    "notes": [
+      {"kind": "evidence", "text": "The pay range and the main benefits for this role, if they are to be stated here."},
+      {"kind": "evidence", "text": "One example of a system the team built and what it changed for model training."}
+    ]
+  },
+  {
+    "title": "Ownership sentence, Human Data ad",
+    "original": "We’re looking for people who are excited by technical ownership, enjoy working across the stack, and are eager to solve ambiguous problems in a high-impact, fast-paced environment.",
+    "problem": "Built from stock phrases (ownership, high-impact, fast-paced). Nothing in it is specific to this team.",
+    "logic": "State what the role does using its task list, and keep the candidate traits as traits, not as facts about the job.",
+    "rewrite": "You’ll build and maintain full-stack systems for feedback collection, data labeling and evaluation pipelines, and partner with researchers to turn experimental alignment research into production infrastructure. The role may suit you if you enjoy full-stack development with end-to-end ownership and solving novel, ambiguous problems.",
+    "notes": [
+      {"kind": "evidence", "text": "One example of something an engineer on the team owned end to end, and its outcome."}
+    ]
+  },
+  {
+    "title": "Role summary, early-career ad",
+    "original": "We are seeking Software Engineers (Emerging Talent) to join our Applied Engineering team. You’ll work in a highly iterative, collaborative, fast-paced environment to bring our technology to millions of users around the world, and ensure it’s delivered with safety and reliability in mind. We value engineers who are self-starters, care deeply about the end user experience, and take pride in building products to solve customer needs.",
+    "problem": "The summary leads with environment adjectives and a vague scale (“millions of users”). The most useful facts for a new graduate are further down or missing.",
+    "logic": "Lead with who the role is for and what they will own, move the experience line up, and list the missing facts as questions rather than guessing them.",
+    "rewrite": "This role is for software engineers with 0–1 years of experience in software engineering or a relevant field. You’ll own the development of new customer-facing ChatGPT and OpenAI API features end to end, and talk to users to understand their problems. You’ll work with engineers, researchers, product managers, designers and operations colleagues. We ask for JavaScript and React; on the backend we use Python. An interest in AI/ML matters; direct experience is not required.",
+    "notes": [
+      {"kind": "evidence", "text": "Location and work mode for this role."},
+      {"kind": "evidence", "text": "When the 2027 cohort starts."},
+      {"kind": "evidence", "text": "What support or training new engineers receive."},
+      {"kind": "evidence", "text": "A user figure with its date, if “millions of users” is to stay."}
+    ]
+  }
+],
+"questions": [
+  {"kind": "evidence", "for": "communication", "text": "What employees get beyond the role itself: pay range logic, benefits, development."},
+  {"kind": "evidence", "for": "communication", "text": "For each role family, one example of work owned end to end and what it changed."},
+  {"kind": "evidence", "for": "communication", "text": "How safety and responsible deployment shape day-to-day work in sales, support and other non-research roles."},
+  {"kind": "evidence", "for": "communication", "text": "What, if anything, the claim about “the world’s best scientists, engineers, and business professionals” is based on."},
+  {"kind": "evidence", "for": "communication", "text": "Location, work mode, start date and new-engineer support for the Emerging Talent (2027) role."},
+  {"kind": "evidence", "for": "communication", "text": "A dated user figure for the Applied team’s products, if the ads are to keep referring to millions of users."},
+  {"kind": "confirm", "for": "communication", "text": "Whether the hybrid model of three office days and relocation assistance also applies to the Emerging Talent role."},
+  {"kind": "confirm", "for": "communication", "text": "Whether OpenAI wrote or maintains the claimed Comparably profile that describes it as a non-profit research company."},
+  {"kind": "confirm", "for": "audit", "text": "Whether the live job pages show a pay range outside the description text that was captured."},
+  {"kind": "confirm", "for": "audit", "text": "The official LinkedIn and X addresses; both were found on a third-party profile."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots or saved text of the careers main page, benefits and culture pages, and the interview guide on openai.com."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots from Glassdoor, Indeed and Blind, to give the review layer a usable sample."}
+],
+"genericity": [
+  {"claim": "The mission as the reason to join: “OpenAI is an AI research and deployment company dedicated to ensuring that general-purpose artificial intelligence benefits all of humanity.” closing with “Join us in shaping the future of technology.” (all five ads)", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "none", "defensibility": "unowned", "why": "A comparable AI lab could use the sentence unchanged: it contains no fact specific to OpenAI. The closing line follows the lexicon phrase “shape the future”. No figure, practice or condition is attached."},
+  {"claim": "Frontier work on named models and products: “The RL and Reasoning team drives the core reasoning paradigm and has created groundbreaking innovations such as o1 and o3.”, with ChatGPT and OpenAI API features in other ads", "verdict": "partial", "substitution": "breaks", "ubiquity": "common", "specificity": "high", "defensibility": "supportable", "why": "Depends on named models and products, so it breaks under substitution. Some stock wording around it (groundbreaking, cutting-edge, next-generation). The proof is only partial and is not linked to what a new hire gets, so it stays one step short of setting OpenAI apart."},
+  {"claim": "Ownership and impact: “We’re looking for people who are excited by technical ownership, enjoy working across the stack, and are eager to solve ambiguous problems in a high-impact, fast-paced environment.”", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Built from lexicon terms (ownership, high-impact, fast-paced) with no example. The specific ownership in the sales ad, a consumption revenue target, is not carried into this claim."},
+  {"claim": "Safety at the core: the closing block says AI must be created with safety and human needs at its core", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "As worded, a comparable AI lab could use it unchanged. Two ads give it some substance through alignment tasks, but the claim itself names no practice."}
+],
+"ledger": [
+  {"claim": "Working here means working on the mission that artificial general intelligence benefits all of humanity (all five ads; YouTube channel description)", "class": "core", "evidence": "The Human Data ad says a key part of achieving the mission is training models that reflect human preferences, and that its team is at the heart of that effort. No other ad links its role to the mission.", "strength": "weak", "status": "weak", "comment": "A self-stated link for one team, with no example of an outcome. The other four ads give no link at all."},
+  {"claim": "You will work at the frontier of AI, on models and products used at scale (research, Human Data and Applied ads)", "class": "core", "evidence": "The RL/Reasoning ad credits its team with o1 and o3. The Applied ad has engineers own ChatGPT and OpenAI API features end to end. The Human Data ad describes infrastructure work from internal research tooling to production ChatGPT.", "strength": "moderate", "status": "partial", "comment": "Specific and tied to named products, but it shows team output rather than what a new hire does, and covers three of the five ads. “Millions of users” is given without a figure."},
+  {"claim": "Ownership and high impact (Human Data, Applied, program manager and sales ads)", "class": "core", "evidence": "Task lists state ownership as a duty: features owned end to end (Applied), a portfolio, deals and a consumption revenue target (sales).", "strength": "weak", "status": "weak", "comment": "The duty statements restate the claim in role form. No example shows what someone owned and what changed."},
+  {"claim": "Safety and human needs are at the core of how AI is built here (closing block in all five ads)", "class": "core", "evidence": "The Human Data ad has engineers translate experimental alignment research into production infrastructure; the RL/Reasoning ad says the role advances AI alignment and capabilities.", "strength": "moderate", "status": "partial", "comment": "A practice without outcome, and only for two research-side teams; the promise is made to every role. The sales ad asks for sound judgement on sensitive security use cases, which is a requirement, not proof."},
+  {"claim": "The pace is fast and work is often loosely defined (four ads)", "class": "supporting", "evidence": "The early-career ad asks for the ability to move fast where things are sometimes loosely defined and may have competing priorities or deadlines.", "strength": "weak", "status": "weak", "comment": "Stated as a requirement in one ad; no description of what the pace looks like in a week or how it is managed."},
+  {"claim": "You will work alongside the best people in the field (Human Data, sales ads)", "class": "supporting", "evidence": "Not found. The sales ad claims the lab brings together the world’s best scientists, engineers and business professionals; the Human Data ad mentions world-class researchers.", "strength": "none", "status": "none", "comment": "The superlative has no comparison behind it. The o1 and o3 detail belongs to one team and does not establish the claim about colleagues in other teams."},
+  {"claim": "An inclusive culture that values many perspectives (closing block; Applied ad)", "class": "supporting", "evidence": "Every ad links an equal-opportunity policy statement and a form for requesting accommodations for applicants with disabilities.", "strength": "weak", "status": "weak", "comment": "These are applicant policies, not evidence of how inclusion works inside teams. The Applied ad lists creating an inclusive culture as a duty, with no practice described."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

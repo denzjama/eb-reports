@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "Ryan, LLC",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 57,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 97,
+  "confidence": "medium",
+  "reliability_note": "33 of 34 criteria assessed. The main ryan.com careers pages refused automated access, and the job-board pages carry the same employer text as the ads, so in practice two kinds of material were read: job ads and one YouTube channel"
+},
+"verdict": "Ryan’s job ads give candidates a concrete benefits list and a clear picture of the tasks. The employer story wrapped around them is one shared paragraph of stock phrases and superlatives, and its promise of control over your own time sits in the same ad as a 50+ hour standard workweek.",
+"notices": [
+  "This audit was built from public pages collected automatically on 2026-10-27. ryan.com, including its careers, benefits, early-careers, belonging and employee-story pages, refused automated access, so none of those pages is in the audit. The Workday job pages returned only their summary text, which for the ads holds the full ad. Live pages may have changed since the capture date, and some sources may have been missed.",
+  "Reviews and the Great Place To Work profile are shown in a separate section. They are not part of the 100-point score."
+],
+"materials": [
+  {"name": "RyanCareers job board, landing text", "type": "Careers site (job board)"},
+  {"name": "Students and Graduates job board, landing text", "type": "Careers site (early careers)"},
+  {"name": "Consultant, Real Property Tax", "type": "Job ad (entry level)"},
+  {"name": "Senior Consultant or Consultant, International Income Tax", "type": "Job ad (mid level)"},
+  {"name": "Principal, Sales and Use Tax Consulting, Western U.S.", "type": "Job ad (senior)"},
+  {"name": "Consultant, Severance Tax/Royalty", "type": "Job ad (entry level)"},
+  {"name": "Summer 2027 Intern, Sales and Use Tax", "type": "Job ad (internship)"},
+  {"name": "Ryan Tax YouTube channel, latest 15 videos", "type": "Social account"}
+],
+"sources": [
+  {"title": "RyanCareers job board (Workday)", "url": "https://ryan.wd1.myworkdayjobs.com/RyanCareers", "type": "Careers site", "captured": "2026-10-27"},
+  {"title": "Students-Graduates job board (Workday)", "url": "https://ryan.wd1.myworkdayjobs.com/Students-Graduates", "type": "Careers site", "captured": "2026-10-27"},
+  {"title": "Consultant, Real Property Tax", "url": "https://ryan.wd1.myworkdayjobs.com/en-US/RyanCareers/job/Consultant--Real-Property-Tax_R0020287-1", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Senior Consultant or Consultant, International Income Tax", "url": "https://ryan.wd1.myworkdayjobs.com/en-US/RyanCareers/job/Senior-Consultant-or-Consultant--International-Income-Tax_R0018722-1", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Principal, Sales and Use Tax Consulting, Western U.S.", "url": "https://ryan.wd1.myworkdayjobs.com/en-US/RyanCareers/job/Principal--Sales-and-Use-Tax-Consulting---Western-US_R0012749", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Consultant, Severance Tax/Royalty", "url": "https://ryan.wd1.myworkdayjobs.com/en-US/RyanCareers/job/Consultant--Severance-Tax-Royalty_R0015709-1", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Summer 2027 Intern, Sales and Use Tax", "url": "https://ryan.wd1.myworkdayjobs.com/en-US/Students-Graduates/job/Summer-2027-Intern--Sales-and-Use-Tax_R0020802", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Ryan Tax YouTube channel (@RyanTax)", "url": "https://www.youtube.com/channel/UCBDIOmEcNFbHeq9o1F7nV1Q", "type": "Social account", "captured": "2026-10-27"},
+  {"title": "Ryan on Comparably: company overview", "url": "https://www.comparably.com/companies/ryan", "type": "Reviews", "captured": "2026-10-27"},
+  {"title": "Ryan on Comparably: employee reviews", "url": "https://www.comparably.com/companies/ryan/reviews", "type": "Reviews", "captured": "2026-10-27"},
+  {"title": "Ryan, LLC on Great Place To Work", "url": "https://www.greatplacetowork.com/certified-company/1000789", "type": "Survey results and list rankings", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "ryan.com careers main page", "url": "https://www.ryan.com/careers", "kind": "Careers site", "decision": "unavailable", "reason": "The site refused automated access (HTTP 403). Fetching from ryan.com was stopped."},
+  {"source": "ryan.com life at Ryan, culture, benefits and myRyan, belonging, early careers and employee-story pages", "url": "", "kind": "Careers site", "decision": "unavailable", "reason": "Seen only in search listings; the same block applied. A staging copy of the site appeared in search and was not used because it is not the live site."},
+  {"source": "ryan.com robots.txt and careers sitemap", "url": "", "kind": "Site map", "decision": "unavailable", "reason": "Same block, so the full map of the careers site could not be built."},
+  {"source": "ryan.com press room", "url": "", "kind": "Press", "decision": "unavailable", "reason": "Blocked, and press pages are not candidate-facing."},
+  {"source": "ryan.com careers pages for Canada, Europe and Asia-Pacific", "url": "", "kind": "Careers site, other markets", "decision": "excluded", "reason": "Outside the US market chosen for this audit."},
+  {"source": "RyanCareers job board (Workday)", "url": "https://ryan.wd1.myworkdayjobs.com/RyanCareers", "kind": "Careers site", "decision": "included", "reason": "Official and candidate-facing. Only the summary text could be read; the total number of open ads could not be counted."},
+  {"source": "Students-Graduates job board (Workday)", "url": "https://ryan.wd1.myworkdayjobs.com/Students-Graduates", "kind": "Careers site (early careers)", "decision": "included", "reason": "Official; states the internship proposition."},
+  {"source": "Four US job ads and one internship ad", "url": "", "kind": "Job ads", "decision": "included", "reason": "Entry, mid, senior and internship levels across property, income, sales and use, and severance tax. The Principal ad shows no posting date."},
+  {"source": "Consultant, Business Solutions; Senior Consultant, Cost Segregation (Houston); Consultant, Fixed Assets and Cost Segregation", "url": "", "kind": "Job ads", "decision": "unavailable", "reason": "The pages returned no text."},
+  {"source": "Other Workday ads seen in search (VAT roles in Braga and Amsterdam, Sales and Use Tax Atlanta, Historic Tax Credits Boston, other internship postings)", "url": "", "kind": "Job ads", "decision": "excluded", "reason": "Same template as ads already captured, or outside the US market."},
+  {"source": "Built In ad, Employment Tax Consulting and Recovery", "url": "", "kind": "Job ad on a third-party board", "decision": "excluded", "reason": "The page says the job was removed on 2026-05-26."},
+  {"source": "Aggregator reposts (eFinancialCareers, CareerBuilder and others)", "url": "", "kind": "Job aggregators", "decision": "excluded", "reason": "Not official; some expired."},
+  {"source": "Built In company jobs page", "url": "", "kind": "Job board", "decision": "unavailable", "reason": "Page not found."},
+  {"source": "Handshake employer page", "url": "", "kind": "Early-careers listing", "decision": "excluded", "reason": "Requires a login."},
+  {"source": "Ryan Tax YouTube (@RyanTax)", "url": "https://www.youtube.com/channel/UCBDIOmEcNFbHeq9o1F7nV1Q", "kind": "Social account", "decision": "included", "reason": "Channel name, description and videos match the firm; the handle matches the X and Facebook handles. The link from ryan.com could not be checked."},
+  {"source": "YouTube @ryanllc", "url": "https://www.youtube.com/@ryanllc", "kind": "Social account", "decision": "excluded", "reason": "Belongs to an unrelated person; no videos."},
+  {"source": "LinkedIn company page and Life tab", "url": "https://www.linkedin.com/company/ryan", "kind": "Social account", "decision": "manual", "reason": "Closed platform."},
+  {"source": "X @RyanTax", "url": "https://x.com/RyanTax", "kind": "Social account", "decision": "manual", "reason": "Closed platform."},
+  {"source": "Facebook RyanTax", "url": "https://www.facebook.com/RyanTax", "kind": "Social account", "decision": "manual", "reason": "Closed platform; the account’s link to the firm was not checked independently."},
+  {"source": "Instagram and TikTok", "url": "", "kind": "Social accounts", "decision": "excluded", "reason": "No account was found in search. That does not mean none exists."},
+  {"source": "Comparably company page and reviews", "url": "https://www.comparably.com/companies/ryan/reviews", "kind": "Reviews", "decision": "included", "reason": "Public; short answers without author names."},
+  {"source": "Great Place To Work certified-company profile", "url": "https://www.greatplacetowork.com/certified-company/1000789", "kind": "Survey results and list rankings", "decision": "included", "reason": "Public; employee survey figure and list ranks 2016 to 2026."},
+  {"source": "Glassdoor reviews", "url": "https://www.glassdoor.com/Reviews/Ryan-Reviews-E26296.htm", "kind": "Reviews", "decision": "manual", "reason": "Closed platform; not collected automatically."},
+  {"source": "Indeed company reviews", "url": "https://www.indeed.com/cmp/Ryan,-LLC/reviews", "kind": "Reviews", "decision": "manual", "reason": "A security check refused automated access."},
+  {"source": "InHerSight", "url": "", "kind": "Reviews", "decision": "unavailable", "reason": "One address not found; the other loaded an empty page."},
+  {"source": "Fortune and Great Place To Work list pages, award press releases, third-party guides and directories", "url": "", "kind": "Press and directories", "decision": "excluded", "reason": "Not published by the employer or not candidate-facing; the Great Place To Work profile already holds the ranks."}
+],
+"social": [
+  {
+    "platform": "YouTube",
+    "account": "Ryan Tax (@RyanTax)",
+    "url": "https://www.youtube.com/channel/UCBDIOmEcNFbHeq9o1F7nV1Q",
+    "purpose": "General corporate channel: client partnerships, software demos and the firm’s story, with a few people videos",
+    "sample": "15 videos, 2025-02-06 to 2026-10-08 (titles and descriptions; videos not watched)",
+    "rhythm": "15 videos in about 20 months, unevenly spread: 8 in August 2026 and none between 15 July 2025 and 10 March 2026",
+    "people_share": "2 of 15 videos",
+    "themes": [
+      "Software demos: 7 of 15",
+      "Client partnerships with sports teams (Dallas Cowboys, New York Yankees, New York Islanders): 3 of 15",
+      "Firm story and the future of tax: 2 of 15",
+      "People: the Team Member Value Proposition video and the RyanSHARES Day video, 2 of 15",
+      "One live stream with no description"
+    ],
+    "notes": "The value-proposition video description promises that you can grow at the speed of your own ability, with support that adapts to your life. That growth promise matches the job ads. The ads say nothing about support that adapts to your life, and the description gives no example of it. The RyanSHARES Day description names a practice: an annual global day of service on the firm’s founding anniversary, with volunteering, meal packing and support for local charities. None of the 15 descriptions links to jobs or the careers site; one links to ryan.com."
+  }
+],
+"perception": {
+  "sample": [
+    {"platform": "Comparably", "reviews": 38, "period": "Not shown on the page; one answer is marked as posted 21 days before capture", "rating": "4.7/5 shown on Comparably on 2026-10-27, with 95 employee participants and 1,006 ratings; the reviews page shows 114 reviews, 96% of them positive"},
+    {"platform": "Great Place To Work", "reviews": 0, "period": "Profile updated July 2026", "rating": "95% of employees say it is a great place to work, per the survey shown on the profile on 2026-10-27; this is a survey figure, not free-text reviews"}
+  ],
+  "thin": false,
+  "themes": [
+    {"theme": "Colleagues and team", "mentions": 9, "of": 38, "tone": "positive", "promise": "A team that is invested in your continued success (YouTube value-proposition video)", "match": "consistent", "note": "Answers describe colleagues who share knowledge, work as a team and have long tenure."},
+    {"theme": "Flexibility and remote work", "mentions": 5, "of": 38, "tone": "positive", "promise": "Ownership of your time and flexibility; hybrid work options (job ads)", "match": "consistent", "note": "Answers mention flexible hours, taking time off when needed and working from home. One says working from home is occasional. None speaks about senior roles, so the reviews say nothing about the 50+ hour week in the Principal ad."},
+    {"theme": "Pay and benefits", "mentions": 6, "of": 38, "tone": "mixed", "promise": "Competitive benefits package and outstanding earning potential (job ads)", "match": "mixed", "note": "Five answers name what they value in their pay and benefits, including paid sports club memberships and maternity leave, both of which match items in the ads’ benefits list, as well as commissions and bonus opportunity. One says pay felt low for the role until it was raised with HR."},
+    {"theme": "Hiring process", "mentions": 6, "of": 38, "tone": "positive", "promise": "", "match": "not_addressed", "note": "Answers describe meeting the direct supervisor and the department head, and recruiters who set realistic expectations. One suggests take-home tests. The ads describe no hiring steps."},
+    {"theme": "Leadership", "mentions": 5, "of": 38, "tone": "positive", "promise": "", "match": "not_addressed", "note": "Answers call leaders open, transparent and knowledgeable. The candidate material makes no specific promise about leadership."},
+    {"theme": "Growth and careers", "mentions": 2, "of": 38, "tone": "positive", "promise": "Accelerated growth path for high performers (job ads, job board)", "match": "consistent", "note": "Both answers are general, such as a focus on growth for careers. Neither describes a promotion path, so they add no detail to the ads’ growth promise."},
+    {"theme": "Workload and pace", "mentions": 2, "of": 38, "tone": "mixed", "promise": "Freedom to work the way you work best (job ads); high-energy environment (ad requirements)", "match": "mixed", "note": "One answer calls it hard work at a growing business; another describes the team as hard working."},
+    {"theme": "Ethics", "mentions": 1, "of": 38, "tone": "negative", "promise": "Value: Integrity Always (Real Property Tax ad)", "match": "tension", "note": "The only answer to the question on what the culture needs to change asks for more focus on ethical behaviour. It is one comment, with no context."}
+  ],
+  "caveat": "On Comparably, 30 of the 38 answers respond to questions about what people like best, 5 to a neutral question about overall experience and 3 to questions about what should improve, so the sample leans positive by design. Glassdoor and Indeed could not be read. The Great Place To Work figure comes from a structured survey rather than open reviews."
+},
+"manual_import": [
+  {"platform": "ryan.com careers pages", "url": "https://www.ryan.com/careers", "capture": ["the careers home page", "life at Ryan and culture", "benefits, including the flexible-work programme if there is one", "early careers", "belonging pages", "two or three employee stories", "any how-we-hire or FAQ page"]},
+  {"platform": "LinkedIn", "url": "https://www.linkedin.com/company/ryan", "capture": ["profile header with bio and follower count", "all sections of the Life tab", "the latest 9 to 12 posts", "3 to 5 recent posts about people, work or hiring, opened with their captions", "pinned posts"]},
+  {"platform": "X", "url": "https://x.com/RyanTax", "capture": ["profile header and bio", "pinned post", "the latest 9 to 12 posts with captions"]},
+  {"platform": "Facebook", "url": "https://www.facebook.com/RyanTax", "capture": ["page header", "the latest 9 to 12 posts"]},
+  {"platform": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/Ryan-Reviews-E26296.htm", "capture": ["rating summary", "15 to 30 of the most recent reviews, text only, without names"]},
+  {"platform": "Indeed", "url": "https://www.indeed.com/cmp/Ryan,-LLC/reviews", "capture": ["rating summary", "15 to 30 of the most recent reviews, text only, without names"]}
+],
+"scope": {
+  "reviewed": [
+    "Two Workday job-board landing pages (all roles; students and graduates)",
+    "Five job ads: two entry-level consultant roles, one mid-level, one Principal and one summer 2027 internship",
+    "The Ryan Tax YouTube channel: titles and descriptions of the latest 15 videos",
+    "Perception layer, outside the score: 38 short answers on Comparably and the Great Place To Work profile",
+    "US market, English, public pages captured on 2026-10-27"
+  ],
+  "not_reviewed": [
+    "ryan.com careers, benefits, early-careers, belonging and employee-story pages (automated access refused)",
+    "The video content itself (only titles and descriptions were read)",
+    "LinkedIn, X and Facebook (closed platforms)",
+    "Glassdoor and Indeed reviews",
+    "The hiring process as candidates experience it",
+    "Markets outside the US"
+  ]
+},
+"summary": {
+  "points": [
+    "The ads do two things well. Four US ads carry the same concrete benefits list, and every ad lists real tasks and tools; every experienced-hire ad gives the share of time spent travelling.",
+    "The employer story around them is one paragraph repeated on the job board and in every ad. It is built from stock phrases and ends in an unsupported superlative. Of the seven promises the audit found, only the benefits package and hands-on internship work have meaningful support.",
+    "The promise that employees get ownership of their time sits in the Principal ad next to a 50+ hour standard workweek and 30 to 50% travel. The ad does not say how the two fit.",
+    "Recognition is claimed but not shown. The ads say “Award-Winning Culture” and name no award. The independent Great Place To Work profile lists a Fortune 100 Best Companies to Work For rank for every year from 2018 to 2026 and a 95% survey result. None of this reaches the ads.",
+    "In 38 Comparably answers, colleagues, flexibility and the hiring process come up positively. Six answers describe the hiring process, while the ads explain no hiring steps."
+  ],
+  "actions": [
+    "Decide what flexibility means for each role and state it in the ad, starting with the Principal ad.",
+    "Replace the shared employer paragraph with copy built from facts the ads already contain, and name the awards with list and year.",
+    "Publish the career path: the levels from Consultant to Principal, typical timing, and how many interns join full-time."
+  ]
+},
+"dimensions": [
+  {
+    "id": "clarity", "score": 7, "max": 12, "assessable": true,
+    "why": "The offer is split between the benefits list at the top of each ad and a closing paragraph that lists growth, innovation, benefits, earning potential and freedom with equal weight. Benefits are written from the candidate’s side. An internal framework and a few typos slow reading.",
+    "criteria": [
+      {"name": "Employer proposition identifiable", "score": 2, "max": 4, "assessable": true, "note": "The ads lead with a perk list headed Why Ryan?, and the employer paragraph names five ideas at once. The value-proposition line on YouTube appears once and nowhere in the ads."},
+      {"name": "Candidate benefit explicit", "score": 3, "max": 4, "assessable": true, "note": "The benefits list is concrete and from the candidate’s side (for example 14 weeks of 100% paid leave for new parents, adoption included). The closing paragraph describes the firm."},
+      {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "Several ideas of equal weight; nothing leads."},
+      {"name": "Accessibility", "score": 1, "max": 2, "assessable": true, "note": "Duties are grouped under Ryan’s Key Results (People, Client, Value) with no explanation. The ads also contain typos such as “award-wining”."}
+    ]
+  },
+  {
+    "id": "differentiation", "score": 7, "max": 16, "assessable": true,
+    "why": "No main claim is true of Ryan alone. Three of six bend: the benefits terms, the breadth of the internship and the firm’s focus on business tax only. The growth, freedom and culture claims fit any comparable employer unchanged. The most specific facts, such as the Principal title being similar to an equity partner, sit in one ad’s fine print.",
+    "criteria": [
+      {"name": "Resistance to swapping in another employer", "score": 2, "max": 5, "assessable": true, "note": "None of the six main claims stops being true for a comparable firm. Benefits, internship breadth and the business-tax focus bend; growth, freedom and award-winning culture fit anyone. Employer-specific detail appears only in secondary text."},
+      {"name": "Avoids stock category phrases", "score": 1, "max": 3, "assessable": true, "note": "The employer paragraph is carried by stock phrases: dynamic, innovative work environment, accelerated growth, outstanding opportunities. The early-careers text adds cutting-edge, shape the future and meaningful impact."},
+      {"name": "Uses employer-specific realities", "score": 2, "max": 4, "assessable": true, "note": "The business-tax focus, the equity-partner comparison and the all-expense-paid trip to the Dallas headquarters for summer interns are specific. Only the last two are tied to what the candidate gets."},
+      {"name": "Hard for others to claim", "score": 1, "max": 2, "assessable": true, "note": "Benefits terms such as a four-week sabbatical after five years have a cost, but another employer could offer the same."},
+      {"name": "Memorable idea", "score": 1, "max": 2, "assessable": true, "note": "The line about growing at the speed of your own ability appears only once, in a YouTube description."}
+    ]
+  },
+  {
+    "id": "proof", "score": 8, "max": 16, "assessable": true,
+    "why": "Two of seven promises have meaningful support: the benefits package, through the specific list, and hands-on intern work, through the intern ad’s duties. Growth, award-winning culture, the internship as a career start and the firm’s scale rest on their own wording or on client facts. The flexibility promise is contradicted inside the Principal ad.",
+    "criteria": [
+      {"name": "How many claims are supported", "score": 2, "max": 6, "assessable": true, "note": "Two of seven claims partly supported, none strongly; most main claims lack meaningful support."},
+      {"name": "How specific the proof is", "score": 2, "max": 4, "assessable": true, "note": "The supported minority has specific proof (weeks of leave, years of service, named intern duties)."},
+      {"name": "Whether the proof fits the claim", "score": 2, "max": 3, "assessable": true, "note": "The benefits list fits the benefits promise but not the word competitive. The intern duties come from one practice, while the internship claim covers more than 35 departments."},
+      {"name": "Proof next to the claim", "score": 2, "max": 3, "assessable": true, "note": "The benefits list heads each ad under Why Ryan?. The internship claim sits at the end of the intern ad, away from the duties that support it."}
+    ]
+  },
+  {
+    "id": "audience_fit", "score": 8, "max": 12, "assessable": true,
+    "why": "Each ad is clearly aimed at one role and level, and students get their own board and benefits list. Senior hires get the same employer paragraph and benefits list as entry-level consultants. The demands of the job are stated as requirements, not as an honest choice in the offer.",
+    "criteria": [
+      {"name": "Audience definition", "score": 3, "max": 3, "assessable": true, "note": "Role family, level and requirements are explicit in every ad; students have a separate board."},
+      {"name": "Decision factors addressed", "score": 2, "max": 4, "assessable": true, "note": "Travel share, benefits and requirements are specific. Pay appears in two of five ads, and progression is generic."},
+      {"name": "Adapted by audience", "score": 2, "max": 3, "assessable": true, "note": "Interns get an adapted message. The Principal ad adds one helpful framing passage but otherwise repeats the entry-level text."},
+      {"name": "Real trade-offs", "score": 1, "max": 2, "assessable": true, "note": "Travel, a 50+ hour week and GPA minimums are stated, but only as requirements. The employer paragraph promises freedom and flexibility to everyone."}
+    ]
+  },
+  {
+    "id": "employee_truth", "score": 5, "max": 7, "assessable": true,
+    "why": "The ads describe the work concretely: fieldwork at client sites, filing appeals, Access and Excel work, travel shares. Demands are named but how they are handled is not. Culture appears through one practice, RyanSHARES Day, and otherwise through adjectives and value names. Employee voice could not be assessed because the employee-story pages and the videos could not be read.",
+    "criteria": [
+      {"name": "Employee voice", "score": 0, "max": 3, "assessable": false, "note": "Not assessed: the employee-story pages on ryan.com refused access, and the videos were not watched."},
+      {"name": "Work reality", "score": 3, "max": 3, "assessable": true, "note": "Tasks, tools, travel share and working conditions are given in the ads (for example, fieldwork at client sites to review documentation for incentive applications and refund claims)."},
+      {"name": "Difficulties and how they are handled", "score": 1, "max": 2, "assessable": true, "note": "Travel up to 50%, a 50+ hour week and managing ambiguity are named; nothing says how they are handled."},
+      {"name": "Culture shown through practices", "score": 1, "max": 2, "assessable": true, "note": "RyanSHARES Day and the sabbatical are practices; the rest is “Award-Winning Culture” and value names."}
+    ]
+  },
+  {
+    "id": "consistency", "score": 7, "max": 12, "assessable": true,
+    "why": "The same employer paragraph and benefits list appear word for word across the ads, so the message is consistent but consistently general. The YouTube channel mostly talks to clients. The promise of control over your own time is contradicted by the Principal ad’s 50+ hour standard workweek.",
+    "criteria": [
+      {"name": "Same core promise everywhere", "score": 3, "max": 5, "assessable": true, "note": "The ads align. On YouTube, 2 of 15 videos concern people. The flexibility promise is undercut in one ad."},
+      {"name": "Proof tells the same story", "score": 2, "max": 3, "assessable": true, "note": "Benefits proof is consistent across ads. The YouTube proof points are client tax savings, which say nothing about working at Ryan."},
+      {"name": "Same voice", "score": 2, "max": 2, "assessable": true, "note": "The shared text makes every touchpoint recognisably the same employer."},
+      {"name": "No contradictions", "score": 0, "max": 2, "assessable": true, "note": "Ownership of your time versus a 50+ hour standard workweek requirement in the Principal ad."}
+    ]
+  },
+  {
+    "id": "candidate_relevance", "score": 8, "max": 12, "assessable": true,
+    "why": "A candidate learns the tasks, the travel and the benefits. Pay is given only for California-based roles in two ads, work mode is a label without content, and the path from one level to the next is not described.",
+    "criteria": [
+      {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "The benefits list is a specific reason; the rest of the case for joining is generic."},
+      {"name": "Role reality", "score": 2, "max": 3, "assessable": true, "note": "Four ads describe tasks and conditions well. Team set-up is vague, and the Principal ad lists only general duties."},
+      {"name": "Decision facts", "score": 2, "max": 3, "assessable": true, "note": "There is a salary range for certain California-based Real Property Tax roles and an hourly range for Sacramento interns. Hybrid Work Options has no content, and no progression path is given."},
+      {"name": "Anticipates candidate questions", "score": 2, "max": 3, "assessable": true, "note": "The Principal ad explains that Ryan is not a CPA firm and what the title compares to. Ads state the visa-sponsorship rule and an accommodation contact."}
+    ]
+  },
+  {
+    "id": "conversion", "score": 5, "max": 10, "assessable": true,
+    "why": "Two ads invite candidates to submit a resume or contact the recruiter directly, and the student board offers a talent community. The ads say nothing about what happens after applying. The apply button itself sits in the part of the Workday page that could not be read.",
+    "criteria": [
+      {"name": "Next step clear", "score": 2, "max": 3, "assessable": true, "note": "Next steps appear in two of five ads and on the student board; elsewhere only the standard apply flow."},
+      {"name": "Reasons near the call to action", "score": 1, "max": 2, "assessable": true, "note": "In two ads the contact line follows the role introduction; the benefits list sits at the top."},
+      {"name": "Less effort to apply", "score": 1, "max": 2, "assessable": true, "note": "A recruiter contact in two ads and a People Group phone and email for accommodation; no word on time or documents needed."},
+      {"name": "Call to action fits the stage", "score": 1, "max": 2, "assessable": true, "note": "Contacting the recruiter to learn more and joining the talent community suit undecided candidates, but only some touchpoints offer them."},
+      {"name": "Process explained", "score": 0, "max": 1, "assessable": true, "note": "None of the five ads describes steps or timing."}
+    ]
+  }
+],
+"strengths": [
+  {"title": "A concrete benefits list, identical across the US ads", "text": "All four experienced-hire ads open with the same Why Ryan? list. It gives terms, not adjectives: 14 weeks of 100% paid leave for new parents with adoption included, benefits eligibility from day one, tuition reimbursement after one year of service, a fertility assistance program, and a four-week company-paid sabbatical after five years of service. A candidate can check each item against another offer."},
+  {"title": "Job ads show the actual work", "text": "Each ad lists tasks a candidate can picture. The Severance Tax ad describes fieldwork at client sites to review documentation for incentive applications and refund claims, and preparing refund claims with Access and Excel. The Real Property Tax ad covers property inspections, analysing assessment notices and filing appeals. Every experienced-hire ad gives the share of time spent travelling, from up to 10 to 20% for entry consultants to 30 to 50% for the Principal."},
+  {"title": "Students get their own proposition", "text": "The intern ad has its own benefits list: a competitively paid internship, mentorship and hands-on training, and an all-expense-paid trip to the Dallas headquarters for summer interns. Its duties are specific, including drafting technical memoranda and helping multi-state companies with state and local tax controversies, such as preparing clients for discussions with auditors. It also gives an hourly range of $23.70 to $27.50 for Sacramento, CA."},
+  {"title": "The Principal ad explains the title", "text": "The Principal ad says Ryan is not a CPA firm and that the Principal title is similar to an equity partner in public accounting. It also says the role has no location preference. This is the one passage in the material that explains Ryan’s structure from the candidate’s side."}
+],
+"problems": [
+  {
+    "severity": "high",
+    "title": "The promise of control over your own time is contradicted in the same ad",
+    "evidence": [
+      "Employer paragraph in every ad: “With a clear understanding of expectations and accountabilities, our employees are given ownership of their time and flexibility to meet the demands of their professional and personal lives.”",
+      "Principal ad, work environment: “Independent travel requirement: 30 to 50%. 50+ hour standard workweek requirement.”",
+      "Why Ryan? list in four ads: “Hybrid Work Options”, with no explanation of what the options are."
+    ],
+    "why": "The employer paragraph makes flexibility a company-wide promise. The Principal ad sets a 50+ hour standard workweek and up to half the time travelling, and does not explain how the two fit. The only other content on flexibility is a three-word label. This is the one claim in the material that the material itself contradicts. It is ranked high rather than critical because the contradiction appears in one of the five ads.",
+    "flags": ["RF12", "RF18", "RF05"]
+  },
+  {
+    "severity": "high",
+    "title": "The employer paragraph in every ad is stock phrases ending in a superlative",
+    "evidence": [
+      "“Ryan offers outstanding opportunities to work in a dynamic, rapidly expanding tax services firm serving the world’s most respected Global 5000 companies.”",
+      "“Our innovative work environment, accelerated growth path for high performers, competitive benefits package, and outstanding earning potential provide the most rewarding career experience available in the industry.”"
+    ],
+    "why": "These two sentences are the only description of Ryan as an employer that appears on the job board and in every ad. Every phrase in them could be moved into a comparable firm’s copy unchanged. The closing claim compares Ryan with the whole industry and offers no basis for the comparison. The concrete benefits list sits above the paragraph, but the paragraph does not refer to it.",
+    "flags": ["RF01", "RF02", "RF15"]
+  },
+  {
+    "severity": "high",
+    "title": "Growth is promised in three places and explained nowhere",
+    "evidence": [
+      "Employer paragraph: an accelerated growth path for high performers.",
+      "YouTube value-proposition video: you can grow at the speed of your own ability.",
+      "Early-careers board: “Many of our interns go on to join Ryan full-time, contributing to our mission of delivering the best tax services and software solutions in the world.”"
+    ],
+    "why": "None of the touchpoints shows a level structure, typical time to promotion, promotion figures or an intern conversion number. The only career-level detail is in the Principal ad, which will consider candidates at Managing Director or Director level who are ready for promotion. It does not say whether such candidates come from inside Ryan. Tuition reimbursement after one year and training on the Internal Revenue Code are inputs. They do not show a path.",
+    "flags": ["RF14", "RF06"]
+  },
+  {
+    "severity": "medium",
+    "title": "Recognition is claimed but not named, while specific rankings sit unused on another site",
+    "evidence": [
+      "Why Ryan? list: “Award-Winning Culture”.",
+      "International Income Tax ad: “We are truly a Great Place to Work!”",
+      "The Great Place To Work profile, outside the candidate material, lists among others #37 on the Fortune 100 Best Companies to Work For 2026, #7 in Fortune Best Workplaces in Consulting and Professional Services 2026 (Large), Fortune Best Workplaces for Parents (Large) ranks in 2024 and 2025, and a 95% survey result."
+    ],
+    "why": "As written in the ads, the award claims contain no award, year or criterion. The specific rankings exist on an independent page, and the parents ranks line up with the 14-week paid parental leave in the same ads. The ads do not connect them. Only the internship awards (Handshake Early Talent Award, Vault’s Top Internship Programs) are named, and they too come without a year.",
+    "flags": ["RF02", "RF06"]
+  },
+  {
+    "severity": "medium",
+    "title": "The most specific facts about Ryan are presented as company description or client marketing, not as part of the offer",
+    "evidence": [
+      "Principal ad only: “Ryan LLC is not a CPA Firm. The Principal title is similar to an equity Partner in Public Accounting.”",
+      "Early-careers board: Ryan describes itself as the world’s largest firm dedicated exclusively to business tax services, with no statement of what that means for the work.",
+      "YouTube: 3 of 15 videos are client partnerships with sports teams, including more than $40 million in tax savings across nine services for the Dallas Cowboys; 2 of 15 are about people."
+    ],
+    "why": "These facts are what set Ryan’s structure apart in the material, yet none of them is turned into a statement about the work. A candidate is never told what working only on business tax, or a Principal title outside a CPA firm, means for the job. The client results describe what the firm delivers for clients. They say nothing about the employee experience.",
+    "flags": ["RF22", "RF04"]
+  },
+  {
+    "severity": "medium",
+    "title": "Pay and work mode are thin",
+    "evidence": [
+      "Real Property Tax ad: “For certain California based roles, the base salary hiring range for this position is $68,600 - $85,800.”",
+      "Intern ad: an hourly range of $23.70 to $27.50 for Sacramento, CA, and a note that certain roles may be eligible for incentive compensation.",
+      "Three of the five ads state no pay at all, and no ad says what Hybrid Work Options involves."
+    ],
+    "why": "Pay appears only where it is scoped to California. The outstanding earning potential promised in the employer paragraph has no figure or mechanism behind it outside those two ranges. Work mode is a label with no content.",
+    "flags": ["RF05", "RF06"]
+  },
+  {
+    "severity": "low",
+    "title": "An unexplained internal framework and typos in the ads",
+    "evidence": [
+      "“Duties and responsibilities, as they align to Ryan’s Key Results People: Create a positive team member experience.”",
+      "“The ideal candidate with have analytical and problem-solving skills, coupled with strong people skills.”",
+      "“Ryan used Workday and Salesforce.”"
+    ],
+    "why": "Key Results and its three headings (People, Client, Value) are never explained, so a reader without inside knowledge has to guess why duties are grouped this way. The typos sit in ads that list attention to detail and accuracy among the requirements.",
+    "flags": ["RF19"]
+  }
+],
+"fixes": [
+  {
+    "title": "Decide what flexibility means for each role and say it in the ad",
+    "needs_new_data": true,
+    "steps": [
+      "Decide which statement holds for the Principal role: ownership of your time, or the 50+ hour standard workweek. If both hold, explain how.",
+      "Replace the Hybrid Work Options label with what the option involves, by role family: days, eligibility and who decides.",
+      "Drop the ownership-of-time sentence from the shared paragraph. Put role-level facts (hours, travel share, location, work mode) together in one block in each ad."
+    ],
+    "why_first": "This is the only promise in the material that the material itself contradicts, and it appears in every ad. The fix also gives the flexibility claim content, which it now lacks.",
+    "needs": ["What Hybrid Work Options allows, by role family", "Whether the 50+ hour standard workweek applies only to Principals"],
+    "effort": "medium",
+    "effort_note": "A decision by the People Group with practice leaders, then a template change in Workday",
+    "who": ["People Group (policy on hybrid work)", "Sales and Use Tax practice leadership (Principal role)", "Talent acquisition (ad template)"],
+    "check": ["Whether candidates for senior roles raise hours or flexibility at the first screening call", "Whether the work-mode block shows up in every newly posted ad"]
+  },
+  {
+    "title": "Rewrite the shared employer paragraph from facts the ads already contain",
+    "needs_new_data": false,
+    "steps": [
+      "Replace the two-sentence paragraph with a short block built from facts already in the ads: business tax only, day-one benefits, parental leave, sabbatical, tuition reimbursement.",
+      "Cut the industry-wide superlative and the unnamed award line, or replace them with named lists and years.",
+      "Carry the equity-partner explanation from the Principal ad into the other senior ads, and say what working only on business tax means for a consultant’s work."
+    ],
+    "why_first": "The paragraph appears in every ad and on the job board, so one change reaches every candidate. Most of the replacement facts are already in the material.",
+    "needs": ["Approval to cite the Great Place To Work and Fortune ranks with list name and year", "A sentence from practice leaders on what a business-tax-only focus means for the work"],
+    "effort": "small",
+    "effort_note": "Rewording with facts already in the material, plus one approval for the award citations",
+    "who": ["Employer brand or talent marketing", "Communications (award citations)"],
+    "check": ["Whether the new block appears unchanged across all new ads", "Whether candidates mention specific benefits or awards in interviews"]
+  },
+  {
+    "title": "Give the growth promise a mechanism and figures",
+    "needs_new_data": true,
+    "steps": [
+      "Publish the level structure from Consultant to Principal and what moves someone from one level to the next.",
+      "Add a dated figure for internal promotion, and the number of interns who joined full-time from a named intake.",
+      "Collect two or three attributable accounts from people who moved up, written in their own words."
+    ],
+    "why_first": "Growth is the promise made in the most places (employer paragraph, YouTube, early-careers board) and it has no support anywhere. It needs data that has to be gathered, so it comes after the two copy fixes.",
+    "needs": ["The career levels and typical timing", "Internal promotion data with year and population", "Intern-to-hire numbers by intake", "Real employee accounts"],
+    "effort": "large",
+    "effort_note": "Data from HR systems and new employee content",
+    "who": ["People Group (promotion and intern data)", "Campus recruiting", "Employees who were promoted (stories)"],
+    "check": ["Whether candidates at interview ask about specific levels and timing rather than whether growth exists", "How many interns from the next intake accept full-time offers"]
+  }
+],
+"rewrites": [
+  {
+    "title": "The shared employer paragraph (job board and every ad)",
+    "original": "Ryan offers outstanding opportunities to work in a dynamic, rapidly expanding tax services firm serving the world’s most respected Global 5000 companies. Our innovative work environment, accelerated growth path for high performers, competitive benefits package, and outstanding earning potential provide the most rewarding career experience available in the industry.",
+    "problem": "Stock phrases and an unsupported superlative. It never mentions the concrete benefits listed above it.",
+    "logic": "Lead with the firm’s business-tax focus, state the benefits as facts with their conditions, and leave growth as a gap to fill rather than a claim.",
+    "rewrite": "Ryan works on business tax, and only business tax. Our clients include Global 5000 companies.\n\nWhat you get:\nBenefits eligibility from your first day.\n14 weeks of 100% paid leave for new parents, adoption included.\nTuition reimbursement after one year of service.\nA four-week company-paid sabbatical once you reach five years of service.\n\nHow you grow:\nEVIDENCE NEEDED: the career levels from Consultant to Principal, and the typical time between them.",
+    "notes": [
+      {"kind": "confirm", "text": "Whether the Why Ryan? benefits apply to every US role. In the material they appear in the four experienced-hire ads, while the intern ad has a different list."},
+      {"kind": "confirm", "text": "Whether to add named recognition with year, for example the 2026 Fortune 100 Best Companies to Work For rank shown on the Great Place To Work profile."},
+      {"kind": "evidence", "text": "The career levels and typical timing for the How you grow line."}
+    ]
+  },
+  {
+    "title": "Hours and flexibility in the Principal ad",
+    "original": "Ryan employees are given the freedom to do their best work in the way they work best. With a clear understanding of expectations and accountabilities, our employees are given ownership of their time and flexibility to meet the demands of their professional and personal lives.",
+    "problem": "A company-wide promise of control over time, in an ad whose work-environment section sets a 50+ hour standard workweek and 30 to 50% travel.",
+    "logic": "Replace the general promise with the role’s actual conditions, taken from the same ad, and leave the open question as a gap.",
+    "rewrite": "How this role works\nPractice: Sales and Use Tax Consulting, western U.S.\nLocation: we do not have a location preference. Any major city works.\nTravel: 30 to 50%.\nHours: a 50+ hour standard workweek.\nWork mode: EVIDENCE NEEDED: what Hybrid Work Options means for this role.",
+    "notes": [
+      {"kind": "confirm", "text": "Which statement reflects the Principal role: ownership of your time, or the 50+ hour standard workweek. If both apply, say how."},
+      {"kind": "evidence", "text": "What Hybrid Work Options allows for Principals."}
+    ]
+  }
+],
+"questions": [
+  {"kind": "confirm", "for": "communication", "text": "For the Principal role, which statement reflects reality: ownership of your time and flexibility, or a 50+ hour standard workweek? If both apply, how do they fit together?"},
+  {"kind": "evidence", "for": "communication", "text": "What Hybrid Work Options allows: days, eligibility and differences by role family."},
+  {"kind": "evidence", "for": "communication", "text": "The career levels from Consultant to Principal, typical time between levels, and internal promotion figures with year and population."},
+  {"kind": "confirm", "for": "communication", "text": "Whether Principal candidates at Managing Director or Director level are drawn from inside Ryan as well as from outside."},
+  {"kind": "evidence", "for": "communication", "text": "How many interns joined full-time, by intake and year."},
+  {"kind": "confirm", "for": "communication", "text": "Whether the Why Ryan? benefits list applies to every US role."},
+  {"kind": "confirm", "for": "communication", "text": "Which awards to name in place of Award-Winning Culture, with list name and year, and the year of the Handshake and Vault internship awards."},
+  {"kind": "evidence", "for": "communication", "text": "Pay ranges for roles outside California."},
+  {"kind": "evidence", "for": "communication", "text": "The hiring steps and timeline after a candidate applies."},
+  {"kind": "evidence", "for": "communication", "text": "What Ryan’s Key Results (People, Client, Value) are and why duties are grouped by them."},
+  {"kind": "evidence", "for": "communication", "text": "Attributable employee accounts in their own words, including what the role demands and how people manage it."},
+  {"kind": "evidence", "for": "communication", "text": "What working only on business tax means for a consultant’s work, in one or two concrete sentences from practice leaders."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots or saved copies of the ryan.com careers, benefits, early-careers, belonging and employee-story pages."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the LinkedIn Life tab and recent posts, and of the latest Glassdoor and Indeed reviews."},
+  {"kind": "confirm", "for": "audit", "text": "Whether the Principal, Sales and Use Tax Consulting ad is still open; it shows no posting date."}
+],
+"genericity": [
+  {"claim": "Accelerated growth path for high performers; grow at the speed of your own ability (employer paragraph, YouTube)", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "No level, path, timing or figure is attached. The wording follows the lexicon pattern of career growth and contains nothing tied to Ryan."},
+  {"claim": "“Ryan employees are given the freedom to do their best work in the way they work best.”", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "none", "defensibility": "unowned", "why": "The sentence names no practice, and the only related item, Hybrid Work Options, has no content. One ad’s 50+ hour standard workweek works against it."},
+  {"claim": "The Why Ryan? benefits list (14 weeks of 100% paid parental leave, day-one eligibility, four-week sabbatical after five years)", "verdict": "partial", "substitution": "bends", "ubiquity": "rare", "specificity": "high", "defensibility": "supportable", "why": "It contains specific terms and conditions, so another employer would have to offer the same terms to reuse it. Nothing in the list is structurally Ryan’s."},
+  {"claim": "“Ryan is an award-winning firm with an amazing corporate culture.”", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Award-winning with no award named, plus an adjective, both in the methodology’s list of stock phrases. Specific rankings exist on an independent profile but are not used."},
+  {"claim": "“Our award-winning internship program offers opportunities across more than 35 departments, ranging from consulting and technology to operations and beyond.”", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The department and location counts, two named awards and the headquarters trip for summer interns are specific. The surrounding text adds stock phrases (meaningful impact from day one, shape the future)."},
+  {"claim": "“At Ryan, the world’s largest firm dedicated exclusively to business tax services, we’re redefining what it means to start a career in professional services.”", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The business-tax focus is specific to Ryan. The second half, redefining what it means to start a career, is generic, and the sentence never says what the focus means for the work."}
+],
+"ledger": [
+  {"claim": "Accelerated growth for high performers; grow at the speed of your own ability (employer paragraph on the job board and in every ad; YouTube value-proposition video; early-careers board)", "class": "core", "evidence": "Tuition reimbursement after one year of service (Why Ryan? list). Training provided for understanding the Internal Revenue Code (International Income Tax ad). The Principal ad will consider candidates at Managing Director or Director level who are ready for promotion.", "strength": "weak", "status": "weak", "comment": "The evidence consists of inputs, not a path or an outcome. The Principal ad does not say whether these candidates come from inside Ryan, so it says nothing about growth within the firm. Needed: levels, timing, promotion figures."},
+  {"claim": "Employees get the freedom to work the way they work best, ownership of their time and flexibility (employer paragraph; Hybrid Work Options in the Why Ryan? list)", "class": "core", "evidence": "The International Income Tax ad prefers east coast talent but will consider candidates anywhere in the U.S. The Principal ad has no location preference. Against: the Principal ad sets a 50+ hour standard workweek and 30 to 50% travel.", "strength": "moderate", "status": "conflicting", "comment": "Location openness in two ads supports part of the claim. The 50+ hour standard workweek in the same Principal ad contradicts ownership of time, and the material does not reconcile the two. Hybrid Work Options has no content."},
+  {"claim": "A competitive benefits package (employer paragraph; Why Ryan? list headed as the reason to join)", "class": "core", "evidence": "The Why Ryan? list in four US ads: 14 weeks of 100% paid leave for new parents (adoption included), benefits eligibility from day one, 401K with employer match, tuition reimbursement after one year of service, fertility assistance, gym membership or equipment reimbursement, a four-week company-paid sabbatical after five years of service.", "strength": "strong", "status": "partial", "comment": "The list strongly supports what the package contains. Nothing in the material supports the comparison implied by competitive."},
+  {"claim": "Award-winning culture; “We are truly a Great Place to Work!” (Why Ryan? list in four ads; in full in two ads)", "class": "core", "evidence": "No culture award is named in the candidate material. The independent Great Place To Work profile lists certification (updated July 2026), a 95% survey result and list ranks from 2016 to 2026, but it is not part of what candidates read in the ads.", "strength": "weak", "status": "weak", "comment": "The independent profile backs up that the recognition exists. Candidates reading the ads are shown none of it, so the claim stays weak in the ads. Fix: name list and year."},
+  {"claim": "An award-winning internship that is the beginning of a career path; many interns join full-time (early-careers board; intern ad)", "class": "core", "evidence": "Two named awards: the Handshake Early Talent Award and Vault’s Top Internship Programs, with no year or criteria. Nothing in the material shows how many interns join full-time.", "strength": "weak", "status": "weak", "comment": "The awards are named but their year and criteria are not. The full-time conversion claim rests on its own wording. Needed: intern-to-hire numbers by intake."},
+  {"claim": "Work at a dynamic, rapidly expanding firm serving the world’s most respected Global 5000 companies; the world’s largest firm dedicated exclusively to business tax services (employer paragraph; early-careers board)", "class": "core", "evidence": "The International Income Tax ad says Ryan is expanding that practice throughout the U.S. YouTube shows client partnerships, including more than $40 million in tax savings across nine services for the Dallas Cowboys. The intern ad refers to Fortune 500 and 1,000 clients.", "strength": "weak", "status": "weak", "comment": "These are company and client facts. None says what the scale means for an employee’s work. The superlatives (most respected, world’s largest) have no source in the material."},
+  {"claim": "Interns gain hands-on experience and mentorship from industry leaders from day one (early-careers board)", "class": "supporting", "evidence": "The Sales and Use Tax intern ad lists specific duties: drafting technical memoranda on state and local tax questions, and assisting multi-state companies with state and local tax controversies, which includes preparing clients for discussions with auditors, representing the client at hearings and appeal meetings, and preparing protests. Interns work side by side with subject matter experts. Its Why Ryan? list includes mentorship opportunities and hands-on training.", "strength": "moderate", "status": "partial", "comment": "The duties are direct evidence of hands-on work for one practice. The claim covers internships across more than 35 departments, so the scope is narrower than the claim."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

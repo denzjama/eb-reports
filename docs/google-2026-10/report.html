@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+ "lang": "en",
+ "company": "Google",
+ "date": "2026-10-27",
+ "plugin_version": "0.4.1",
+ "score": {
+  "value": 64,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 99,
+  "confidence": "high",
+  "reliability_note": "33 of 34 criteria assessed from job ads, employee stories, a YouTube channel and careers-site summaries; the careers-site page bodies could not be read"
+ },
+ "verdict": "Google's public hiring copy is concrete where it describes a single role and its pay, and generic where it explains why to work there. The idea repeated everywhere, helping billions of users, is a product fact that never says what it means for the person doing the job.",
+ "notices": [
+  "Material was collected automatically from public pages on 2026-10-27. Some sources may have been missed, and live pages may have changed since.",
+  "The careers-site pages (home, How we hire, Benefits, Working at Google) are drawn by scripts in the browser. Only their titles, summary lines, menus and the equal-opportunity footer could be captured, so the main careers-site copy is not part of this audit. Screenshots of these pages would let the audit cover them.",
+  "Employer facts were assessed as evidence shown to candidates. They were not independently verified."
+ ],
+ "materials": [
+  {
+   "name": "Careers site home (title and summary only)",
+   "type": "Careers page"
+  },
+  {
+   "name": "How we hire (title and summary only)",
+   "type": "Candidate process"
+  },
+  {
+   "name": "Benefits (title and summary only)",
+   "type": "Careers page"
+  },
+  {
+   "name": "Working at Google (title and summary only)",
+   "type": "Employer proposition"
+  },
+  {
+   "name": "Data Center Technician, West Memphis",
+   "type": "Job ad"
+  },
+  {
+   "name": "Staff Software Engineer, Search Intelligence, Bengaluru",
+   "type": "Job ad"
+  },
+  {
+   "name": "Account Executive, New Business Sales, Central Europe, Hamburg",
+   "type": "Job ad"
+  },
+  {
+   "name": "Financial Analyst, Quantum and Research, Los Angeles / Mountain View",
+   "type": "Job ad"
+  },
+  {
+   "name": "Product Manager, Deep Zoom, DeepMind, Mountain View",
+   "type": "Job ad"
+  },
+  {
+   "name": "Account Manager, Large Customer Sales, Export, Sydney",
+   "type": "Job ad"
+  },
+  {
+   "name": "Cyber Defense Detection Engineer, Mandiant, remote eligible (US)",
+   "type": "Job ad"
+  },
+  {
+   "name": "Meet 3 interns working on AI at Google (Jul 31, 2025)",
+   "type": "Employee story"
+  },
+  {
+   "name": "Helping students hack real Colorado problems (Nov 19, 2025)",
+   "type": "Employee story"
+  },
+  {
+   "name": "Life at Google YouTube channel, 15 latest videos",
+   "type": "Social media"
+  },
+  {
+   "name": "Comparably overview and reviews (perception only, not scored)",
+   "type": "Employee reviews"
+  }
+ ],
+ "sources": [
+  {
+   "title": "Search for your career at Google.",
+   "url": "https://www.google.com/about/careers/applications/",
+   "type": "Careers page (partial)",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Our hiring process - Google Careers",
+   "url": "https://www.google.com/about/careers/applications/how-we-hire",
+   "type": "Candidate process (partial)",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Benefits at Google - Google Careers",
+   "url": "https://www.google.com/about/careers/applications/benefits",
+   "type": "Careers page (partial)",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Working at Google - Google Careers",
+   "url": "https://www.google.com/about/careers/applications/working-at-google",
+   "type": "Employer proposition (partial)",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Data Center Technician",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/82422449152369350-data-center-technician",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Staff Software Engineer, Search Intelligence",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/126645271483294406-staff-software-engineer-search-intelligence",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Account Executive, New Business Sales, Central Europe (Polish, English)",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/117364482006491846-account-executive-new-business-sales-central-europe-polish-english",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Financial Analyst, Quantum and Research",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/98529555764912838-financial-analyst-quantum-and-research",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Product Manager, Deep Zoom, DeepMind",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/73697523738256070-product-manager-deep-zoom-deepmind",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Account Manager, Large Customer Sales, Export",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/87959894652527302-account-manager-large-customer-sales-export",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Cyber Defense Detection Engineer, Mandiant, Google Cloud",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/82194240360063686-cyber-defense-detection-engineer-mandiant-google-cloud",
+   "type": "Job ad",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Meet 3 interns working on AI at Google",
+   "url": "https://blog.google/company-news/inside-google/googlers/international-intern-day-2025/",
+   "type": "Employee story",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Helping students “hack” real Colorado problems",
+   "url": "https://blog.google/company-news/inside-google/life-at-google/colorado-impact-hackathon/",
+   "type": "Employee story",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Life at Google (YouTube, @LifeatGoogle)",
+   "url": "https://www.youtube.com/channel/UCWIzrKzN4KY6BPU8hsk880Q",
+   "type": "Social media",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Google Culture | Comparably",
+   "url": "https://www.comparably.com/companies/google",
+   "type": "Employee reviews",
+   "captured": "2026-10-27"
+  },
+  {
+   "title": "Google Employee Reviews | Comparably",
+   "url": "https://www.comparably.com/companies/google/reviews",
+   "type": "Employee reviews",
+   "captured": "2026-10-27"
+  }
+ ],
+ "source_map": [
+  {
+   "source": "Careers site home",
+   "url": "https://www.google.com/about/careers/applications/",
+   "kind": "Careers page",
+   "decision": "included",
+   "reason": "Official and candidate-facing. The page body is drawn by scripts; only title, summary, menus and footer were readable."
+  },
+  {
+   "source": "How we hire",
+   "url": "https://www.google.com/about/careers/applications/how-we-hire",
+   "kind": "Candidate process",
+   "decision": "included",
+   "reason": "Official process page. The hiring steps could not be read; only title and summary were captured."
+  },
+  {
+   "source": "Benefits",
+   "url": "https://www.google.com/about/careers/applications/benefits",
+   "kind": "Careers page",
+   "decision": "included",
+   "reason": "Official. Benefit details could not be read; only title and summary were captured."
+  },
+  {
+   "source": "Working at Google",
+   "url": "https://www.google.com/about/careers/applications/working-at-google",
+   "kind": "Employer proposition",
+   "decision": "included",
+   "reason": "Official. Body could not be read; only title and summary were captured."
+  },
+  {
+   "source": "Teams, Locations, Students, Early career, Internships, Build your future, Apprenticeships, Veterans, People with disabilities, Applying to Google, Interview tips, AI / Cloud / YouTube job pages, EEO",
+   "url": "https://www.google.com/about/careers/applications/",
+   "kind": "Careers pages",
+   "decision": "unavailable",
+   "reason": "Same script-drawn template as the four pages tried, which returned menus only. Screenshots would add them."
+  },
+  {
+   "source": "Account pages (dashboard, saved jobs, alerts, recommendations) and privacy policy",
+   "url": "",
+   "kind": "Account functions, legal",
+   "decision": "excluded",
+   "reason": "Not employer-brand content."
+  },
+  {
+   "source": "Job search: 3,453 jobs matched on 2026-10-27",
+   "url": "https://www.google.com/about/careers/applications/jobs/results",
+   "kind": "Job listing",
+   "decision": "excluded",
+   "reason": "Used only to record the hiring footprint."
+  },
+  {
+   "source": "20 job ads in the live job-search sample",
+   "url": "",
+   "kind": "Job ads",
+   "decision": "included",
+   "reason": "7 used, chosen across engineering, operations, sales, finance, product and security, three levels and six countries. The other 13 share the same template and were excluded."
+  },
+  {
+   "source": "sitemap.xml and robots.txt",
+   "url": "",
+   "kind": "Site map",
+   "decision": "unavailable",
+   "reason": "Sitemap returned 404; robots.txt could not be read."
+  },
+  {
+   "source": "Google blog, Life at Google section: Meet 3 interns working on AI (Jul 2025)",
+   "url": "https://blog.google/company-news/inside-google/googlers/international-intern-day-2025/",
+   "kind": "Employee story",
+   "decision": "included",
+   "reason": "Official, employees in their own words, within 24 months."
+  },
+  {
+   "source": "Google blog: Colorado Impact Hackathon (Nov 2025)",
+   "url": "https://blog.google/company-news/inside-google/life-at-google/colorado-impact-hackathon/",
+   "kind": "Employee story",
+   "decision": "included",
+   "reason": "Official, written by a Googler, within 24 months."
+  },
+  {
+   "source": "My Path to Google series (2020 to 2022)",
+   "url": "",
+   "kind": "Employee stories",
+   "decision": "excluded",
+   "reason": "Older than 24 months, or date not confirmed."
+  },
+  {
+   "source": "Other Life at Google posts (AI adoption at work, Bolands Mills office, screensaver photographers, older office posts)",
+   "url": "",
+   "kind": "Blog posts",
+   "decision": "excluded",
+   "reason": "Product, productivity or office-announcement posts rather than candidate-facing stories, or outdated."
+  },
+  {
+   "source": "YouTube: Life at Google",
+   "url": "https://www.youtube.com/channel/UCWIzrKzN4KY6BPU8hsk880Q",
+   "kind": "Social media",
+   "decision": "included",
+   "reason": "Official: titled Life at Google, its description links to Google Careers."
+  },
+  {
+   "source": "Instagram: lifeatgoogle",
+   "url": "https://www.instagram.com/lifeatgoogle",
+   "kind": "Social media",
+   "decision": "manual",
+   "reason": "Linked from the careers site; closed to automatic collection."
+  },
+  {
+   "source": "X: lifeatgoogle",
+   "url": "https://twitter.com/lifeatgoogle",
+   "kind": "Social media",
+   "decision": "manual",
+   "reason": "Linked from the careers site; closed to automatic collection."
+  },
+  {
+   "source": "Facebook: lifeatgoogle",
+   "url": "https://www.facebook.com/lifeatgoogle",
+   "kind": "Social media",
+   "decision": "manual",
+   "reason": "Linked from the careers site; closed to automatic collection."
+  },
+  {
+   "source": "LinkedIn: Google company page and Life tab",
+   "url": "https://www.linkedin.com/company/google/jobs",
+   "kind": "Social media",
+   "decision": "manual",
+   "reason": "Linked from the careers site; closed to automatic collection."
+  },
+  {
+   "source": "Telegram, VK, TikTok",
+   "url": "",
+   "kind": "Social media",
+   "decision": "excluded",
+   "reason": "No verified official recruiting account found for the global English-language market."
+  },
+  {
+   "source": "Comparably overview and reviews",
+   "url": "https://www.comparably.com/companies/google/reviews",
+   "kind": "Employee reviews",
+   "decision": "included",
+   "reason": "Readable; about 75 short answer previews."
+  },
+  {
+   "source": "Indeed reviews",
+   "url": "https://www.indeed.com/cmp/Google/reviews",
+   "kind": "Employee reviews",
+   "decision": "unavailable",
+   "reason": "Security check (HTTP 403). Fetching stopped."
+  },
+  {
+   "source": "kununu",
+   "url": "https://www.kununu.com/us/google",
+   "kind": "Employee reviews",
+   "decision": "unavailable",
+   "reason": "Human-verification check. Fetching stopped."
+  },
+  {
+   "source": "InHerSight",
+   "url": "https://www.inhersight.com/companies/google",
+   "kind": "Employee reviews",
+   "decision": "unavailable",
+   "reason": "Page returned an empty template."
+  },
+  {
+   "source": "Glassdoor",
+   "url": "",
+   "kind": "Employee reviews",
+   "decision": "manual",
+   "reason": "Closed to automatic collection."
+  },
+  {
+   "source": "Other job boards re-posting Google ads",
+   "url": "",
+   "kind": "Job boards",
+   "decision": "excluded",
+   "reason": "Copies of ads already captured on Google's own site."
+  }
+ ],
+ "social": [
+  {
+   "platform": "YouTube",
+   "account": "Life at Google (@LifeatGoogle)",
+   "url": "https://www.youtube.com/channel/UCWIzrKzN4KY6BPU8hsk880Q",
+   "purpose": "Recruiting and life at Google. The channel says Googlers give the inside scoop on work, culture and offices, plus help with applying and interviewing, and links to Google Careers.",
+   "sample": "15 latest videos (6 long, 9 Shorts), 24 Mar to 10 Sep 2026. Titles and descriptions only; the videos were not watched.",
+   "rhythm": "About 2 to 3 videos a month (15 in about five and a half months)",
+   "people_share": "15 of 15 about people, work, offices or hiring; 10 of 15 built around a named employee",
+   "themes": [
+    "Careers by city: 7 of 15 (Warsaw, Dublin four times, Bangalore, Austin)",
+    "Infrastructure, data centers and hardware: 6 of 15",
+    "Interview advice: 3 of 15 (two recruiter-tip Shorts for sales and AI/ML interviews, one chapter in a longer video)",
+    "Career changes: a Dublin series by career stage, one move from home AV work into a Google role, one path-to-Google story",
+    "Reach (billions of people or users): 2 of 15"
+   ],
+   "notes": "8 of 15 descriptions link to open roles, most to a city-specific job search; Shorts mostly carry no link. Infrastructure work gets far more space here than in the careers-site summaries, which speak about users and technology. The career-change theme is stronger here than anywhere else in the set, but the descriptions do not say whether any of the moves happened inside Google."
+  }
+ ],
+ "perception": {
+  "sample": [
+   {
+    "platform": "Comparably",
+    "reviews": 75,
+    "period": "undated",
+    "rating": "4.6/5 and culture grade A, shown on Comparably on 2026-10-27, based on 7,127 employee participants and 78,831 ratings. The reviews page reports 86% positive out of 2,551 reviews."
+   }
+  ],
+  "thin": false,
+  "themes": [
+   {
+    "theme": "Hiring process",
+    "mentions": 3,
+    "of": 75,
+    "tone": "negative",
+    "promise": "How we hire: all candidates, from entry level to leadership, should have access to the same information and resources",
+    "match": "tension",
+    "note": "Three of the five answers on improving the interview process mention its length or slow, unclear communication. The answers on what people liked about interviewing are mostly stock praise."
+   },
+   {
+    "theme": "Management and feedback",
+    "mentions": 12,
+    "of": 75,
+    "tone": "negative",
+    "promise": "",
+    "match": "not_addressed",
+    "note": "Three answers ask leadership not to retaliate against people who give feedback. Others mention bureaucracy, corporate language, strategy and empathy. Two answers praise clear instructions or progressive management."
+   },
+   {
+    "theme": "Growth and promotion",
+    "mentions": 2,
+    "of": 75,
+    "tone": "negative",
+    "promise": "Opportunities to switch teams and projects; varied career pathways",
+    "match": "tension",
+    "note": "One answer says management cannot explain what promotion requires. Another says the company misrepresents how its rating system works. Two answers are too few to show a pattern."
+   },
+   {
+    "theme": "Pay and recognition",
+    "mentions": 3,
+    "of": 75,
+    "tone": "negative",
+    "promise": "World-class benefits; pay ranges with bonus target and equity in ads",
+    "match": "mixed",
+    "note": "Answers say recognition lags when workload rises, and pay does not keep up with living costs. The question itself asks why people feel undervalued, so the tone follows the question."
+   },
+   {
+    "theme": "Pace and workload",
+    "mentions": 6,
+    "of": 75,
+    "tone": "mixed",
+    "promise": "The Bengaluru ad describes a fast-paced business and problems with increasing ambiguity",
+    "match": "consistent",
+    "note": "Reviewers describe a fast pace and quick decisions; some value it, others link it to rising workload and less personal connection."
+   },
+   {
+    "theme": "Team and culture",
+    "mentions": 9,
+    "of": 75,
+    "tone": "mixed",
+    "promise": "Teammates who share your curiosity and drive",
+    "match": "mixed",
+    "note": "Five answers praise helpful, kind colleagues or the people and culture. Four ask for more respect, less drama, better treatment of women or more willingness to talk as a group."
+   },
+   {
+    "theme": "Mission and visible impact",
+    "mentions": 3,
+    "of": 75,
+    "tone": "positive",
+    "promise": "Help billions of users around the world",
+    "match": "consistent",
+    "note": "Answers name seeing their work make a difference in the real world, the mission to make people's lives better, and the Google name on a CV."
+   },
+   {
+    "theme": "Stability",
+    "mentions": 2,
+    "of": 75,
+    "tone": "negative",
+    "promise": "",
+    "match": "not_addressed",
+    "note": "One answer says layoffs were handled disrespectfully though severance was acceptable; another mentions no trust in product longevity."
+   }
+  ],
+  "caveat": "Only one platform could be read. The previews are short, undated, and some are cut off by the site. 20 of the 75 are repeated stock phrases with no content, such as strings of praise words. Each question invites either praise or criticism, so tone follows the question as much as the reviewer."
+ },
+ "manual_import": [
+  {
+   "platform": "Instagram",
+   "url": "https://www.instagram.com/lifeatgoogle",
+   "capture": [
+    "Profile header with bio and follower count",
+    "Grid of the latest 9 to 12 posts",
+    "3 to 5 recent posts about people, work or hiring, opened with captions",
+    "Pinned posts"
+   ]
+  },
+  {
+   "platform": "X",
+   "url": "https://twitter.com/lifeatgoogle",
+   "capture": [
+    "Profile header and follower count",
+    "Latest 9 to 12 posts",
+    "Pinned post"
+   ]
+  },
+  {
+   "platform": "Facebook",
+   "url": "https://www.facebook.com/lifeatgoogle",
+   "capture": [
+    "Page header, About section and follower count",
+    "Latest 9 to 12 posts"
+   ]
+  },
+  {
+   "platform": "LinkedIn",
+   "url": "https://www.linkedin.com/company/google/jobs",
+   "capture": [
+    "Company page header and follower count",
+    "Sections of the Life tab",
+    "3 to 5 recent posts about people or hiring"
+   ]
+  },
+  {
+   "platform": "Glassdoor",
+   "capture": [
+    "Rating page with share recommending and approving",
+    "15 to 30 reviews from the last 24 months, saved in social/reviews/"
+   ]
+  },
+  {
+   "platform": "Indeed, kununu, InHerSight",
+   "url": "https://www.indeed.com/cmp/Google/reviews",
+   "capture": [
+    "Rating page",
+    "15 to 30 recent reviews, if visible to you"
+   ]
+  },
+  {
+   "platform": "Google careers site",
+   "url": "https://www.google.com/about/careers/applications/",
+   "capture": [
+    "Full-page screenshots of How we hire, Interview tips, Benefits, Working at Google",
+    "Students, Early career, Internships and Apprenticeships pages",
+    "Teams and Locations pages"
+   ]
+  }
+ ],
+ "scope": {
+  "reviewed": [
+   "Public sources captured on 2026-10-27, global English-language market",
+   "Four careers-site pages, titles and summary lines only",
+   "Seven job ads across engineering, operations, sales, finance, product and security, in six countries",
+   "Two Google blog stories from 2025 with employee voice",
+   "The latest 15 videos on the Life at Google YouTube channel (titles and descriptions)",
+   "About 75 short answers on Comparably, as a separate perception layer outside the score"
+  ],
+  "not_reviewed": [
+   "The main copy of the careers-site pages, which could not be read automatically",
+   "Instagram, X, Facebook and LinkedIn (closed to automatic collection)",
+   "Glassdoor, Indeed, kununu and InHerSight reviews (blocked or closed)",
+   "Separate careers sites such as datacenters.google/careers and other Alphabet companies",
+   "Non-English country sites",
+   "The content of the YouTube videos themselves",
+   "The interview process as candidates experience it"
+  ]
+ },
+ "summary": {
+  "points": [
+   "Job ads are the strongest material. Five of seven state a pay range with bonus target and equity, six of seven define the seniority level in plain words, and the DeepMind and Search ads describe the actual project.",
+   "The proposition rests on reach. Helping billions of users appears in the careers summaries, five of seven ads, the intern story and two videos. It is consistent and generic: outside the DeepMind ad, no touchpoint says what that reach means for the person in the role.",
+   "Career growth is the weakest promise. Ads mention switching teams and varied career pathways without saying how. The YouTube career stories describe routes into Google. Two of 75 Comparably answers say promotion criteria are unclear.",
+   "The How we hire summary promises every candidate the same information. The interview tips found sit on YouTube, cover sales and AI/ML only, and are not linked from the ads read. Three of five Comparably answers on improving interviews mention length or poor communication.",
+   "The data center technician ad is the most candid text in the set: heavy lifting, nights, weekends, holidays, fully on site, no visa sponsorship. It still does not say how often those shifts come up or how they are paid."
+  ],
+  "actions": [
+   "Rewrite the shared opening paragraph of each ad family and the Working at Google page so the reach line ends in what this role owns.",
+   "Publish how team moves and promotion work, with a figure and a period, and link it from every ad that promises growth.",
+   "Replace the benefits superlative with the main benefits and their terms, and add pay ranges to ads that lack them."
+  ]
+ },
+ "dimensions": [
+  {
+   "id": "clarity",
+   "score": 6,
+   "max": 12,
+   "assessable": true,
+   "why": "The offer has to be pieced together. The careers-site summaries talk about building what's next and helping billions of users; the ads describe the role. Ads address the candidate directly about tasks, but their opening paragraphs describe Google and its products.",
+   "criteria": [
+    {
+     "name": "Employer offer identifiable",
+     "score": 2,
+     "max": 4,
+     "assessable": true,
+     "note": "The closest thing to an offer, helping billions of users with new technology, sits in the careers summaries and repeats in ads. It describes product reach more than working here."
+    },
+    {
+     "name": "Candidate benefit explicit",
+     "score": 2,
+     "max": 4,
+     "assessable": true,
+     "note": "Tasks and pay are written for the candidate. Opening paragraphs are company self-description."
+    },
+    {
+     "name": "Message hierarchy",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "One repeated idea (reach), with no supporting pillars in the captured text."
+    },
+    {
+     "name": "Plain language",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "GSU grants (in all seven ads), account hygiene (Sydney) and Search Intelligence stack (Bengaluru) are not explained."
+    }
+   ]
+  },
+  {
+   "id": "differentiation",
+   "score": 8,
+   "max": 16,
+   "assessable": true,
+   "why": "Project-level detail in some ads is Google's own: Deep Zoom in the Gemini app, Search features for the Indian market, TPUs. The employer-level claims are not. Helping billions of users, building what's next and switching teams would fit a comparable employer unchanged. The specific material stays inside single ads and never becomes the reason to join.",
+   "criteria": [
+    {
+     "name": "Holds up when another employer's name is used",
+     "score": 2,
+     "max": 5,
+     "assessable": true,
+     "note": "None of the core claims as the careers pages state them fails the substitution test. The specific version of the technology claim appears only in single ads, such as the DeepMind one."
+    },
+    {
+     "name": "Avoids stock phrases",
+     "score": 1,
+     "max": 3,
+     "assessable": true,
+     "note": "Ad openings lean on unparalleled, cutting-edge, game-changing and shape the future."
+    },
+    {
+     "name": "Uses the employer's own realities",
+     "score": 3,
+     "max": 4,
+     "assessable": true,
+     "note": "TPUs, Gemini, Search, Mandiant and named offices are described as the work, but not tied to a general reason to join."
+    },
+    {
+     "name": "Hard for others to copy honestly",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Specific projects are Google's own; the core promise of reach and frontier work is not anchored to anything only Google has in the copy."
+    },
+    {
+     "name": "Memorable idea",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Billions of users is repeated enough to remember. It says nothing about the work."
+    }
+   ]
+  },
+  {
+   "id": "proof",
+   "score": 8,
+   "max": 16,
+   "assessable": true,
+   "why": "Two of six claims have meaningful support. Frontier technology work is shown in the DeepMind, Search and data center ads and in the intern projects. Access to hiring information is backed by recruiter-tip videos. The central reach claim, career growth, curious teammates and world-class benefits rest on repetition, user numbers or single stories.",
+   "criteria": [
+    {
+     "name": "Claims backed by evidence",
+     "score": 2,
+     "max": 6,
+     "assessable": true,
+     "note": "Two of six claims partly supported. The most repeated claim (reach) and growth are only weakly supported."
+    },
+    {
+     "name": "Concrete evidence",
+     "score": 2,
+     "max": 4,
+     "assessable": true,
+     "note": "Support is specific where it exists (20 launch worlds to thousands of topics; named interview tracks), but covers only two claims."
+    },
+    {
+     "name": "Evidence fits the claim",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Support covers engineering and AI roles and two interview tracks, narrower than the claims."
+    },
+    {
+     "name": "Evidence next to the claim",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "In ads, project detail sits next to the claim. The hiring-information promise is on the careers site; its support is on YouTube."
+    }
+   ]
+  },
+  {
+   "id": "audience_fit",
+   "score": 9,
+   "max": 12,
+   "assessable": true,
+   "why": "Each ad states its level with a one-line definition and lists qualifications, so the target is clear. Several decision factors are covered with specifics. Adaptation by audience is partial: the data center ad states physical and shift conditions, then opens with the same scale-and-innovation paragraph used for the AI and Infrastructure organisation.",
+   "criteria": [
+    {
+     "name": "Audience defined",
+     "score": 3,
+     "max": 3,
+     "assessable": true,
+     "note": "Six of seven ads give a level (Early, Mid, Advanced) with a definition, plus minimum and preferred qualifications."
+    },
+    {
+     "name": "Decision factors addressed",
+     "score": 3,
+     "max": 4,
+     "assessable": true,
+     "note": "Pay, location and, in some ads, work mode are stated. Progression and team set-up mostly are not."
+    },
+    {
+     "name": "Adapted by audience",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Interns, technicians, engineers and sellers get different content; the employer-level message is the same reach claim for all."
+    },
+    {
+     "name": "Real choices",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "The data center ad states demands some people will not accept. No choice is made at the employer level."
+    }
+   ]
+  },
+  {
+   "id": "employee_truth",
+   "score": 7,
+   "max": 10,
+   "assessable": true,
+   "why": "Work reality is the strongest part: ads list concrete tasks, and the data center ad describes a typical day of moving and installing racks. Employee voice exists in three intern quotes, a Googler-written story and a YouTube channel built on named employees. Every story and video description is positive.",
+   "criteria": [
+    {
+     "name": "Employee voice",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Three interns, named with role and city, describe their projects in their own words. Polished, and a small sample."
+    },
+    {
+     "name": "Work reality",
+     "score": 3,
+     "max": 3,
+     "assessable": true,
+     "note": "Concrete tasks in every ad; the DeepMind ad names quarterly milestones and day-to-day partners."
+    },
+    {
+     "name": "Honest difficulties",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Demands appear as requirements (physically demanding work, night shifts, ambiguity), with nothing on how they are handled."
+    },
+    {
+     "name": "Culture shown through practice",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "The Boulder hackathon and the Sail Tower venue for nonprofits are practices. Elsewhere culture is adjectives, such as a vibrant office."
+    }
+   ]
+  },
+  {
+   "id": "consistency",
+   "score": 10,
+   "max": 12,
+   "assessable": true,
+   "why": "The same story runs through most touchpoints: technology at a scale that reaches billions. Five of seven ads, the careers summaries, the intern story and two videos carry it. The finance and Mandiant ads drift to their own themes. No contradictions were found.",
+   "criteria": [
+    {
+     "name": "Core promise aligned",
+     "score": 4,
+     "max": 5,
+     "assessable": true,
+     "note": "Reach appears in most touchpoints. The finance ad (the googol story) and the Mandiant ad do not use it."
+    },
+    {
+     "name": "Evidence aligned",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Project detail and day-in-the-life videos support the technology story. The hackathon post is about community work, off the main story."
+    },
+    {
+     "name": "Same voice",
+     "score": 2,
+     "max": 2,
+     "assessable": true,
+     "note": "Recognisably one employer; ads share templates and closing paragraphs."
+    },
+    {
+     "name": "No contradictions",
+     "score": 2,
+     "max": 2,
+     "assessable": true,
+     "note": "No touchpoint contradicts another. The Bengaluru and Sydney ads lack the pay line the other five show, which is a gap."
+    }
+   ]
+  },
+  {
+   "id": "candidate_relevance",
+   "score": 9,
+   "max": 12,
+   "assessable": true,
+   "why": "Most roles can be pictured: tasks, location, level, who the person works with. Pay with bonus target and equity is in five of seven ads. Missing across the set: how progression works, what the benefits are, and for the data center role how often nights and weekends come up.",
+   "criteria": [
+    {
+     "name": "Why join",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Reasons are given (reach, frontier projects, pay with equity), mostly in generic form."
+    },
+    {
+     "name": "Role reality",
+     "score": 3,
+     "max": 3,
+     "assessable": true,
+     "note": "Concrete tasks, location, level and collaborators in most ads."
+    },
+    {
+     "name": "Decision facts",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Pay in five of seven ads; progression and benefit details absent from the captured text."
+    },
+    {
+     "name": "Doubts addressed",
+     "score": 2,
+     "max": 3,
+     "assessable": true,
+     "note": "Ads cover visa sponsorship, on-site work, English, accommodations, application window and preferred location. Nothing on what is hard or how decisions are made."
+    }
+   ]
+  },
+  {
+   "id": "conversion",
+   "score": 6,
+   "max": 10,
+   "assessable": true,
+   "why": "Every ad has an Apply button, the intern story says when applications open, and eight of 15 video descriptions link to open roles, mostly by city. The Apply button sits above the pay and the role description. The hiring steps could not be read, so process transparency was not assessed; the score is out of 9 assessed points.",
+   "criteria": [
+    {
+     "name": "Next step clear",
+     "score": 3,
+     "max": 3,
+     "assessable": true,
+     "note": "Apply on every ad; job alerts and the autumn opening in the intern story; city job links on YouTube."
+    },
+    {
+     "name": "Decision support near the button",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Apply sits under title, location and level; pay and tasks come after it."
+    },
+    {
+     "name": "Effort explained",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "Accommodations form, preferred-location choice, an application window in the Mandiant ad. Nothing on time or documents needed."
+    },
+    {
+     "name": "Next step fits the reader",
+     "score": 1,
+     "max": 2,
+     "assessable": true,
+     "note": "A generic Apply in ads; the intern story and city videos tailor the next step."
+    },
+    {
+     "name": "Hiring process described",
+     "score": 0,
+     "max": 1,
+     "assessable": false,
+     "note": "The How we hire page body could not be read."
+    }
+   ]
+  }
+ ],
+ "strengths": [
+  {
+   "title": "Pay is stated with its structure",
+   "text": "Five of seven ads give a base range plus bonus target and equity. The data center technician in West Memphis: US $105,000 to $145,000 with a 15% bonus target. The account executive in Hamburg: €78,000 to €79,500 with a 35% bonus target. The DeepMind product manager: US $138,000 to $197,000. Each says individual pay depends on job-related skills, experience and relevant education or training."
+  },
+  {
+   "title": "Some ads show the actual project",
+   "text": "The DeepMind ad says Deep Zoom has launched its first 20 curated worlds in the Gemini app and the role drives expansion to thousands of topic experiences, with quality owned across storytelling, factual accuracy and visual fidelity. The Bengaluru ad ties the role to Search Intelligence features for the Indian market. These are the most specific statements about working at Google in the set."
+  },
+  {
+   "title": "The data center ad states its demands",
+   "text": "It lists lifting 50lb (23kg), long periods of physical exertion, weekends, night shifts, holidays and shift schedules, travel, 100% on-site work and no U.S. immigration sponsorship, and describes a typical day of moving and installing racks."
+  },
+  {
+   "title": "Seniority is defined, not just labelled",
+   "text": "Six of seven ads give a level with a one-line definition. Early, for example, is defined as experience completing work as directed and collaborating with teammates."
+  },
+  {
+   "title": "A YouTube channel built around people and hiring",
+   "text": "15 videos in about five and a half months, all about people, work, offices or hiring. Ten are built around a named employee, two are recruiter tips for sales and AI/ML interviews, and eight link to open roles."
+  }
+ ],
+ "problems": [
+  {
+   "severity": "high",
+   "title": "The central idea is product reach, and almost nothing says what it means for the person in the role",
+   "evidence": [
+    "Careers home summary: “Make a global impact with innovative technology that helps billions of users.”",
+    "Working at Google summary: “Help shape the future alongside teammates that share your curiosity and deep inner drive to help billions of users around the world — from ideation, to research, to reality.”",
+    "Helping billions of users or people also appears in five of seven ads, the intern story and two YouTube descriptions."
+   ],
+   "why": "The figure describes Google's products. Outside the DeepMind ad, the material does not connect it to what a person in a given role owns, decides or changes. The most repeated message in the set therefore carries no information about the job.",
+   "flags": [
+    "RF22",
+    "RF13",
+    "RF01"
+   ]
+  },
+  {
+   "severity": "high",
+   "title": "Career growth is promised without a mechanism",
+   "evidence": [
+    "Bengaluru ad: “As a software engineer, you will work on a specific project critical to Google’s needs with opportunities to switch teams and projects as you and our fast-paced business grow and evolve.”",
+    "DeepMind ad: “Our global teams offer diverse learning opportunities and varied career pathways for those driven to achieve exceptional results through collective effort.”",
+    "YouTube: a Dublin series by career stage and two career-change stories. The descriptions do not say whether any move happened inside Google."
+   ],
+   "why": "No touchpoint says how a team move works, how often people make one, or what promotion requires. Growth is offered as a reason to join in two ads and a video series, and it is the least supported promise in the set.",
+   "flags": [
+    "RF14"
+   ]
+  },
+  {
+   "severity": "medium",
+   "title": "The benefits promise is a superlative with nothing behind it in the captured text",
+   "evidence": [
+    "Benefits page summary: “We strive to provide Googlers and their loved ones with a world-class benefits.”",
+    "Ads end the pay line with + benefits and a link to the benefits page."
+   ],
+   "why": "World-class is a comparison the material gives no basis for, and the sentence has a grammatical slip. The benefits page body could not be read, so its full content is unknown; the summary line itself names no benefit.",
+   "flags": [
+    "RF02"
+   ]
+  },
+  {
+   "severity": "medium",
+   "title": "Ad openings are built from superlatives and stock phrases",
+   "evidence": [
+    "Hamburg and Sydney sales ads: “Businesses of all shapes and sizes rely on Google’s unparalleled advertising solutions to help them grow in today's dynamic marketing environment.”",
+    "Mandiant ad: “Our unique combination of renowned frontline experience responding to some of the most complex breaches, nation-state grade threat intelligence, machine intelligence, and the industry's best security validation ensures that Mandiant knows more about today's advanced threats than anyone.”",
+    "Data center ad: “We're the driving force behind Google's groundbreaking innovations, empowering the development of our cutting-edge AI models, delivering unparalleled computing power to global services, and providing the essential platforms that enable developers to build the future.”"
+   ],
+   "why": "These paragraphs come before the role and make comparative claims (unparalleled, more than anyone, the industry's best) with no comparison in the material. The two sales ads open with an almost identical paragraph, so it says nothing about either specific role.",
+   "flags": [
+    "RF02",
+    "RF15"
+   ]
+  },
+  {
+   "severity": "medium",
+   "title": "Difficulty appears only as job requirements; stories and videos show none",
+   "evidence": [
+    "Data center ad: “A typical day involves manual movement and installation of racks, and while it can sometimes be physically demanding, you are excited to work with infrastructure that is at the cutting-edge of computer technology.”",
+    "All three intern quotes and all 15 YouTube descriptions describe positive experiences only."
+   ],
+   "why": "The data center ad names non-standard hours without saying how often they come up or how they are paid, and the same sentence that admits the physical demand tells the candidate how they feel about it. Outside the requirement lists, the set shows no effort, friction or trade-off.",
+   "flags": [
+    "RF24"
+   ]
+  },
+  {
+   "severity": "low",
+   "title": "Internal terms are left unexplained",
+   "evidence": [
+    "GSU grants in the equity paragraph of all seven ads; account hygiene in the Sydney ad; Search Intelligence stack in the Bengaluru ad."
+   ],
+   "why": "None of these terms is explained in the captured candidate-facing material, so their meaning may be unclear to a reader without internal context.",
+   "flags": [
+    "RF19"
+   ]
+  }
+ ],
+ "fixes": [
+  {
+   "title": "Turn the reach line into what each role owns",
+   "needs_new_data": true,
+   "steps": [
+    "On the Working at Google page and in the shared opening paragraph of each ad family (sales, engineering, infrastructure), follow the reach line with one sentence on what this role owns and what changes because of it.",
+    "Use the DeepMind ad as the model: it names the product, the starting point (20 launch worlds) and the target (thousands of topic experiences).",
+    "In the same paragraphs, remove superlatives such as unparalleled and more than anyone unless the comparison can be sourced."
+   ],
+   "why_first": "It is the most repeated message in the set, and it lives in shared templates: one change per ad family reaches every ad in it.",
+   "needs": [
+    "Two or three examples per ad family of what a person in the role owns, with a result"
+   ],
+   "effort": "medium",
+   "effort_note": "Template edits plus one input per ad family",
+   "who": [
+    "employer-brand lead",
+    "recruiting leads per ad family",
+    "hiring managers (role examples)"
+   ],
+   "check": [
+    "Whether each ad's opening paragraph names something the role owns",
+    "Whether recruiters still get asked what the team actually works on at the first screen"
+   ]
+  },
+  {
+   "title": "Give the growth promise a mechanism and a number",
+   "needs_new_data": true,
+   "steps": [
+    "Write one short section on internal moves and promotion: who can move, after how long, how a move is requested, what promotion requires.",
+    "Add a figure with its period and scope, such as how many people changed team or role in a stated year.",
+    "Link the section from the ads that promise team switching or career pathways. Where a YouTube career story shows a move inside Google, say so in its description and link the section."
+   ],
+   "why_first": "Growth is the least supported promise and it appears in ads and on YouTube. The review sample read also contains complaints about promotion clarity.",
+   "needs": [
+    "The internal-move and promotion process as it works today",
+    "Move and promotion figures with period and scope",
+    "Employee stories of moves made inside Google"
+   ],
+   "effort": "large",
+   "effort_note": "Needs process owners, data and new stories",
+   "who": [
+    "people operations",
+    "internal mobility owner",
+    "people analytics",
+    "Life at Google channel team"
+   ],
+   "check": [
+    "Whether ads that promise growth link to the new section",
+    "How often promotion and team moves come up as questions in interviews",
+    "What reviewers say about promotion on review sites in the following months"
+   ]
+  },
+  {
+   "title": "State the reward and condition facts the copy leaves out",
+   "needs_new_data": true,
+   "steps": [
+    "Replace the benefits summary line with the three to five main benefits, each with its terms, and correct the grammar.",
+    "Add a pay range to ads that lack one (Bengaluru and Sydney in the sample), or explain why none is shown.",
+    "In the data center ad, say how often nights, weekends and holidays come up, and how they are paid."
+   ],
+   "why_first": "These are decision facts a candidate cannot get anywhere else in the material, and the benefits line is currently a claim without content.",
+   "needs": [
+    "Main benefits and their terms",
+    "Pay ranges for the locations missing them",
+    "Shift frequency and premiums for data center technicians"
+   ],
+   "effort": "medium",
+   "effort_note": "A few facts from rewards and operations, plus legal review per country",
+   "who": [
+    "total rewards",
+    "legal (pay disclosure by country)",
+    "data center operations managers"
+   ],
+   "check": [
+    "Whether every ad in a fresh sample shows a pay line",
+    "How often candidates ask about benefits or shift patterns at offer stage"
+   ]
+  }
+ ],
+ "rewrites": [
+  {
+   "title": "Working at Google page summary",
+   "original": "Help shape the future alongside teammates that share your curiosity and deep inner drive to help billions of users around the world — from ideation, to research, to reality.",
+   "problem": "Built from stock phrases around a product reach figure. It says nothing about what the person does.",
+   "logic": "Keep the reach line, then attach a real, attributed example from a current ad and leave a slot for other role families.",
+   "rewrite": "Help billions of users around the world, from ideation, to research, to reality.\nOn the Deep Zoom team in the Gemini app, for example, the product manager we are hiring will drive the expansion from 20 launch worlds to thousands of topic experiences.\n[Information needed: one example each for engineering, sales and infrastructure roles]",
+   "notes": [
+    {
+     "kind": "evidence",
+     "text": "One concrete example of ownership for each main role family."
+    },
+    {
+     "kind": "confirm",
+     "text": "That the Deep Zoom role is still open when the copy is published; otherwise use a current example."
+    }
+   ]
+  },
+  {
+   "title": "Benefits page summary",
+   "original": "We strive to provide Googlers and their loved ones with a world-class benefits.",
+   "problem": "An unsupported superlative, a grammatical slip, and no benefit named.",
+   "logic": "Drop the comparison, keep who the benefits are for, and let the facts carry the line.",
+   "rewrite": "Benefits for Googlers and their loved ones:\n[Information needed: the three to five main benefits, each with its terms and who is eligible]",
+   "notes": [
+    {
+     "kind": "evidence",
+     "text": "The main benefits with their terms."
+    },
+    {
+     "kind": "confirm",
+     "text": "Which benefits extend to family members."
+    }
+   ]
+  },
+  {
+   "title": "Growth sentence in the software engineering ads",
+   "original": "As a software engineer, you will work on a specific project critical to Google’s needs with opportunities to switch teams and projects as you and our fast-paced business grow and evolve.",
+   "problem": "Promises team and project moves with no mechanism, timing or evidence.",
+   "logic": "Keep the promise and its condition as written, split it out, and attach the facts that would make it checkable.",
+   "rewrite": "As a software engineer, you will work on a specific project critical to Google’s needs.\nYou will have opportunities to switch teams and projects as you and the business grow and evolve.\n[Information needed: how a team or project switch works and when it is possible]\n[Information needed: how many engineers switched teams in a stated period]",
+   "notes": [
+    {
+     "kind": "evidence",
+     "text": "How team and project switches work."
+    },
+    {
+     "kind": "evidence",
+     "text": "The number of engineers who switched teams, with period."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "For each ad family, two or three examples of what a person in the role owns and what changed because of it."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "How internal team moves and promotion work today, with figures for a stated period."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "Whether the career-change stories on YouTube include moves made inside Google."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "The main benefits with their terms and eligibility."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "Which benefits extend to family members."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "Whether the Bengaluru and Sydney ads, and others like them, can carry a pay range."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "For data center technicians: how often nights, weekends and holidays come up, how they are paid, and how much travel the role involves."
+  },
+  {
+   "kind": "evidence",
+   "for": "communication",
+   "text": "Typical time from application to decision, and what candidates are told at each step."
+  },
+  {
+   "kind": "confirm",
+   "for": "communication",
+   "text": "That the Deep Zoom role is still open before it is used as an example."
+  },
+  {
+   "kind": "evidence",
+   "for": "audit",
+   "text": "Full-page screenshots of the careers home, Working at Google, Benefits, How we hire, Teams, Locations and student pages, whose main copy could not be read."
+  },
+  {
+   "kind": "evidence",
+   "for": "audit",
+   "text": "Screenshots from Instagram, X, Facebook, LinkedIn and Glassdoor as listed under What to add for the full picture."
+  }
+ ],
+ "genericity": [
+  {
+   "claim": "“Make a global impact with innovative technology that helps billions of users.” (careers home summary)",
+   "verdict": "partial",
+   "substitution": "bends",
+   "ubiquity": "ubiquitous",
+   "specificity": "some",
+   "defensibility": "supportable",
+   "why": "The only employer-specific element is the billions-of-users reach; the rest is stock phrasing (make an impact, innovative). The reach is a product fact and the line does not say what it means for the employee."
+  },
+  {
+   "claim": "“Join Google Careers and build what's next, today.” (careers home summary)",
+   "verdict": "generic",
+   "substitution": "survives",
+   "ubiquity": "ubiquitous",
+   "specificity": "none",
+   "defensibility": "unowned",
+   "why": "No employer-specific information apart from the name; a comparable employer could use it unchanged."
+  },
+  {
+   "claim": "“Joining Deep Zoom means shaping the future of multimodal, visual-first AI interaction.” (DeepMind ad)",
+   "verdict": "partial",
+   "substitution": "breaks",
+   "ubiquity": "common",
+   "specificity": "high",
+   "defensibility": "supportable",
+   "why": "Depends on a named product, and the ad backs it with figures (20 launch worlds, thousands of topics). It uses a stock phrase (shaping the future) and appears in one ad only."
+  },
+  {
+   "claim": "“As a software engineer, you will work on a specific project critical to Google’s needs with opportunities to switch teams and projects as you and our fast-paced business grow and evolve.” (Bengaluru ad)",
+   "verdict": "generic",
+   "substitution": "survives",
+   "ubiquity": "common",
+   "specificity": "none",
+   "defensibility": "unowned",
+   "why": "Names a practice without saying how it works or how often it happens; a comparable employer could reuse it."
+  },
+  {
+   "claim": "“Help shape the future alongside teammates that share your curiosity and deep inner drive to help billions of users around the world — from ideation, to research, to reality.” (Working at Google summary)",
+   "verdict": "generic",
+   "substitution": "survives",
+   "ubiquity": "common",
+   "specificity": "some",
+   "defensibility": "unowned",
+   "why": "Stock phrases (shape the future, great-team language) around the reach figure; nothing shows who the teammates are or how they work."
+  },
+  {
+   "claim": "“We strive to provide Googlers and their loved ones with a world-class benefits.” (Benefits summary)",
+   "verdict": "generic",
+   "substitution": "survives",
+   "ubiquity": "ubiquitous",
+   "specificity": "none",
+   "defensibility": "unowned",
+   "why": "A superlative with no benefit named and no basis for the comparison."
+  }
+ ],
+ "ledger": [
+  {
+   "claim": "Your work helps billions of users around the world (careers home and Working at Google summaries, five of seven ads, intern story, two YouTube descriptions)",
+   "class": "core",
+   "evidence": "User-reach statements about Google products in the same touchpoints. Three intern accounts of their own projects (intern story). The DeepMind ad gives the role a product target: expand Deep Zoom from 20 launch worlds to thousands of topic experiences.",
+   "strength": "weak",
+   "status": "weak",
+   "comment": "Reach figures describe products, not what employees do or achieve, which caps support at weak. The intern accounts are single experiences. The DeepMind ad ties a role to a product outcome but does not state that product's reach."
+  },
+  {
+   "claim": "You build new technology, especially AI (careers home summary; data center, Bengaluru, Hamburg, Sydney and DeepMind ads; intern story)",
+   "class": "core",
+   "evidence": "DeepMind ad: generative media, automated evaluation pipelines, Deep Zoom in the Gemini app. Bengaluru ad: ML infrastructure, LLM and agentic frameworks in Search Intelligence. Data center ad: the AI and Infrastructure organisation lists TPUs and Vertex AI among its teams' work. Intern story: three interns describe AI/ML projects in Pune and Mountain View.",
+   "strength": "moderate",
+   "status": "partial",
+   "comment": "Direct and specific for engineering, research and infrastructure roles. The sales ads make the same claim (shape the future of advertising in the AI era) without comparable detail, so support covers only part of the claim's scope."
+  },
+  {
+   "claim": "You can grow and change direction here (Bengaluru ad: switch teams and projects; DeepMind ad: varied career pathways; YouTube career-stage series and career-change stories)",
+   "class": "core",
+   "evidence": "Only the claim wording in the ads. YouTube descriptions: one employee moved from home automation and AV work into a Google role; one shares his path to Google; the Dublin series covers early-career, experienced and executive staff. Videos not watched.",
+   "strength": "weak",
+   "status": "weak",
+   "comment": "The ad sentences restate the claim and do not count as support. The video descriptions describe routes into Google; it is unclear whether any of the moves shown happened inside Google. No mechanism or figure."
+  },
+  {
+   "claim": "Your teammates share your curiosity and drive (Working at Google summary; DeepMind ad on exceptional interdisciplinary teams)",
+   "class": "supporting",
+   "evidence": "Boulder story: Googlers across the Boulder office volunteered to run a hackathon with CU Boulder students and the Colorado Energy Office.",
+   "strength": "weak",
+   "status": "weak",
+   "comment": "One office and one event, showing volunteering rather than how teams work day to day. The DeepMind wording is self-description."
+  },
+  {
+   "claim": "World-class benefits for Googlers and their loved ones (Benefits summary)",
+   "class": "supporting",
+   "evidence": "Not found in the captured text. Ads end the pay line with + benefits and a link; the benefits page body could not be read.",
+   "strength": "none",
+   "status": "none",
+   "comment": "The comparison has no basis in the material. Pay ranges are basic conditions and do not support a benefits claim. Worth re-checking against the full benefits page."
+  },
+  {
+   "claim": "All candidates get the same information and resources about hiring (How we hire summary)",
+   "class": "supporting",
+   "evidence": "YouTube: recruiter tips for sales interviews and for AI/ML technical interviews; one employee video includes interview tips. The Bengaluru ad tells candidates to be prepared to discuss AI tools in the hiring process.",
+   "strength": "moderate",
+   "status": "partial",
+   "comment": "Indirect support covering two interview tracks, narrower than all candidates. The hiring steps themselves could not be read, and the tips are not linked from the ads read."
+  }
+ ]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>

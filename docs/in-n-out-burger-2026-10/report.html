@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employer brand audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16141F;--soft:#5D5A6B;--line:#E4E1EA;--paper:#FBFAF7;--card:#FFFFFF;--accent:#6B3FD4;--accent2:#19B6C9;--hi:#D6455D;--mid:#E39B1A;--lo:#8B8898;--ok:#1F9D6B;--tint:#F2EEFB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Onest,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 80px}
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin:64px 0 20px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:21px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+.muted{color:var(--soft)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* cover */
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;margin-bottom:8px}
+.cover-main{background:var(--ink);color:#fff;border-radius:18px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.cover-main:after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:conic-gradient(from 90deg,var(--accent2),var(--accent),#FF5FA2,var(--accent2));filter:blur(60px);opacity:.55}
+.cover-main h1{font-size:46px;font-weight:800;letter-spacing:-.02em;position:relative;z-index:1}
+.cover-main .kicker{color:#C9B8FF;position:relative;z-index:1}
+.cover-meta{position:relative;z-index:1;color:#CFCBDC;font-size:15px}
+.verdict{font-size:18px;line-height:1.5;font-weight:400;color:#E9E6F2;position:relative;z-index:1;margin:22px 0}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.ring{display:flex;align-items:center;gap:20px}
+.ring svg{width:132px;height:132px;flex:none}
+.ring .num{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .num small{font-size:20px;color:var(--soft);font-weight:500}
+.band{font-size:15px;color:var(--soft);line-height:1.4}
+.metric{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.metric b{font-size:17px}
+.metric span.h{display:block;color:var(--soft);font-size:13px;line-height:1.35}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent)}
+.pill.prov{background:#FFF4DC;color:#9A6400}
+/* nav */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.toc a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+/* summary */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h3{margin-bottom:12px}
+.actions li{margin:8px 0}
+/* howto */
+.lead{font-size:19px;line-height:1.5}
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+.howto-card{background:var(--tint);border-radius:14px;padding:20px}
+.howto-card h4{margin-bottom:8px;color:var(--accent)}
+.howto-card p{font-size:15.5px;margin:0}
+.howto-h{margin:26px 0 8px}
+.howto-list li{margin:8px 0}
+details.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 24px 20px}
+details.howto summary{cursor:pointer;font-weight:700;padding:14px 0;color:var(--accent)}
+/* scorecard */
+.dim{display:grid;grid-template-columns:280px 1fr 70px;gap:18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .name{font-weight:700}
+.dim .desc{font-size:13.5px;color:var(--soft);line-height:1.4;margin-top:4px}
+.bar{height:14px;background:#EEEBF3;border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.dim .why{font-size:15px}
+.dim .pts{text-align:right;font-weight:800;font-size:20px}
+.dim .pts small{font-size:13px;color:var(--soft);font-weight:500}
+/* cards */
+.cards{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;border-left:6px solid var(--line)}
+.card.sev-critical,.card.sev-high{border-left-color:var(--hi)}
+.card.sev-medium{border-left-color:var(--mid)}
+.card.sev-low{border-left-color:var(--lo)}
+.card.good{border-left-color:var(--ok)}
+.card h3{margin:6px 0 10px}
+.sev{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sev-critical .sev,.sev-high .sev{color:var(--hi)}.sev-medium .sev{color:#B07400}.sev-low .sev{color:var(--lo)}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+blockquote{margin:6px 0;padding:10px 14px;background:#F7F5FA;border-radius:10px;font-size:15.5px}
+.fix{counter-increment:fix}
+.fix h3:before{content:counter(fix);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;margin-right:12px;font-size:17px}
+.cards.fixes{counter-reset:fix}
+.effort{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:8px;background:#E8F7F0;color:#13734E}
+.effort.data{background:#FFF4DC;color:#9A6400}
+/* rewrites */
+.rw{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.rw .before{background:#F7F5FA;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+.rw .after{background:#EFFAF5;border:1px solid #CBEBDD;border-radius:12px;padding:16px;font-size:15.5px;white-space:pre-line}
+/* tags */
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:7px;margin-right:6px;vertical-align:1px}
+.tag-q{background:#E6F6F8;color:#0E7C8A}.tag-e{background:#FFF4DC;color:#9A6400}
+.qlist{list-style:none;padding:0}
+.qlist li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#F4F2F8;text-align:left;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft);padding:10px 12px}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:7px;background:#F1EFF5;white-space:nowrap}
+.chip.g{background:#E8F7F0;color:#13734E}.chip.m{background:#FFF4DC;color:#9A6400}.chip.r{background:#FDE8EC;color:#B3263E}
+.tblwrap{overflow-x:auto;margin:10px 0 26px}
+.notice{background:#FFF4DC;border-radius:12px;padding:14px 18px;margin:18px 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:15px}
+.scope h4{margin-bottom:6px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.printbtn{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:12px 18px;font:600 14px Onest,Arial,sans-serif;cursor:pointer}
+@media (max-width:820px){.scope,.cover,.summary,.howto-grid,.rw{grid-template-columns:1fr}.dim{grid-template-columns:1fr}.dim .pts{text-align:left}.cover-main h1{font-size:34px}}
+@media print{#summary + .summary{break-after:page}body{background:#fff;font-size:12pt}.wrap{max-width:none;padding:0}.printbtn,.toc{display:none}h2{break-after:avoid}.card,.dim,.panel,table,.rw{break-inside:avoid}details.howto{border:0;padding:0}.cover-main{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="printbtn" onclick="window.print()" id="printbtn"></button>
+<!-- Audit data. The skill replaces the placeholder below with the audit JSON (format: methodology/report-format.md). -->
+<script id="report-data" type="application/json">{
+"lang": "en",
+"company": "In-N-Out Burger",
+"date": "2026-10-27",
+"plugin_version": "0.4.1",
+"score": {
+  "value": 66,
+  "provisional": false,
+  "withheld": false,
+  "coverage": 96,
+  "confidence": "medium",
+  "reliability_note": "32 of 34 criteria assessed, but only two types of material (careers pages and job ads), collected automatically on 2026-10-27; the restaurant detail pages and the FAQ could not be read"
+},
+"verdict": "The job ads are concrete and candid about hard conditions. The careers page above them leans on stock phrases, and restaurant roles, which it lists first, get the fewest facts.",
+"notices": [
+  "All material was collected automatically from public pages on 2026-10-27. Some sources may have been missed, and live pages may have changed since then.",
+  "Facts stated by In-N-Out Burger in its own pages were not independently verified. Employee reviews are shown in a separate section and do not affect the score.",
+  "No official social media account could be read automatically. Facebook, Instagram, LinkedIn, Glassdoor and Indeed are closed to automatic collection; the section “What to add for the full picture” lists what to capture."
+],
+"materials": [
+  {"name": "Employment landing page (in-n-out.com/employment)", "type": "Careers page"},
+  {"name": "Talent portal entry page", "type": "Careers page"},
+  {"name": "Job search list, 65 open roles", "type": "Careers page"},
+  {"name": "Store Associate, Palmdale", "type": "Job ad"},
+  {"name": "Steam Cleaner, Baldwin Park", "type": "Job ad"},
+  {"name": "Meat Department General Helper, Lancaster TX", "type": "Job ad"},
+  {"name": "FSQA Beef Technical Services Manager, Chino CA", "type": "Job ad"},
+  {"name": "Flying Dutchman Race Team Performance Mechanic, Franklin TN", "type": "Job ad"},
+  {"name": "Meat Department Maintenance Inventory Clerk, Lancaster TX", "type": "Job ad"},
+  {"name": "Senior Software QA Engineer, Irvine CA", "type": "Job ad"},
+  {"name": "Comparably employee reviews and rating page (perception only, not scored)", "type": "Review site"}
+],
+"sources": [
+  {"title": "Employment - In-N-Out Burger", "url": "https://www.in-n-out.com/employment", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Login | In-N-Out (talent portal)", "url": "https://talent.innout.com/en_US/careers", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Job Search | In-N-Out (65 results)", "url": "https://talent.innout.com/en_US/careers/SearchJobs", "type": "Careers page", "captured": "2026-10-27"},
+  {"title": "Store Associate - Palmdale (00079)", "url": "https://talent.innout.com/en_US/careers/JobDetail/Store-Associate-Palmdale-79/2354", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Steam Cleaner", "url": "https://talent.innout.com/en_US/careers/JobDetail/Steam-Cleaner/8855", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Meat Department General Helper", "url": "https://talent.innout.com/en_US/careers/JobDetail/Meat-Department-General-Helper/8824", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "FSQA Beef Technical Services Manager (Chino, CA)", "url": "https://talent.innout.com/en_US/careers/JobDetail/FSQA-Beef-Technical-Services-Manager-Chino-CA/8714", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Flying Dutchman Race Team Performance Mechanic", "url": "https://talent.innout.com/en_US/careers/JobDetail/Flying-Dutchman-Race-Team-Performance-Mechanic/8716", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Meat Department Maintenance Inventory Clerk (Lancaster, TX)", "url": "https://talent.innout.com/en_US/careers/JobDetail/Meat-Department-Maintenance-Inventory-Clerk-Lancaster-TX/8806", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "Senior Software QA Engineer", "url": "https://talent.innout.com/en_US/careers/JobDetail/Senior-Software-QA-Engineer/8675", "type": "Job ad", "captured": "2026-10-27"},
+  {"title": "In-N-Out Burger Employee Reviews | Comparably", "url": "https://www.comparably.com/companies/in-n-out-burger/reviews", "type": "Review site", "captured": "2026-10-27"},
+  {"title": "In-N-Out Burger Culture | Comparably", "url": "https://www.comparably.com/companies/in-n-out-burger", "type": "Review site", "captured": "2026-10-27"}
+],
+"source_map": [
+  {"source": "Employment landing page", "url": "https://www.in-n-out.com/employment", "kind": "Careers page", "decision": "included", "reason": "Official employment hub with restaurant, support and Cookout Truck sections"},
+  {"source": "Talent portal entry page", "url": "https://talent.innout.com/en_US/careers", "kind": "Careers page", "decision": "included", "reason": "Shows the application path (create a profile, then log in)"},
+  {"source": "Job search list, 3 pages, 65 roles", "url": "https://talent.innout.com/en_US/careers/SearchJobs", "kind": "Careers page", "decision": "included", "reason": "Full list of open roles on the capture date"},
+  {"source": "Seven job ads across restaurant, cleaning, meat production, food safety, race team, inventory and IT", "url": "https://talent.innout.com/en_US/careers/JobDetail/Store-Associate-Palmdale-79/2354", "kind": "Job ads", "decision": "included", "reason": "One ad per role family. The Palmdale store ad opened by direct link but was not in the 65-role list"},
+  {"source": "Store Associate, Tucson", "url": "https://talent.innout.com/en_US/careers/JobDetail/Store-Associate-Tucson-00242-/2517", "kind": "Job ad", "decision": "excluded", "reason": "Same template and text as the Palmdale ad"},
+  {"source": "The other 55 listed job ads", "url": "https://talent.innout.com/en_US/careers/SearchJobs", "kind": "Job ads", "decision": "excluded", "reason": "Sample limit; each role family was already represented"},
+  {"source": "About 35 portal system pages (login, register, profile)", "url": "https://talent.innout.com/en_US/careers/Login", "kind": "Application system", "decision": "excluded", "reason": "Not candidate-facing content"},
+  {"source": "Spanish-language copies of portal pages", "url": "", "kind": "Careers page", "decision": "excluded", "reason": "Duplicates of the English pages; out of language scope"},
+  {"source": "YouTube channel @inNout", "url": "https://www.youtube.com/channel/UCci8Qy-G3t2y5cKS3oUsPpQ", "kind": "Social account", "decision": "excluded", "reason": "Could not be confirmed as official: no description, no public videos, no link from the employer site"},
+  {"source": "Aggregator and SEO pages re-posting In-N-Out ads", "url": "", "kind": "Third-party pages", "decision": "excluded", "reason": "Not official sources"},
+  {"source": "InHerSight", "url": "https://www.inhersight.com/companies/best/reviews/in-n-out-burger", "kind": "Review site", "decision": "unavailable", "reason": "Page not found"},
+  {"source": "Employment FAQ", "url": "https://www.in-n-out.com/employment/faqs", "kind": "Careers page", "decision": "unavailable", "reason": "Page returned no readable text"},
+  {"source": "Restaurant jobs page and the Restaurant, Support and Cookout Truck “Learn More” pages", "url": "https://www.in-n-out.com/employment/restaurant/jobs", "kind": "Careers page", "decision": "unavailable", "reason": "No readable text; link targets not visible in the capture"},
+  {"source": "careers.in-n-out.com", "url": "https://careers.in-n-out.com", "kind": "Careers site", "decision": "unavailable", "reason": "Server error (503)"},
+  {"source": "Comparably reviews and rating page", "url": "https://www.comparably.com/companies/in-n-out-burger/reviews", "kind": "Review site", "decision": "included", "reason": "Readable public review layer; used for perception only"},
+  {"source": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/In-N-Out-Burger-Reviews-E14276.htm", "kind": "Review site", "decision": "manual", "reason": "Blocked automatic access (403)"},
+  {"source": "Indeed", "url": "https://www.indeed.com/cmp/In-n-out-Burger/reviews", "kind": "Review site", "decision": "manual", "reason": "Blocked automatic access (403)"},
+  {"source": "Facebook and Instagram", "url": "https://www.in-n-out.com", "kind": "Social accounts", "decision": "manual", "reason": "Icons on the site header; closed platforms"},
+  {"source": "LinkedIn company page", "url": "https://www.linkedin.com/company/in-n-out-burger", "kind": "Social account", "decision": "manual", "reason": "Closed platform; account not yet confirmed as official"},
+  {"source": "TikTok and X", "url": "", "kind": "Social accounts", "decision": "manual", "reason": "No official account confirmed; X appears only as a share button on job ads"}
+],
+"social": [],
+"perception": {
+  "sample": [
+    {"platform": "Comparably", "reviews": 58, "period": "Undated; one answer marked as posted 18 days before capture", "rating": "4.6/5 and an A+ culture grade, shown on Comparably on 2026-10-27, based on 802 employee participants and 6,177 ratings; the platform reports 612 reviews, 91% positive"}
+  ],
+  "thin": false,
+  "themes": [
+    {"theme": "Team and coworkers", "mentions": 18, "of": 58, "tone": "positive", "promise": "A friendly, team-oriented environment; joining “our family”", "match": "consistent", "note": "Most mentions describe friendly, supportive colleagues and friendships. Four answers describe poor communication or complaining among coworkers, one saying people often go home upset."},
+    {"theme": "Management and HR", "mentions": 13, "of": 58, "tone": "mixed", "promise": "The founders’ wish to take care of Associates, a focus that “still remains firmly in place”", "match": "mixed", "note": "Praise for managers who help and train. Criticism of HR showing little care, managers not following through, and one account of being left off the schedule and unpaid for two months."},
+    {"theme": "Pay and benefits", "mentions": 11, "of": 58, "tone": "mixed", "promise": "Higher starting wages and great benefits", "match": "mixed", "note": "Five answers praise medical benefits, schooling or earnings. Six ask for more pay or say they get no benefits beyond the shift meal."},
+    {"theme": "Workload and pace", "mentions": 5, "of": 58, "tone": "negative", "promise": "A fast-paced, fun, team-oriented work environment (store ad)", "match": "mixed", "note": "Answers mention labour-intensive shifts, short breaks, long days and tiredness. The store ad names the pace but says nothing about breaks or shift length."},
+    {"theme": "Fairness and appearance rules", "mentions": 4, "of": 58, "tone": "negative", "promise": "", "match": "not_addressed", "note": "Answers mention unequal treatment by a manager and rules on covering tattoos and hair length. None of the pages read mention appearance standards."},
+    {"theme": "Growth and promotion", "mentions": 3, "of": 58, "tone": "mixed", "promise": "Opportunities to grow; all Store Managers and Divisional Managers started as hourly Associates", "match": "consistent", "note": "One answer says leaders all came up through the ranks; one praises schooling; one asks for more opportunities."},
+    {"theme": "Hiring process", "mentions": 7, "of": 58, "tone": "positive", "promise": "", "match": "not_addressed", "note": "Five answers describe interviewers who took time to get to know them. Two criticise unresponsive recruiters or managers. The pages read do not describe the process."}
+  ],
+  "caveat": "Comparably shows answers to its own survey questions, one positive and one critical question per topic, so the balance of tone partly reflects the questions asked. Answers are undated, and departments are labelled by the platform. Glassdoor and Indeed could not be read."
+},
+"manual_import": [
+  {"platform": "Glassdoor", "url": "https://www.glassdoor.com/Reviews/In-N-Out-Burger-Reviews-E14276.htm", "capture": ["Rating page with overall rating, review count and date", "The 15 to 30 most recent reviews from the last 24 months, with dates, pros and cons", "Interviews and Benefits tabs"]},
+  {"platform": "Indeed", "url": "https://www.indeed.com/cmp/In-n-out-Burger/reviews", "capture": ["Company rating and review count", "The 15 to 30 most recent reviews with dates", "Salaries and Benefits tabs"]},
+  {"platform": "Facebook", "url": "https://www.in-n-out.com", "capture": ["Confirm the account through the icon on in-n-out.com", "Profile header and follower count", "Grid of the latest 9 to 12 posts and any pinned posts", "3 to 5 recent posts about people, work or hiring, with captions"]},
+  {"platform": "Instagram", "url": "https://www.in-n-out.com", "capture": ["Confirm the account through the icon on in-n-out.com", "Profile header with bio and follower count", "Grid of the latest 9 to 12 posts and any pinned posts", "3 to 5 recent posts about people, work or hiring, with captions"]},
+  {"platform": "LinkedIn company page", "url": "https://www.linkedin.com/company/in-n-out-burger", "capture": ["Confirm it is the official page", "Header and the Life tab sections", "Jobs tab", "3 to 5 posts about people or hiring"]},
+  {"platform": "TikTok and X", "url": "", "capture": ["Only if official accounts exist: profile header and the latest 9 to 12 posts"]}
+],
+"scope": {
+  "reviewed": [
+    "The employment landing page on in-n-out.com, the talent portal entry page and the full list of 65 open roles, captured 2026-10-27",
+    "Seven job ads, one per role family: restaurant, store cleaning, meat production, inventory, food safety management, race team and IT",
+    "Employee answers on Comparably (58 answers and the platform rating), as a separate perception layer outside the score"
+  ],
+  "not_reviewed": [
+    "The restaurant, support and Cookout Truck “Learn More” pages and the employment FAQ, which returned no readable text",
+    "Official social media (Facebook, Instagram, LinkedIn; TikTok and X if they exist), which is closed to automatic collection",
+    "Glassdoor and Indeed reviews, which blocked automatic access",
+    "Employee stories, benefits pages, management-track or early-careers pages: none were found in the public sources reviewed",
+    "The other 55 open job ads, the Spanish-language pages, and the interview and onboarding experience itself"
+  ]
+},
+"summary": {
+  "points": [
+    "The job ads do the heavy lifting. Five of the seven publish a pay range and an exact schedule, and they name hard conditions plainly, from cold rooms and heavy lifting to graveyard shifts and the planned closure of the Irvine office.",
+    "The careers landing page, where candidates start, rests on stock phrases: a great place to work and grow, great benefits, competitive wages, family. Its four restaurant highlights are generic and come with no detail.",
+    "Restaurant candidates get the fewest facts. The store ad gives no pay figure, “Flexible scheduling” is never explained, and the unfiltered list of 65 open roles on the capture date contained no restaurant roles.",
+    "The most ownable promise is buried. One store ad states that all Store Managers and Divisional Managers started as hourly Associates and that everyone starts as a Level 1 Store Associate. This appears nowhere on the landing page, which offers only the words “Career Growth”.",
+    "Among 58 Comparably answers, team and coworkers draw mostly positive comments, while pay and management draw mixed ones. Fairness and appearance rules come up only in reviews."
+  ],
+  "actions": [
+    "Publish restaurant starting pay and explain what “flexible schedule” means in practice.",
+    "Move the promotion-from-within fact and the Level 1 entry point to the top of the landing page, and show what growth looks like outside the restaurants.",
+    "Add accounts from real Associates, starting with managers who began as hourly Associates."
+  ]
+},
+"dimensions": [
+  {
+    "id": "clarity", "score": 9, "max": 12, "assessable": true,
+    "why": "The landing page states an offer in its first paragraph: higher starting wages, great benefits and opportunities to grow. That offer competes with the founders’ story and the quality message, and the rest of the page and the ads do not build on one lead idea.",
+    "criteria": [
+      {"name": "Employer proposition identifiable", "score": 3, "max": 4, "assessable": true, "note": "Pay, benefits and growth are named in the first paragraph, but the offer is split between three ideas and the founders’ care story."},
+      {"name": "Candidate benefit explicit", "score": 3, "max": 4, "assessable": true, "note": "Ads list concrete benefits (free meal each shift, medical, dental, vision, 401(k)/profit sharing, pet insurance), mixed with a repeated company history paragraph."},
+      {"name": "Message hierarchy", "score": 1, "max": 2, "assessable": true, "note": "The landing page’s lead idea is not carried into the highlight lists or the job ads."},
+      {"name": "Accessibility", "score": 2, "max": 2, "assessable": true, "note": "Plain language. A few department names in the job search filter (OSC, QFC, All Stars) are not explained."}
+    ]
+  },
+  {
+    "id": "differentiation", "score": 7, "max": 16, "assessable": true,
+    "why": "None of the four core claims is tied firmly to In-N-Out alone. The founders’ story and the promotion-from-within statement are specific, but the first is company history and the second appears once, in one store ad. The landing page’s argument rests on stock phrases.",
+    "criteria": [
+      {"name": "Resistance to substitution by a competitor", "score": 2, "max": 5, "assessable": true, "note": "The care, pay and family claims would fit a comparable employer unchanged; the founders’ version only bends. Employer-specific detail (promotion of all store and divisional managers from hourly roles, unchanged menu since 1948) sits in secondary material."},
+      {"name": "Resistance to category clichés", "score": 1, "max": 3, "assessable": true, "note": "On the landing page, phrases such as great place to work and grow, great benefits, outstanding career opportunities and family-oriented environment carry the argument."},
+      {"name": "Employer-specific advantages", "score": 2, "max": 4, "assessable": true, "note": "Promotion from hourly roles and the free meal each shift are tied to the offer; other specifics (the race team, the headquarters move) sit in single ads."},
+      {"name": "Defensibility", "score": 1, "max": 2, "assessable": true, "note": "Promotion from within would be costly to copy honestly, but no figures back it."},
+      {"name": "Memorability", "score": 1, "max": 2, "assessable": true, "note": "“Everyone starts as a Level 1 Store Associate” is a repeatable idea, but it appears only once, inside one ad."}
+    ]
+  },
+  {
+    "id": "proof", "score": 9, "max": 16, "assessable": true,
+    "why": "Three of seven claims have meaningful support: growth (for restaurant roles only), pay and benefits (without the comparison), and the quality standards of the work. The headline care claim, flexible schedules and the family atmosphere have little or no support.",
+    "criteria": [
+      {"name": "How many claims are backed", "score": 3, "max": 6, "assessable": true, "note": "Several claims are partly supported; none is fully supported, and the opening care claim has no support."},
+      {"name": "How specific the proof is", "score": 2, "max": 4, "assessable": true, "note": "Pay ranges and duty lists are precise, but only a minority of claims have support."},
+      {"name": "Whether the proof fits the claim", "score": 2, "max": 3, "assessable": true, "note": "The promotion statement covers restaurant management only, while growth is promised to all three employment groups."},
+      {"name": "Whether proof sits next to the claim", "score": 2, "max": 3, "assessable": true, "note": "In the store ad the promotion fact sits next to the growth claim; on the landing page every claim is separated from its proof."}
+    ]
+  },
+  {
+    "id": "audience_fit", "score": 9, "max": 12, "assessable": true,
+    "why": "The landing page splits candidates into restaurant, support and Cookout Truck, and each ad speaks to one role. Decision factors are well covered for hourly production and specialist roles and thinly for restaurant roles.",
+    "criteria": [
+      {"name": "Audience definition", "score": 3, "max": 3, "assessable": true, "note": "Three named employment groups; every ad names its role, site and work type."},
+      {"name": "Motivation relevance", "score": 3, "max": 4, "assessable": true, "note": "Pay, shifts and conditions are specific in five ads; the restaurant ad lacks pay and schedule detail."},
+      {"name": "Segmentation", "score": 2, "max": 3, "assessable": true, "note": "Support roles get a different benefit list, and the QA ad gets tools and office details; restaurant and Cookout Truck share identical highlights."},
+      {"name": "Trade-offs", "score": 1, "max": 2, "assessable": true, "note": "Hard conditions appear as job requirements in the ads, but the employer proposition itself makes no choices."}
+    ]
+  },
+  {
+    "id": "employee_truth", "score": 6, "max": 10, "assessable": true,
+    "why": "Scored out of 7: employee voice could not be assessed because no employee stories were found and several pages could not be read. The ads show the work in detail: tasks, shift times, temperatures, lifting limits, travel and overnight stays. Culture on the landing page is described only in adjectives.",
+    "criteria": [
+      {"name": "Employee voice", "score": 0, "max": 3, "assessable": false, "note": "Not assessed: the Learn More pages and FAQ were unreadable and no stories were found. None of the pages read quote an employee."},
+      {"name": "Work reality", "score": 3, "max": 3, "assessable": true, "note": "For example, the store ad lists peeling potatoes and cleaning before and after each shift; the meat ad gives 6:00 a.m. to 2:30 p.m. and work at temperatures as low as 34°F."},
+      {"name": "Tensions and trade-offs", "score": 2, "max": 2, "assessable": true, "note": "Demands are named and some are handled: a company van and weekends off for the night cleaning shift, relocation assistance for the Irvine office closure."},
+      {"name": "Behaviour over adjectives", "score": 1, "max": 2, "assessable": true, "note": "The store ad shows service practices; the landing page uses only friendly, team-oriented and family-oriented."}
+    ]
+  },
+  {
+    "id": "consistency", "score": 8, "max": 12, "assessable": true,
+    "why": "All the material sounds like one employer: the same opening line, the same company paragraph and the same benefit list. Growth, a landing-page pillar, appears in the store ad only. Small boilerplate differences add minor tension.",
+    "criteria": [
+      {"name": "Core promise alignment", "score": 3, "max": 5, "assessable": true, "note": "Benefits and family language repeat across ads; the growth promise is absent from the six non-restaurant ads."},
+      {"name": "Proof alignment", "score": 2, "max": 3, "assessable": true, "note": "Pay ranges support the pay claim for production and specialist roles, not for the restaurant roles the landing page leads with."},
+      {"name": "Tone and message coherence", "score": 2, "max": 2, "assessable": true, "note": "Shared template and voice across all ads."},
+      {"name": "No contradictions", "score": 1, "max": 2, "assessable": true, "note": "Minor tensions: the intro says higher starting wages, the restaurant section says competitive hourly rates; the state lists in the company paragraph differ between ads."}
+    ]
+  },
+  {
+    "id": "candidate_relevance", "score": 9, "max": 12, "assessable": true,
+    "why": "Role content is concrete in every ad, and pay and schedule are present in most of them. The restaurant ad and the race team ad omit pay, and the restaurant ad gives no hours.",
+    "criteria": [
+      {"name": "Why join", "score": 2, "max": 3, "assessable": true, "note": "Reasons are given (pay, benefits, growth), mostly in generic words; the specific promotion reason appears only in the store ad."},
+      {"name": "Work and role reality", "score": 3, "max": 3, "assessable": true, "note": "Duties, reporting lines, sites and conditions are concrete."},
+      {"name": "Decision facts", "score": 2, "max": 3, "assessable": true, "note": "Pay ranges in five of seven ads; no pay in the store or race team ads, and no hours in the store ad."},
+      {"name": "Candidate questions anticipated", "score": 2, "max": 3, "assessable": true, "note": "The QA ad explains the 2029 office move early; the store ad says no prior experience is needed. Nothing addresses how restaurant shifts are set."}
+    ]
+  },
+  {
+    "id": "conversion", "score": 6, "max": 10, "assessable": true,
+    "why": "Scored out of 9: process transparency could not be assessed because the FAQ was unreadable. Apply buttons are everywhere and sit next to pay and benefits. Nothing says how long applying takes, every applicant must create a profile first, and restaurant roles did not appear in the unfiltered job list.",
+    "criteria": [
+      {"name": "Next-step clarity", "score": 2, "max": 3, "assessable": true, "note": "Apply links are clear, but the restaurant route runs through a Learn More page that could not be read, and the 65-role list held no store roles."},
+      {"name": "Decision support near the button", "score": 2, "max": 2, "assessable": true, "note": "Pay, schedule and benefits sit just above Apply in the ads."},
+      {"name": "Less effort to apply", "score": 1, "max": 2, "assessable": true, "note": "The store ad notes that an application can be shared with other selected stores; nothing on time needed or documents."},
+      {"name": "Fit of the call to action", "score": 1, "max": 2, "assessable": true, "note": "Generic Apply everywhere; a separate link exists for current Associates."},
+      {"name": "Process transparency", "score": 0, "max": 1, "assessable": false, "note": "Not assessed: the FAQ, where the process would likely be described, could not be read. The pages read do not describe the steps."}
+    ]
+  }
+],
+"strengths": [
+  {"title": "Pay ranges and exact schedules in most ads", "text": "Five of seven ads publish a range: $23.95 to $25.50 an hour for the Steam Cleaner, $22.75 to $24.50 for the Meat Department General Helper, $23.27 to $25.74 for the Inventory Clerk, $127,000 to $150,000 plus bonus for the FSQA manager and $107,000 to $140,000 plus bonus for the QA engineer. The same ads give exact hours, such as 11:00 pm to 9:30 am, four nights a week, Tuesday to Friday, for the Steam Cleaner."},
+  {"title": "Hard conditions are stated, not hidden", "text": "The ads name lifting limits of 50 to 75 lbs, work in temperatures as low as 34°F, weekend and holiday availability, 20 to 50% travel for the FSQA role and overnight hotel stays for the Steam Cleaner. Some of these come with how they are handled, for example a company van and weekends off for the night cleaning shift."},
+  {"title": "Early warning about the headquarters move", "text": "The QA engineer ad explains that the Irvine office will close in 2029, that new hires there can join the group move to Tennessee with relocation assistance or work from Baldwin Park, and says the news is shared early so candidates can make informed decisions. It answers a question a candidate would otherwise discover after joining."},
+  {"title": "A concrete entry and promotion path for restaurant roles", "text": "The store ad says everyone starts as a Level 1 Store Associate, prior work experience is not required, and all Store Managers and Divisional Managers started as hourly Associates and were promoted with the help of an ongoing training and development program. It is the most specific employer promise in the material."},
+  {"title": "The work itself is shown", "text": "Duty lists are concrete across roles: peeling and dicing potatoes and acting as the final quality check in the store, unloading chuck beef and checking it against In-N-Out and USDA standards in the meat plant, maintaining drag race cars for the race team."}
+],
+"problems": [
+  {
+    "severity": "high",
+    "title": "The careers landing page makes its case with stock phrases, while the specific facts sit in the ads",
+    "evidence": [
+      "“Since 1948, In-N-Out has been a great place to work and grow.”",
+      "Restaurant highlights on the landing page: “Competitive Wages”, “Paid Vacations”, “Flexible Schedule”, “Career Growth”, with the same four for Cookout Truck.",
+      "Support highlights: “Working in one of our Support Departments offers outstanding career opportunities as well as a friendly, family-oriented environment.”"
+    ],
+    "why": "These lines would fit any comparable employer unchanged. The page contains no figure, practice or example, though the ads have many. A reader of the landing page alone learns little that is particular to In-N-Out.",
+    "flags": ["RF01", "RF16"]
+  },
+  {
+    "severity": "high",
+    "title": "Restaurant candidates get the fewest facts about pay and hours",
+    "evidence": [
+      "The store ad lists “Competitive hourly wage with regular opportunity for advancement and raises” and “Flexible scheduling” with no figure and no description of how shifts work.",
+      "The landing page gives restaurant roles “competitive hourly rates” and a “Flexible Schedule”, again without detail.",
+      "On the capture date the unfiltered job list of 65 roles contained no store roles; the Palmdale store ad opened only by direct link."
+    ],
+    "why": "The landing page lists restaurant employment first, yet this is the only group with no pay figure and no schedule. Production roles at the same company get both. The flexible schedule is a promised benefit that the material never describes.",
+    "flags": ["RF06", "RF20"]
+  },
+  {
+    "severity": "medium",
+    "title": "“Higher starting wages” is a comparison with nothing behind it",
+    "evidence": [
+      "“We’re committed to offering higher starting wages, great benefits and opportunities to grow.”",
+      "The restaurant section of the same page says “competitive hourly rates”."
+    ],
+    "why": "Higher than whom is not stated, and no starting wage for restaurant roles appears anywhere in the material read. The same page then uses the weaker word competitive for the same group, which blurs the promise.",
+    "flags": ["RF02"]
+  },
+  {
+    "severity": "medium",
+    "title": "Growth is promised to everyone but shown only for restaurant roles",
+    "evidence": [
+      "Landing page: “Career Growth” for restaurant and Cookout Truck, and “outstanding career opportunities” for support departments.",
+      "The promotion statement appears only in the store ad; the six support and production ads read say nothing about progression."
+    ],
+    "why": "For support, production and specialist roles the growth promise has no path, programme or example in the material. Even for restaurants, the training and development program is named but not described.",
+    "flags": ["RF14"]
+  },
+  {
+    "severity": "medium",
+    "title": "Family and friendly-team language without any people speaking",
+    "evidence": [
+      "“Come join our family at In-N-Out Burger!” opens four of the seven ads, and the race team ad opens with “Come join the Race Team family at In-N-Out Burger!”",
+      "The store ad says Associates love “the friendships they build with their team at their Store!”, without a single named Associate."
+    ],
+    "why": "The family claim is the most repeated phrase in the material and the least supported. In the pages read, no Associate describes the team in their own words, and the founders’ wish to take care of Associates is shown only through the benefits list.",
+    "flags": ["RF16", "RF07"]
+  },
+  {
+    "severity": "low",
+    "title": "The repeated company paragraph varies between ads",
+    "evidence": [
+      "The store ad lists nine states and leaves out Tennessee; the race team ad lists nine and leaves out Idaho; the other ads list ten.",
+      "The hourly store ad ends with “In-N-Out Burger offers a competitive salary and comprehensive benefit package.”"
+    ],
+    "why": "Small inconsistencies in a shared paragraph suggest different versions of the template are in use. Salary wording in an hourly part-time ad also adds to the uncertainty about restaurant pay.",
+    "flags": []
+  }
+],
+"fixes": [
+  {
+    "title": "Give restaurant candidates the same facts production candidates get",
+    "needs_new_data": true,
+    "steps": [
+      "Add the starting hourly range to every store ad and to the restaurant section of the landing page, in the same format as the production ads.",
+      "Replace “Flexible Schedule” with what can actually be chosen: part-time or full-time, how shifts are set, typical shift length.",
+      "Make store roles findable in the main job search, or say on the landing page how to find a nearby store’s openings."
+    ],
+    "why_first": "Restaurant roles lead the landing page and have the biggest gap between promise and published facts. The format already exists in the other ads.",
+    "needs": ["Starting hourly pay for store Associates by store or region", "How restaurant schedules are set and what flexibility means in practice", "Why store roles are missing from the unfiltered job list"],
+    "effort": "medium",
+    "effort_note": "Pay and scheduling facts from operations and compensation, then a template change for store ads",
+    "who": ["Compensation (restaurant pay ranges)", "Restaurant operations (scheduling rules)", "Talent acquisition (job portal setup)"],
+    "check": ["Whether every store ad shows a pay range", "Whether candidates still ask about pay and hours at the first interview", "Whether store openings appear when the job list is searched without filters"]
+  },
+  {
+    "title": "Lead the landing page with the promotion-from-within fact",
+    "needs_new_data": false,
+    "steps": [
+      "Open the landing page with the store ad’s own facts: everyone starts as a Level 1 Store Associate, no prior experience is needed, and all Store Managers and Divisional Managers started as hourly Associates.",
+      "Replace the “Career Growth” bullet with this path.",
+      "In support and production ads, add one line on how people progress in that function, or drop the growth promise there until it can be shown."
+    ],
+    "why_first": "It is the most specific promise in the material and costs nothing to move. It also matches what one reviewer says about leaders coming up through the ranks.",
+    "needs": ["Optional: how many current managers started as Level 1 Associates, and typical time to first promotion", "Growth paths for support and production roles"],
+    "effort": "small",
+    "effort_note": "Rewording with facts already published in the store ad",
+    "who": ["Employer brand or recruitment marketing", "Restaurant operations (to check the wording still holds)"],
+    "check": ["Whether candidates mention the promotion path in interviews", "Whether internal applications from Level 1 Associates are tracked"]
+  },
+  {
+    "title": "Let Associates describe the team in their own words",
+    "needs_new_data": true,
+    "steps": [
+      "Collect three to five short accounts from real Associates: a manager who started at Level 1, a production worker, a support employee.",
+      "Ask for concrete moments: a first shift, a promotion, how a hard day was handled.",
+      "Place them on the landing page next to the claims they support, and drop “family” where no account backs it."
+    ],
+    "why_first": "The family claim is the most repeated and least supported. Accounts take longer to gather than the first two fixes.",
+    "needs": ["Real Associate accounts with their consent; no invented quotes"],
+    "effort": "large",
+    "effort_note": "Interviews, consent and editing across several sites",
+    "who": ["Store and divisional managers", "Support and production department heads", "Employer brand team"],
+    "check": ["Whether the accounts are specific (names, roles, events) rather than general praise", "What new reviews on Glassdoor, Indeed and Comparably say about team and management after publication"]
+  }
+],
+"rewrites": [
+  {
+    "title": "Landing page introduction",
+    "original": "Since 1948, In-N-Out has been a great place to work and grow. Our Founders, Harry and Esther Snyder, wanted not only to take care of our customers but to take care of our Associates as well. More than 70 years later, that focus still remains firmly in place. We’re committed to offering higher starting wages, great benefits and opportunities to grow. Quality is our most important ingredient in everything we do, and that’s why people who join our family have to be the best. So what are you waiting for? Apply today!",
+    "problem": "Stock phrases carry the paragraph. The care claim and “higher starting wages” have no support, and the strongest fact the company publishes is missing.",
+    "logic": "Keeps the founders, replaces the generic growth line with the store ad’s own promotion facts, and holds the pay comparison back until it can be backed.",
+    "rewrite": "In 1948, Harry and Esther Snyder founded In-N-Out in Baldwin Park, California. They wanted to take care of their Associates as well as their customers. The company is still privately owned and operated, under the direction of the Snyder family.\n\nIn our restaurants, everyone starts as a Level 1 Store Associate, and prior work experience is not required. We provide the training you need, and as you grow you learn more skills, including preparing and cooking food, with opportunities to earn raises. All of our Store Managers and Divisional Managers started as hourly Associates and were promoted with the help of an ongoing training and development program.\n\nStarting pay for restaurant Associates: [EVIDENCE NEEDED]. Apply today.",
+    "notes": [
+      {"kind": "evidence", "text": "Starting hourly pay for restaurant Associates, so it can replace “higher starting wages”."},
+      {"kind": "confirm", "text": "Whether the promotion and Level 1 statements from the store ad still hold for every store today."},
+      {"kind": "confirm", "text": "Whether the company can show a basis for “higher starting wages” (higher than what) before the phrase is used again."}
+    ]
+  },
+  {
+    "title": "Restaurant highlights on the landing page",
+    "original": "We provide competitive hourly rates and a friendly team-oriented environment for our restaurant Associates. Some highlights include:\n- Competitive Wages\n- Paid Vacations\n- Flexible Schedule\n- Career Growth",
+    "problem": "Four generic bullets; no figure, no schedule detail, no path.",
+    "logic": "Uses the store ad’s concrete benefits and marks the facts that are still missing.",
+    "rewrite": "For restaurant Associates:\n- Starting pay: [EVIDENCE NEEDED: hourly range]\n- Free meal during each shift\n- Paid vacation time\n- Schedule: [EVIDENCE NEEDED: what can be chosen and how shifts are set]\n- Profit Sharing and 401(k) Plan (after meeting eligibility requirements)\n- Full-time Associates are eligible for medical benefits\n- Everyone starts as a Level 1 Store Associate; all Store Managers and Divisional Managers started as hourly Associates",
+    "notes": [
+      {"kind": "evidence", "text": "Starting hourly range for restaurant Associates."},
+      {"kind": "evidence", "text": "What “flexible schedule” means in restaurants: part-time and full-time options, how shifts are set."},
+      {"kind": "confirm", "text": "Whether the store ad’s benefits apply equally to Cookout Truck Associates, before using one list for both."}
+    ]
+  }
+],
+"questions": [
+  {"kind": "evidence", "for": "communication", "text": "Starting hourly pay for restaurant Associates, by store or region."},
+  {"kind": "evidence", "for": "communication", "text": "What “flexible schedule” means in restaurants and on the Cookout Truck: part-time and full-time options, how shifts are set, typical shift length."},
+  {"kind": "confirm", "for": "communication", "text": "What “higher starting wages” is compared with, and whether that basis can be published."},
+  {"kind": "confirm", "for": "communication", "text": "Whether all Store Managers and Divisional Managers still start as hourly Associates, as the store ad states."},
+  {"kind": "evidence", "for": "communication", "text": "Numbers behind the promotion path: how many current managers started at Level 1, typical time to a first promotion, what the training and development program involves."},
+  {"kind": "evidence", "for": "communication", "text": "How people progress in support, production and specialist roles."},
+  {"kind": "evidence", "for": "communication", "text": "Associates willing to describe their work and team in their own words."},
+  {"kind": "confirm", "for": "communication", "text": "Which state list is current for the shared company paragraph in job ads."},
+  {"kind": "confirm", "for": "audit", "text": "Whether the Palmdale store ad is still open, and how candidates find store roles that do not appear in the main job list."},
+  {"kind": "evidence", "for": "audit", "text": "The content of the restaurant, support and Cookout Truck “Learn More” pages and the employment FAQ, which could not be read automatically."},
+  {"kind": "evidence", "for": "audit", "text": "Screenshots of the official Facebook, Instagram and LinkedIn accounts and of Glassdoor and Indeed reviews, to add social media and a wider review sample."}
+],
+"genericity": [
+  {"claim": "“Since 1948, In-N-Out has been a great place to work and grow. Our Founders, Harry and Esther Snyder, wanted not only to take care of our customers but to take care of our Associates as well.”", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "The founders and the year tie it to In-N-Out, but “a great place to work and grow” fits anyone. The specific part is company history with no practice that shows the care today."},
+  {"claim": "Restaurant and Cookout Truck highlights: Competitive Wages, Paid Vacations, Flexible Schedule, Career Growth", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Built from stock phrases (“competitive”, “career growth”) with no figure or condition attached, so a comparable employer could reuse the list unchanged."},
+  {"claim": "“In fact, all Store Managers and Divisional Managers started as hourly Associates and were promoted with the help of an ongoing training and development program.”", "verdict": "partial", "substitution": "bends", "ubiquity": "common", "specificity": "high", "defensibility": "supportable", "why": "A scoped, checkable practice (all managers at two named levels, entry at Level 1). Another employer could say it only if it ran the same practice. It would move up with figures and with a place on the landing page."},
+  {"claim": "“We provide competitive hourly rates and a friendly team-oriented environment for our restaurant Associates.” and “Come join our family at In-N-Out Burger!”", "verdict": "generic", "substitution": "survives", "ubiquity": "ubiquitous", "specificity": "none", "defensibility": "unowned", "why": "Made of stock phrases (“competitive”, “friendly team”, “family”) with nothing that ties them to In-N-Out."},
+  {"claim": "“Quality is our most important ingredient in everything we do, and that’s why people who join our family have to be the best.”", "verdict": "generic", "substitution": "survives", "ubiquity": "common", "specificity": "some", "defensibility": "supportable", "why": "As written, any food employer could say it. The ads hold specific material that could make it ownable (in-store produce preparation, the final quality check, a menu unchanged since 1948), but none of it is linked to this sentence."}
+],
+"ledger": [
+  {"claim": "In-N-Out has taken care of its Associates since the founders, and that focus remains (landing page)", "class": "core", "evidence": "Not found. The benefit lists in the ads describe the package but do not show care beyond it.", "strength": "none", "status": "none", "comment": "The claim’s own wording and company history are the only support. A standard benefits list does not demonstrate a broader care promise."},
+  {"claim": "Opportunities to grow and career growth (landing page, store ad)", "class": "core", "evidence": "Store ad: all Store Managers and Divisional Managers started as hourly Associates and were promoted with the help of an ongoing training and development program; everyone starts as a Level 1 Store Associate.", "strength": "moderate", "status": "partial", "comment": "Direct and specific for restaurant management, but growth is also promised to support and Cookout Truck candidates, for whom no path is shown. No figures or programme content."},
+  {"claim": "Higher starting wages and great benefits (landing page; competitive salary and comprehensive benefits in every ad)", "class": "core", "evidence": "Pay ranges in five of seven ads; the same ten-item benefit list in six ads; free meal each shift, paid vacation and eligibility-based 401(k) in the store ad.", "strength": "moderate", "status": "partial", "comment": "The benefits are well documented. No restaurant pay figure appears, and nothing supports the comparison “higher”."},
+  {"claim": "A friendly, team-oriented, family environment (landing page, six of seven ads)", "class": "core", "evidence": "Store ad: Associates are expected to anticipate when others need help and to ask for help; Associates are said to love the friendships they build.", "strength": "weak", "status": "weak", "comment": "Behaviour expectations and an unattributed statement only. No Associate speaks in the pages read."},
+  {"claim": "Quality shapes the work, and people who join have to be the best (landing page, store ad)", "class": "supporting", "evidence": "Store ad: final quality check before handing out food, peeling and dicing potatoes and slicing produce in store, cleaning before and after each shift. Meat ad: product checked against In-N-Out and USDA standards.", "strength": "moderate", "status": "partial", "comment": "Practices are described, not outcomes. “Have to be the best” is not shown, and the store ad requires no prior experience."},
+  {"claim": "Flexible schedule (landing page for restaurant and Cookout Truck; store ad)", "class": "supporting", "evidence": "Not found.", "strength": "none", "status": "none", "comment": "The material never says what can be chosen or how shifts are set."},
+  {"claim": "A high-impact engineering team transforming legacy and modern systems into world-class products (QA engineer ad)", "class": "supporting", "evidence": "Named tools (Playwright, Jenkins, JMeter, Jira), automation and CI/CD duties, software used by thousands of users.", "strength": "weak", "status": "weak", "comment": "The duties and tools show the work, not the impact or the legacy transformation. “World-class” is unsupported."}
+]
+}</script>
+<script>
+const T = {"doc_title": "Employer brand audit", "kicker": "Employer brand audit", "date": "Date", "materials": "Materials", "score": "Employer Brand Score", "provisional": "provisional", "withheld": "Score withheld", "withheld_note": "There is too little material for an overall score: fewer than 40% of the criteria can be assessed.", "coverage": "Coverage", "coverage_hint": "the share of criteria that this material allowed us to assess", "reliability": "Score reliability", "rel": {"high": "high", "medium": "medium", "low": "low"}, "rel_hint": "whether enough different types of material were supplied for a stable score", "toc": "Contents", "sec_summary": "Executive summary", "sec_howto": "How to read this report", "sec_scorecard": "Score by dimension", "sec_working": "What works", "sec_problems": "Main problems", "sec_plan": "Plan: the three most important fixes", "sec_rewrites": "Before → after", "sec_questions": "Questions for the company", "sec_social": "Social media", "sec_perception": "Promise and perception", "sec_manual": "What to add for the full picture", "manual_note": "These accounts are official but closed to automatic collection. Save screenshots in a social/ folder and ask the plugin to update the audit.", "manual_capture": "What to capture", "soc_cols": ["Platform", "Account", "Purpose", "Sample", "Rhythm", "Posts about people and work", "Themes and observations"], "per_note": "Reviews show how the company is seen from outside. They are not part of the 100-point score. They are individual opinions, not facts about the company; reviewers select themselves, so strong opinions are over-represented.", "per_sample": "Sample", "per_sample_cols": ["Platform", "Reviews read", "Period", "Rating shown on the platform"], "per_cols": ["Theme", "Mentions", "Tone", "What the company promises", "Match", "Comment"], "per_thin": "There are few reviews, so themes are listed without counts.", "tone": {"positive": "mostly positive", "negative": "mostly negative", "mixed": "mixed"}, "match": {"consistent": "consistent", "mixed": "partly", "tension": "in tension", "not_addressed": "not addressed by the company"}, "app_map": "Source map: what was found and what was used", "map_cols": ["Source", "Type", "Decision", "Reason"], "decision": {"included": "used", "excluded": "excluded", "unavailable": "unavailable", "manual": "manual import"}, "sec_appendix": "Appendix: analysis detail", "app_genericity": "Genericity test", "app_ledger": "Claims and proof", "app_details": "Score by criterion", "app_materials": "Materials reviewed", "app_sources": "Sources", "src_cols": ["Page", "Type", "Captured", "Link"], "open": "open", "summary_points": "Key findings", "summary_actions": "What to do first", "band": {"85": "Distinctive and well supported. What remains is refinement.", "70": "Strong, with visible gaps that can be fixed.", "50": "Works, but reads as generic or unsupported in important places.", "30": "Weak: few specific reasons to choose the employer and little proof.", "0": "The material shows no working proposition for candidates."}, "band_scale_note": "The scale describes this methodology only. It is not a ranking or a comparison with other employers.", "dims": {"clarity": ["Clarity", "Whether it is clear at a glance what the employer offers and why someone would join."], "differentiation": ["Differentiation", "Whether the claims could be moved unchanged into another employer's copy in the same sector."], "proof": ["Proof", "Whether the claims are backed by figures, practices and examples in the material itself."], "audience_fit": ["Audience fit", "Whether it is clear who the material speaks to, and whether the conditions of different roles are covered."], "employee_truth": ["Employee voice and work reality", "Whether there are real people's stories and a description of what the work is like, difficulties included."], "consistency": ["Consistency", "Whether the materials say the same thing and do not contradict each other."], "candidate_relevance": ["Candidate questions answered", "Whether the facts needed to decide are there: pay, schedule, tasks, conditions."], "conversion": ["Path to applying", "Whether it is clear what to do next, how to apply and what happens after."]}, "not_assessable": "not assessed", "why": "Why", "rf": {"RF01": "Generic claim", "RF02": "Superlative without proof", "RF03": "Company mission instead of an offer to employees", "RF04": "About the company, not the candidate", "RF05": "Fact without a benefit for the candidate", "RF06": "Benefit without proof", "RF07": "Culture described only in adjectives", "RF08": "Unclear who it speaks to", "RF09": "One message for every role", "RF10": "No employee voice", "RF11": "The work itself is not shown", "RF12": "Promises contradict each other", "RF13": "Company size without meaning for the candidate", "RF14": "Vague growth promise", "RF15": "Innovation cliché", "RF16": "Great-team cliché", "RF17": "Perks listed instead of an offer", "RF18": "Claim goes beyond its proof", "RF19": "Unexplained internal jargon", "RF20": "No clear next step", "RF21": "Values offered as a difference without proof", "RF22": "Proof that does not bear on the decision", "RF23": "Promise missing from candidate-facing copy", "RF24": "Too polished, no real work shown"}, "effort": {"small": "small", "medium": "medium", "large": "large"}, "effort_lbl": "Effort", "who": "Who to involve", "check": "How to tell it worked", "scope_in": "What the audit covered", "scope_out": "What it did not look at", "severity": {"critical": "Critical", "high": "High priority", "medium": "Medium priority", "low": "Low priority"}, "evidence": "In the material", "why_matters": "Why it matters", "flags": "Common mistake", "fix_where": "What to do", "fix_why": "Why this priority", "fix_needs": "What it needs", "fix_ready": "Can be done with what you already have", "fix_data": "Needs new information", "rw_original": "Before", "rw_problem": "What is wrong", "rw_logic": "How it was fixed", "rw_rewrite": "After", "q_kind": {"confirm": "Confirm", "evidence": "Information needed"}, "q_for": {"audit": "To make the audit more precise", "communication": "To strengthen candidate-facing copy"}, "q_note": "Until answered, these items are not used in the conclusions and do not appear as facts in rewritten copy.", "gen_cols": ["Claim", "Result", "Substitution", "Stock phrases", "Specifics", "Can you own it", "Why"], "gen": {"verdict": {"distinctive": "Sets you apart", "partial": "Partly sets you apart", "generic": "Generic"}, "substitution": {"breaks": "Only true of you", "bends": "Mostly only you", "survives": "Fits anyone"}, "ubiquity": {"rare": "Own words", "common": "Some stock phrases", "ubiquitous": "Stock phrases"}, "specificity": {"high": "A lot", "some": "Some", "none": "None"}, "defensibility": {"owned": "Yours and proven", "supportable": "Could be supported", "unowned": "Not anchored"}}, "led_cols": ["Claim", "Weight", "Supported by", "Strength", "Result", "Comment"], "led": {"class": {"core": "Core", "supporting": "Supporting"}, "strength": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "none": "None"}, "status": {"strong": "Supported", "partial": "Partly supported", "weak": "Weakly supported", "none": "Not supported", "conflicting": "Contradicted by the material"}}, "det_cols": ["Dimension", "Criterion", "Points", "Comment"], "mat_cols": ["Material", "Type"], "footer": "Prepared with the Employer Brand Auditor plugin. The audit assesses only the material supplied: how it reads to a candidate and what supports it. Facts about the company were not independently verified. Check rewritten copy and every figure before publishing.", "parse_error": "The report data could not be read. Ask the plugin to rebuild the HTML report.", "print": "Save as PDF", "howto_toggle": "Show or hide the explanation", "howto_html": "\n<p class=\"lead\">The audit reads candidate-facing material the way a person choosing a job reads it: the careers page, the employer value proposition (EVP), job ads, employee stories. It answers three questions: what you promise, what backs it up, and what to fix first.</p>\n<div class=\"howto-grid\">\n  <div class=\"howto-card\"><h4>The rule</h4><p>No proof in the material, no claim in the report. The audit does not invent facts, figures or market comparisons. When proof is missing from the copy, it means only that a candidate cannot see it. It does not mean the practice does not exist.</p></div>\n  <div class=\"howto-card\"><h4>Score out of 100</h4><p>The sum of the eight dimensions below. They carry different weights. Differentiation and proof weigh most, 16 points each: without them the rest stays general. Scale: 85–100 distinctive, 70–84 strong with gaps, 50–69 works but generic, 30–49 weak, below 30 no proposition visible. It is not a ranking or a comparison with other employers.</p></div>\n  <div class=\"howto-card\"><h4>Coverage</h4><p>The share of the 34 criteria that could be assessed. When material is missing, for example there is no employee story, those criteria are left out rather than scored zero, and the score is computed from the rest. Below 40% coverage no overall score is given.</p></div>\n  <div class=\"howto-card\"><h4>Score reliability</h4><p>High when coverage is at least 80% and at least three different types of material were supplied. Medium when one of these is missing. Low when there is little material; the score is then provisional. Reliability describes how complete the material is. It does not mean the facts in it were checked.</p></div>\n</div>\n<h4 class=\"howto-h\">The genericity test</h4>\n<p>Each main claim is tested with four questions.</p>\n<ul class=\"howto-list\">\n  <li><b>Substitution.</b> Replace the company's name with \"a similar employer in the same sector\". If the sentence is still true, it fits anyone. If it becomes untrue, it contains something only yours: a place, a figure, a specific practice.</li>\n  <li><b>Stock phrases.</b> Whether the sentence is built from standard phrases such as \"great team\" or \"growth opportunities\".</li>\n  <li><b>Specifics.</b> Figures with time frames, named practices, conditions, constraints.</li>\n  <li><b>Can you own it.</b> Whether the claim rests on something the company really has and the material shows.</li>\n</ul>\n<h4 class=\"howto-h\">Labels in the text</h4>\n<ul class=\"howto-list\">\n  <li><span class=\"tag tag-q\">Confirm</span> a likely fact the company needs to confirm. Until then it is not used as a fact.</li>\n  <li><span class=\"tag tag-e\">Information needed</span> the material does not contain it, and the copy cannot be strengthened without it.</li>\n  <li><b>Supported, partly, weakly, not supported</b>: how well a claim is backed inside the material itself. This is not independent fact-checking.</li>\n</ul>\n"};
+const app = document.getElementById('app');
+document.getElementById('printbtn').textContent = T.print;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = s => esc(s).replace(/\n/g, '<br>');
+const list = (a, cls) => (a && a.length) ? `<ul${cls ? ` class="${cls}"` : ''}>${a.map(x => `<li>${txt(x)}</li>`).join('')}</ul>` : '';
+const sec = (id, title, body) => body ? `<h2 id="${id}">${esc(title)}</h2>${body}` : '';
+const bandKey = v => v >= 85 ? '85' : v >= 70 ? '70' : v >= 50 ? '50' : v >= 30 ? '30' : '0';
+const chipCls = {mixed:'m',included:'g',excluded:'',unavailable:'r',manual:'m',consistent:'g',tension:'r',not_addressed:'',positive:'g',negative:'r',strong:'g',partial:'m',weak:'m',none:'r',conflicting:'r',distinctive:'g',generic:'r',breaks:'g',bends:'m',survives:'r',rare:'g',common:'m',ubiquitous:'r',high:'g',some:'m',owned:'g',supportable:'m',unowned:'r'};
+const chip = (map, k) => k ? `<span class="chip ${chipCls[k] || ''}">${esc((map && map[k]) || k)}</span>` : '';
+function ring(v, max) {
+const r = 56, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+return `<svg viewBox="0 0 132 132"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19B6C9"/><stop offset="1" stop-color="#6B3FD4"/></linearGradient></defs>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="#EEEBF3" stroke-width="12"/>
+<circle cx="66" cy="66" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c * f} ${c}" transform="rotate(-90 66 66)"/></svg>`;
+}
+const safeUrl = u => /^https?:\/\//i.test(String(u || '')) ? esc(u) : '';
+function render(d) {
+const s = d.score || {};
+document.title = `${T.doc_title}: ${d.company || ''}`;
+const withheld = !!s.withheld;
+let h = '';
+// cover
+h += `<div class="cover"><div class="cover-main"><div><div class="kicker">${esc(T.kicker)}</div><h1>${esc(d.company || '')}</h1>
+<p class="verdict">${txt(d.verdict)}</p></div>
+<div class="cover-meta">${esc(T.date)}: ${esc(d.date || '')} · ${esc(T.materials)}: ${(d.materials || []).length}</div></div>
+<div class="scorebox">`;
+if (withheld) {
+h += `<div><div class="kicker">${esc(T.score)}</div><h3 style="margin-top:8px">${esc(T.withheld)}</h3><p class="band">${esc(T.withheld_note)}</p></div>`;
+} else {
+h += `<div class="ring">${ring(s.value || 0, 100)}<div><div class="num">${esc(s.value)}<small>/100</small></div>
+${s.provisional ? `<span class="pill prov">${esc(T.provisional)}</span>` : ''}</div></div>
+<p class="band">${esc(T.band[bandKey(s.value || 0)])}</p>`;
+}
+h += `<div class="metric"><div>${esc(T.coverage)}<span class="h">${esc(T.coverage_hint)}</span></div><b>${esc(s.coverage)}%</b></div>
+<div class="metric"><div>${esc(T.reliability)}<span class="h">${esc(T.rel_hint)}${s.reliability_note ? ': ' + esc(s.reliability_note) : ''}</span></div><b>${esc(T.rel[s.confidence] || s.confidence || '')}</b></div>
+</div></div>`;
+const toc = [['summary', T.sec_summary], ['howto', T.sec_howto], ['scorecard', T.sec_scorecard], ['working', T.sec_working], ['problems', T.sec_problems]]
+.concat((d.social || []).length ? [['social', T.sec_social]] : [])
+.concat(d.perception && (d.perception.themes || []).length ? [['perception', T.sec_perception]] : [])
+.concat([['plan', T.sec_plan], ['rewrites', T.sec_rewrites], ['questions', T.sec_questions]])
+.concat((d.manual_import || []).length ? [['manual', T.sec_manual]] : [])
+.concat([['appendix', T.sec_appendix]]);
+h += `<nav class="toc">${toc.map(([id, t]) => `<a href="#${id}">${esc(t)}</a>`).join('')}</nav>`;
+(d.notices || []).forEach(n => { h += `<div class="notice">${txt(n)}</div>`; });
+const sc = d.scope || {};
+if ((sc.reviewed || []).length || (sc.not_reviewed || []).length) {
+h += `<div class="scope"><div><h4>${esc(T.scope_in)}</h4>${list(sc.reviewed)}</div><div><h4>${esc(T.scope_out)}</h4>${list(sc.not_reviewed)}</div></div>`;
+}
+// summary
+const sm = d.summary || {};
+h += sec('summary', T.sec_summary, `<div class="summary"><div class="panel"><h3>${esc(T.summary_points)}</h3>${list(sm.points)}</div>
+<div class="panel"><h3>${esc(T.summary_actions)}</h3>${list(sm.actions, 'actions')}</div></div>`);
+// how to read (fixed text)
+h += sec('howto', T.sec_howto, `<details class="howto" open><summary>${esc(T.howto_toggle)}</summary>${T.howto_html}<p class="muted">${esc(T.band_scale_note)}</p></details>`);
+// scorecard
+if ((d.dimensions || []).length) {
+h += sec('scorecard', T.sec_scorecard, `<div class="panel">${d.dimensions.map(x => {
+const meta = T.dims[x.id] || [x.id, ''];
+const na = x.assessable === false;
+const pct = na ? 0 : Math.round(100 * (x.score || 0) / (x.max || 1));
+return `<div class="dim"><div><div class="name">${esc(meta[0])}</div><div class="desc">${esc(meta[1])}</div></div>
+<div><div class="bar"><i style="width:${pct}%"></i></div><div class="why">${txt(x.why)}</div></div>
+<div class="pts">${na ? `<small>${esc(T.not_assessable)}</small>` : `${esc(x.score)}<small>/${esc(x.max)}</small>`}</div></div>`;
+}).join('')}</div>`);
+}
+// what works
+h += sec('working', T.sec_working, (d.strengths || []).length ? `<div class="cards">${d.strengths.map(x => `<div class="card good"><h3>${esc(x.title)}</h3><p>${txt(x.text)}</p></div>`).join('')}</div>` : '');
+// problems
+h += sec('problems', T.sec_problems, (d.problems || []).length ? `<div class="cards">${d.problems.map(x => `<div class="card sev-${esc(x.severity)}">
+<div class="sev">${esc(T.severity[x.severity] || '')}</div><h3>${esc(x.title)}</h3>
+${(x.evidence || []).length ? `<div class="lbl">${esc(T.evidence)}</div>${x.evidence.map(e => `<blockquote>${txt(e)}</blockquote>`).join('')}` : ''}
+${x.why ? `<div class="lbl">${esc(T.why_matters)}</div><p>${txt(x.why)}</p>` : ''}
+${(x.flags || []).length ? `<div class="lbl">${esc(T.flags)}</div><p class="muted">${x.flags.map(f => esc((T.rf && T.rf[f]) || f)).join(' · ')}</p>` : ''}</div>`).join('')}</div>` : '');
+// social media
+if ((d.social || []).length) {
+h += sec('social', T.sec_social, `<div class="tblwrap"><table><tr>${T.soc_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.social.map(x => `<tr>
+<td>${esc(x.platform)}</td><td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.account || x.url)}</a>` : esc(x.account)}</td>
+<td>${txt(x.purpose)}</td><td>${txt(x.sample)}</td><td>${txt(x.rhythm)}</td><td>${txt(x.people_share)}</td>
+<td>${(x.themes || []).length ? list(x.themes) : ''}${x.notes ? `<p class="muted">${txt(x.notes)}</p>` : ''}</td></tr>`).join('')}</table></div>`);
+}
+// perception layer (reviews), never part of the score
+const pr = d.perception || {};
+if ((pr.themes || []).length || (pr.sample || []).length) {
+let ph = `<div class="notice">${esc(T.per_note)}${pr.caveat ? ' ' + txt(pr.caveat) : ''}</div>`;
+if ((pr.sample || []).length) {
+ph += `<h3>${esc(T.per_sample)}</h3><div class="tblwrap"><table><tr>${T.per_sample_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.sample.map(x => `<tr><td>${esc(x.platform)}</td><td>${esc(x.reviews)}</td><td>${esc(x.period)}</td><td>${txt(x.rating)}</td></tr>`).join('')}</table></div>`;
+}
+if (pr.thin) ph += `<p class="muted">${esc(T.per_thin)}</p>`;
+if ((pr.themes || []).length) {
+ph += `<div class="tblwrap"><table><tr>${T.per_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${pr.themes.map(x => `<tr>
+<td><b>${esc(x.theme)}</b></td><td>${pr.thin || x.mentions == null ? '' : esc(x.mentions) + (x.of ? ' / ' + esc(x.of) : '')}</td>
+<td>${chip(T.tone, x.tone)}</td><td>${txt(x.promise)}</td><td>${chip(T.match, x.match)}</td><td>${txt(x.note)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('perception', T.sec_perception, ph);
+}
+// plan
+h += sec('plan', T.sec_plan, (d.fixes || []).length ? `<div class="cards fixes">${d.fixes.map(x => `<div class="card fix"><h3>${esc(x.title)}</h3>
+<span class="effort ${x.needs_new_data ? 'data' : ''}">${esc(x.needs_new_data ? T.fix_data : T.fix_ready)}</span>
+<div class="lbl">${esc(T.fix_where)}</div>${list(x.steps)}
+${x.why_first ? `<div class="lbl">${esc(T.fix_why)}</div><p>${txt(x.why_first)}</p>` : ''}
+${(x.needs || []).length ? `<div class="lbl">${esc(T.fix_needs)}</div>${list(x.needs)}` : ''}
+${x.effort ? `<div class="lbl">${esc(T.effort_lbl)}</div><p>${esc(T.effort[x.effort] || x.effort)}${x.effort_note ? '. ' + txt(x.effort_note) : ''}</p>` : ''}
+${(x.who || []).length ? `<div class="lbl">${esc(T.who)}</div><p>${x.who.map(esc).join(', ')}</p>` : ''}
+${(x.check || []).length ? `<div class="lbl">${esc(T.check)}</div>${list(x.check)}` : ''}</div>`).join('')}</div>` : '');
+// rewrites
+h += sec('rewrites', T.sec_rewrites, (d.rewrites || []).length ? `<div class="cards">${d.rewrites.map(x => `<div class="card"><h3>${esc(x.title)}</h3>
+${x.problem ? `<div class="lbl">${esc(T.rw_problem)}</div><p>${txt(x.problem)}</p>` : ''}
+${x.logic ? `<div class="lbl">${esc(T.rw_logic)}</div><p>${txt(x.logic)}</p>` : ''}
+<div class="rw"><div><div class="lbl">${esc(T.rw_original)}</div><div class="before">${txt(x.original)}</div></div>
+<div><div class="lbl">${esc(T.rw_rewrite)}</div><div class="after">${txt(x.rewrite)}</div></div></div>
+${(x.notes || []).length ? `<ul class="qlist">${x.notes.map(n => `<li><span class="tag ${n.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[n.kind] || n.kind)}</span>${txt(n.text)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>` : '');
+// questions
+const qs = d.questions || [];
+if (qs.length) {
+const grp = k => qs.filter(q => (q.for || 'communication') === k);
+const qhtml = ['communication', 'audit'].map(k => grp(k).length ? `<h3 style="margin:18px 0 6px">${esc(T.q_for[k])}</h3><ul class="qlist">${grp(k).map(q => `<li><span class="tag ${q.kind === 'confirm' ? 'tag-q' : 'tag-e'}">${esc(T.q_kind[q.kind] || q.kind)}</span>${txt(q.text)}</li>`).join('')}</ul>` : '').join('');
+h += sec('questions', T.sec_questions, `<p class="muted">${esc(T.q_note)}</p>${qhtml}`);
+}
+// manual import checklist
+if ((d.manual_import || []).length) {
+h += sec('manual', T.sec_manual, `<p class="muted">${esc(T.manual_note)}</p><div class="cards">${d.manual_import.map(x => `<div class="card"><h3>${esc(x.platform)}</h3>
+${safeUrl(x.url) ? `<p><a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></p>` : ''}
+${(x.capture || []).length ? `<div class="lbl">${esc(T.manual_capture)}</div>${list(x.capture)}` : ''}</div>`).join('')}</div>`);
+}
+// appendix
+let app2 = '';
+if ((d.source_map || []).length) {
+app2 += `<h3>${esc(T.app_map)}</h3><div class="tblwrap"><table><tr>${T.map_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.source_map.map(x => `<tr>
+<td>${safeUrl(x.url) ? `<a href="${safeUrl(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.source)}</a>` : esc(x.source)}</td><td>${esc(x.kind)}</td>
+<td>${chip(T.decision, x.decision)}</td><td>${txt(x.reason)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.genericity || []).length) {
+app2 += `<h3>${esc(T.app_genericity)}</h3><div class="tblwrap"><table><tr>${T.gen_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.genericity.map(g => `<tr>
+<td>${txt(g.claim)}</td><td>${chip(T.gen.verdict, g.verdict)}</td><td>${chip(T.gen.substitution, g.substitution)}</td><td>${chip(T.gen.ubiquity, g.ubiquity)}</td>
+<td>${chip(T.gen.specificity, g.specificity)}</td><td>${chip(T.gen.defensibility, g.defensibility)}</td><td>${txt(g.why)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.ledger || []).length) {
+app2 += `<h3>${esc(T.app_ledger)}</h3><div class="tblwrap"><table><tr>${T.led_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.ledger.map(l => `<tr>
+<td>${txt(l.claim)}</td><td>${esc(T.led.class[l.class] || '')}</td><td>${txt(l.evidence)}</td><td>${chip(T.led.strength, l.strength)}</td>
+<td>${chip(T.led.status, l.status)}</td><td>${txt(l.comment)}</td></tr>`).join('')}</table></div>`;
+}
+const det = (d.dimensions || []).flatMap(x => (x.criteria || []).map(c => [x.id, c]));
+if (det.length) {
+app2 += `<h3>${esc(T.app_details)}</h3><div class="tblwrap"><table><tr>${T.det_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${det.map(([id, c]) => `<tr>
+<td>${esc((T.dims[id] || [id])[0])}</td><td>${esc(c.name)}</td><td>${c.assessable === false ? esc(T.not_assessable) : `${esc(c.score)}/${esc(c.max)}`}</td><td>${txt(c.note)}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.sources || []).length) {
+app2 += `<h3>${esc(T.app_sources)}</h3><div class="tblwrap"><table><tr>${T.src_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.sources.map(s => `<tr><td>${esc(s.title)}</td><td>${esc(s.type)}</td><td>${esc(s.captured)}</td><td>${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(T.open)}</a>` : ''}</td></tr>`).join('')}</table></div>`;
+}
+if ((d.materials || []).length) {
+app2 += `<h3>${esc(T.app_materials)}</h3><div class="tblwrap"><table><tr>${T.mat_cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${d.materials.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.type)}</td></tr>`).join('')}</table></div>`;
+}
+h += sec('appendix', T.sec_appendix, app2);
+h += `<footer>${esc(T.footer)}${d.plugin_version ? ` · Employer Brand Auditor v${esc(d.plugin_version)}` : ''}</footer>`;
+app.innerHTML = h;
+}
+try {
+render(JSON.parse(document.getElementById('report-data').textContent));
+} catch (e) {
+app.innerHTML = `<div class="notice">${esc(T.parse_error)}</div>`;
+console.error(e);
+}
+</script>
+</body>
+</html>
