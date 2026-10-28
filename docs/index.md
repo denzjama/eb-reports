@@ -6,7 +6,7 @@ The reviews assess public communication only, not what working at a company is l
 
 ## Reviews
 
-- [Anthropic: 76/100](anthropic-2026-10/) · October 2026
+- [Anthropic: 76/100](anthropic-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/anthropics-employer-brand-76-100-1f72b89d8dc1)
 - [Netflix: 75/100](netflix-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/netflixs-employer-brand-75-100-d69cecfa4e7f)
 - [Amazon: 71/100](amazon-2026-10/) · October 2026
 - [Microsoft: 69/100](microsoft-2026-10/) · October 2026
