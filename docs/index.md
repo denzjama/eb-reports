@@ -11,7 +11,7 @@ The reviews assess public communication only, not what working at a company is l
 - [Amazon: 71/100](amazon-2026-10/) · October 2026
 - [Microsoft: 69/100](microsoft-2026-10/) · October 2026
 - [Salesforce: 68/100](salesforce-2026-10/) · October 2026
-- [Apple: 68/100](apple-2026-10/) · October 2026
+- [Apple: 68/100](apple-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/apples-employer-brand-68-100-c2497eb0056e)
 - [In-N-Out Burger: 66/100](in-n-out-burger-2026-10/) · October 2026
 - [ServiceNow: 66/100](servicenow-2026-10/) · October 2026
 - [OpenAI: 66/100](openai-2026-10/) · October 2026
