@@ -8,7 +8,7 @@ The reviews assess public communication only, not what working at a company is l
 
 - [Anthropic: 76/100](anthropic-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/anthropics-employer-brand-76-100-1f72b89d8dc1)
 - [Netflix: 75/100](netflix-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/netflixs-employer-brand-75-100-d69cecfa4e7f)
-- [Amazon: 71/100](amazon-2026-10/) · October 2026
+- [Amazon: 71/100](amazon-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/amazons-employer-brand-71-100-071d207d91b7)
 - [Microsoft: 69/100](microsoft-2026-10/) · October 2026
 - [Salesforce: 68/100](salesforce-2026-10/) · October 2026
 - [Apple: 68/100](apple-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/apples-employer-brand-68-100-c2497eb0056e)
