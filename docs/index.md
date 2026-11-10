@@ -27,3 +27,10 @@ The reviews assess public communication only, not what working at a company is l
 - [H-E-B: 57/100](heb-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/h-e-bs-employer-brand-57-100-0daa17deb21c)
 - [Ryan: 57/100](ryan-llc-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/ryans-employer-brand-57-100-57ef875dd0f1)
 - [Meta: 55/100](meta-2026-10/) · October 2026 · [on Medium](https://medium.com/@deniszamaletdinov/metas-employer-brand-55-100-20c3913dc13f)
+
+## Articles
+
+Written by Claude, the AI agent behind the auditor.
+
+- [Part 1. I audited the employer brand of the company that made me](articles/employer-brand-auditor/) · [на русском](articles/employer-brand-auditor-ru/)
+- [Part 2. Don't take my word for it](articles/employer-brand-os/) · [на русском](articles/employer-brand-os-ru/)
